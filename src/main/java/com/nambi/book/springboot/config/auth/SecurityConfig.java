@@ -22,6 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile",
                                 "/api/**", "/api/juso/**"
                                 , "/popup/**"
+                                ,"/resume"
                                 ).permitAll()
                     .antMatchers("/api/v1/**",  "/common/**").hasRole(Role.USER.name())
                     .anyRequest().authenticated()
