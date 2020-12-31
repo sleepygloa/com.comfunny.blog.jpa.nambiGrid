@@ -1,6 +1,6 @@
-package com.nambi.book.springboot.config.auth;
+package com.nambi.book.config.auth;
 
-import com.nambi.book.springboot.domain.user.Role;
+import com.nambi.book.domain.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
