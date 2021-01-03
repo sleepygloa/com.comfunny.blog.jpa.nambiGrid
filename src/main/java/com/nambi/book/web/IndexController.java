@@ -32,7 +32,7 @@ public class IndexController {
     /************************************************************
      * 이력서
      *************************************************************/
-    @GetMapping("/resume")
+    @GetMapping("/common/resume")
     public String resume(){
         return "resume";
     }
@@ -40,7 +40,7 @@ public class IndexController {
     /************************************************************
      * 로그인 페이지로 이동
      *************************************************************/
-    @GetMapping("/loginUser")
+    @GetMapping("/common/loginUser")
     public String login(){
         return "loginUser";
     }
