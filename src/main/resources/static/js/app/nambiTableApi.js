@@ -69,7 +69,6 @@ function fnSaveReIdx(el){
 
 (function(window, $, undefined){
 
-
 	//글 컨텐츠 불러오기.
     $.fn.getLoadingPage = function(data){
     	blogData = data;
@@ -99,7 +98,7 @@ function fnSaveReIdx(el){
     		title		: "", //페이지 상단에 보여줄 제목
     		tableTitle	: "", //테이블 상단에 보여줄 테이블 제목
     		grid		: "",
-    		
+
     		colName		: [],
     		colRow		: [],
     		colOption	: [],
@@ -135,113 +134,73 @@ function fnSaveReIdx(el){
 				}
 			}
 		}
-    	
+
+
     	initData = data;
     	url = data.url;
     	programId = data.programId; //프로그램 아이디
     	uProgramId = programId.charAt(0).toUpperCase() + programId.slice(1); //프로그램 아이디 대문자
 
-    	var title = data.programNm + '관리'; //페이지 상단의 페이지 제목
-    	var tableTitle = data.programNm + '목록'; //그리드 이름
+    	tableInitData["tableTitle"] = data.programNm + '목록'; //그리드 이름
+
+        //그리드 스트링.
     	var grid = '';
-    	(data.viewContents != undefined? viewContents = data.viewContents : viewContents = false);
-    	(data.viewContentsRe != undefined? viewContentsRe = data.viewContentsRe : viewContentsRe = false);
+    	(data.viewContents != undefined? viewContents = data.viewContents : viewContents = false); //컨텐츠 유무
+    	(data.viewContentsRe != undefined? viewContentsRe = data.viewContentsRe : viewContentsRe = false); //댓글유무.
 
     	colName = new Array();
     	colRow = new Array();
     	colOption = data.colOption;
     	
     	
-    	//데이터 세팅
 
-    	
-
-    	var btn = data.btn;
+    	/**********************
+    	* 데이터 세팅
+    	**********************/
+    	var btn = tableInitData.btn;
 
     	var $element = '';
     	var navi = '';
-    	//dataSetting
-//    	(data.checkBox == true ? checkBox = data.checkBox : checkBox);
 
     	var editable = false;
     	if(data.editable) editable = data.editable;
     	var editableFlag = false;
 
-    	
-    	//그리드 컬럼 만드는 로직
-    	//gridData.colName
-    	//gridData.colRow
-//    	$.ajax({
-//    		url : tableInitData.url + "list" + tableInitData.uProgramId,
-//    		async : false,
-//    		success : function(result){
-//
-//    			//키를 가져와 컬럼 이름을 구성
-////    			var colList = result.dt_grid[0];
-//    			if(result.dt_grid.length > 0){
-//        			var k = Object.keys(result.dt_grid[0]);
-//        			if(k.length > 0){
-//        				var tColName = [];
-//        				//그리드 옵션 중 컬럼 명이 없을
-//        				//조회된 모든 컬럼 불러옴.
-//        				if(tableInitData.colName == undefined){
-//            				for(var i = 0; i < k.length; i++){
-//            					tColName.push(k[i]);
-//            				}
-//            				tableInitData.colName = tColName;
-//            			//그리드 옵션 중에 컬럼명 지정
-//            			//지정한 컬럼만 불러옴.
-//        				}else{
-//        					for(var j = 0; j < tableInitData.colName.length; j++){
-//                				for(var i = 0; i < k.length; i++){
-//                					if(tableInitData.colName[j] == k[i]){
-//                						tColName.push(k[i]);
-//                						break;
-//                					}
-//                				}
-//        					}
-//        					tableInitData.colName = tColName;
-//        				}
-//        			}
-//    			}
-//    			tableInitData.colRow = result.dt_grid;
-//    		}
-//    	});
 
 
     	//그리드 상단 그룹 버튼
     	var gridDivContainer = $('<div class="col-xs-w100" style="margin-bottom:50px;"/>');
     	
-    	//페이지 타이틀 
-    	var divPageTitle = $('<div class="col-xs-w100" />');
-    	var divPageTitleH = $('<h5 class="card-title mb-4">'+tableInitData.tableTitle+'</h5>');
-    	
-    	divPageTitle.append(divPageTitleH);
-    	gridDivContainer.append(divPageTitle);
+            //페이지 타이틀
+            var divPageTitle = $('<div class="col-xs-w100" />');
+            var divPageTitleH = $('<h5 class="card-title mb-4">'+data.programNm + '관리'+'</h5>');
+
+            divPageTitle.append(divPageTitleH);
+            gridDivContainer.append(divPageTitle);
     	
     	//그리드 버튼 그룹
     	var divBtnGroup = $('<div class="col-xs-w100" />');
 
     	var gridBtnGrpStr = '<div class="col-xs-w100" >';
-	    	if(tableInitData.btn != undefined){
-	    		for(var i = tableInitData.btn.length - 1; i >= 0; i--){
-	        		var btnName = tableInitData.btn[i];
+	    	if(data.btn != undefined){
+	    		for(var i = data.btn.length - 1; i >= 0; i--){
+	        		var btnName = data.btn[i];
 	        		if(btnName == 'search'){
-	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'SearchBtn" class="btn btn-save btn-sm pull-right" >검색</a>';
-	        		}else if(btnName == 'add'){
-	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'AddBtn" class="btn btn-save btn-sm pull-right" >글 추가</a>';
+	        			gridBtnGrpStr += '<a href="#" id="'+data.programId+'SearchBtn" class="btn btn-save btn-sm pull-right" >검색</a>';
+	        		}else if(btnName == 'insert'){
+	        			gridBtnGrpStr += '<a href="#" id="'+data.programId+'InsertBtn" class="btn btn-save btn-sm pull-right" >글 추가</a>';
 	        		}else if(btnName == 'update'){
-	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'UpdateBtn" class="btn btn-update btn-sm pull-right" >글 수정</a>';
+	        			gridBtnGrpStr += '<a href="#" id="'+data.programId+'UpdateBtn" class="btn btn-update btn-sm pull-right" >글 수정</a>';
 	        		}else if(btnName == 'delete'){
-	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'DeleteBtn" class="btn btn-delete btn-sm pull-right" >글 삭제</a>';
+	        			gridBtnGrpStr += '<a href="#" id="'+data.programId+'DeleteBtn" class="btn btn-delete btn-sm pull-right" >글 삭제</a>';
 	        		}else if(btnName == 'addRow'){
-	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'AddRowBtn" class="btn btn-add btn-sm pull-right" >행추가</a>';
+	        			gridBtnGrpStr += '<a href="#" id="'+data.programId+'AddRowBtn" class="btn btn-add btn-sm pull-right" >행추가</a>';
 	        		}else if(btnName == 'delRow'){
-	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'DelRowBtn" class="btn btn-delete btn-sm pull-right" >행삭제</a>';
+	        			gridBtnGrpStr += '<a href="#" id="'+data.programId+'DelRowBtn" class="btn btn-delete btn-sm pull-right" >행삭제</a>';
 //	        		}else if(btnName == 'save'){
-//	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'SaveBtn" class="btn btn-save btn-sm pull-right" >글 저장</a>';
+//	        			gridBtnGrpStr += '<a href="#" id="'+data.programId+'SaveBtn" class="btn btn-save btn-sm pull-right" >글 저장</a>';
 	        		}else if(btnName == 'saveRow'){
-	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'SaveRowBtn" class="btn btn-save btn-sm pull-right" >행저장</a>';
+	        			gridBtnGrpStr += '<a href="#" id="'+data.programId+'SaveRowBtn" class="btn btn-save btn-sm pull-right" >행저장</a>';
 	        		}
 	        	}
 	    	}
@@ -250,7 +209,10 @@ function fnSaveReIdx(el){
     	divBtnGroup.append(gridBtnGrp);
 //    	gridDivContainer.append(divBtnGroup);
 
-    	//테이블
+
+        /***************************
+        * 테이블
+        ****************************/
     	var table = $('<table class="table center-aligned-table table-hover tableScrollX" />');
 
     	//테이블 헤더
@@ -262,120 +224,144 @@ function fnSaveReIdx(el){
     	//FLAG
 		ththData += '<th>'+'FLAG'+'</th>';
 		//FLAG End
-    	for(var i = 0; i < tableInitData.colName.length; i++){
-			var tdTitle = '', tdWidth = '100px', tdHidden = false, tdHiddenCss = 'show';
 
-			if(tableInitData.colOption != undefined){
-				if(tableInitData.colOption[i].id == tableInitData.colName[i]){
-					(tableInitData.colOption[i].title != '' ? tdTitle = tableInitData.colOption[i].title : tdTitle = tableInitData.colOption[i].id);
-					(tableInitData.colOption[i].width != '' ? tdWidth = tableInitData.colOption[i].width : tdWidth = '');
-					(tableInitData.colOption[i].hidden != '' ? tdHidden = tableInitData.colOption[i].hidden : tdHidden = false);
-					if(tdHidden) tdHiddenCss = 'none';
-				}
-			}
-    		ththData += '<th style="width:'+tdWidth+'; display:'+tdHiddenCss+'">'+tableInitData.colName[i]+'</th>';
+    	for(var i = 0; i < data.colOption.length; i++){
+			var tdTitle = '', tdWidth = '100px', tdHidden = false, tdHiddenCss = 'show';
+            (data.colOption[i].title != '' ? tdTitle = data.colOption[i].title : tdTitle = data.colOption[i].id);
+            (data.colOption[i].width != '' ? tdWidth = data.colOption[i].width : tdWidth = '');
+            (data.colOption[i].hidden != '' ? tdHidden = data.colOption[i].hidden : tdHidden = false);
+            if(tdHidden) tdHiddenCss = 'none';
+    		ththData += '<th style="width:'+tdWidth+'; display:'+tdHiddenCss+'">'+tdTitle+'</th>';
     	}
     	var thth = $(ththData);
     	thead.append(thth);
 
-		/**
-		 * Grid Option
-		 * Row 에 대한 IDX 값 세팅
-		 * tr 시작
-		 *
-		 * ViewContents == true; --> 글보기
-		 * ViewContents == false; --> 글보기 없음
-		 * */
-    	var tbody = $('<tbody />');
-
-    	for(var i = 0; i < tableInitData.colRow.length; i++){
-    		trCnt++;
-	    	var tbtr = $('<tr id="tr_row_'+i+'" class="tr_row_'+i+'" />');
-
-	    	//글 상세 보기 속성 있을때 클래스 추가
-	    	if(viewContents){
-	    		tbtr.addClass('viewContents_'+tableInitData.colRow[i].IDX);
-	    	}
-
-			var tbthData = '';
-				tbthData += '<td class="td_row_flag" ><i class="fa" ></i><input class="td_row_flag_input" type="hidden" value="" /></th>';
 
 
-			var rowData = tableInitData.colRow[i];
-			var keyName = Object.keys(rowData);
+    	//그리드 컬럼 만드는 로직
+    	$.ajax({
+    	    type:"GET",
+    		url : "/"+tableInitData.programId + "/list",
+    		dataType : "json",
+    		contentType:"application/json",
+    		success : function(result){
 
-			for(var j = 0; j < tableInitData.colName.length; j++){
-				$.each(rowData, function(k, v){
-					var tdTitle = '';
-					var tdWidth = '100px';
-					var tdHidden = false;
-					var tdHiddenCss = 'show';
+                /**
+                 * Grid Option
+                 * Row 에 대한 IDX 값 세팅
+                 * tr 시작
+                 *
+                 * ViewContents == true; --> 글보기
+                 * ViewContents == false; --> 글보기 없음
+                 * */
+                var tbody = $('<tbody />');
 
-					if(tableInitData.colOption != undefined){
-						if(colOption[j].id == k){
-							(tableInitData.colOption[j].title != '' ? tdTitle = tableInitData.colOption[j].title : tdTitle = tableInitData.colOption[j].id);
-							(tableInitData.colOption[j].width != '' ? tdWidth = tableInitData.colOption[j].width : tdWidth = '');
-							(tableInitData.colOption[j].hidden != '' ? tdHidden = tableInitData.colOption[j].hidden : tdHidden = false);
-							if(tdHidden) tdHiddenCss = 'none';
-						}
-					}
+                for(var i = 0; i < result.length; i++){
+                    trCnt++;
+                    var tbtr = $('<tr id="tr_row_'+i+'" class="tr_row_'+i+'" />');
 
-					if(data.colName[j] == k){
-						tbthData += '<td class="td_row_'+k+'" style="width:'+tdWidth+';display:'+tdHiddenCss+'">'
-						+ '<span class="td_row_s_'+i+'" style="display:show">'+v+'</span>'
-						+ '<input type="text" class="td_row_i_'+i+'" value="'+v+'" style="display:none;width:100%" />'
-						+ '</td>';
-						return false;
-					}
-				});
-			}
+                    //글 상세 보기 속성 있을때 클래스 추가
+                    if(viewContents){
+                        tbtr.addClass('viewContents_'+result[i].menuSeq);
+                    }
+
+                    var tbthData = $('<td class="td_row_flag" ><i class="fa" ></i><input class="td_row_flag_input" type="hidden" value="" /></td>');
+
+                    tbtr.append(tbthData);
 
 
-			var tbth = $(tbthData);
-			tbtr.append(tbth);
-			tbody.append(tbtr);
-    	}
-		table.append(thead);
-		table.append(tbody);
-		//table End
-		
-		//버튼 그룹과 테이블 그룹을 한 div로 합침.
-		var tableParentDiv = $('<div class="col-xs-w100" />');
-		tableParentDiv.append(table);
-		divBtnGroup.append(tableParentDiv);
-		gridDivContainer.append(divBtnGroup);
-		
-		//타이틀, 테이블 버튼, 테이블 화면에 그림.
-//    	gridDivContainer.append(tableParentDiv);
-    	$('#'+programId+'Grid').html(gridDivContainer);
+                    var rowData = result[i];
+                    var keyName = Object.keys(rowData);
+
+                    for(var j = 0; j < data.colOption.length; j++){
+                        $.each(rowData, function(k, v){
+                            var tdTitle = '';
+                            var tdWidth = '100px';
+                            var tdHidden = false;
+                            var tdHiddenCss = 'show';
+
+
+                            if(data.colOption[j].id == k){
+                                (data.colOption[j].title != '' ? tdTitle = data.colOption[j].title : tdTitle = data.colOption[j].id);
+                                (data.colOption[j].width != '' ? tdWidth = data.colOption[j].width : tdWidth = tdWidth);
+                                (data.colOption[j].hidden != '' ? tdHidden = data.colOption[j].hidden : tdHidden = false);
+                                if(tdHidden) tdHiddenCss = 'none';
+
+                                var tbth = $('<td />');
+                                tbth.addClass('td_row_'+i);
+                                tbth.css('width', tdWidth);
+                                tbth.css('display', tdHiddenCss);
+                                var tbthspan = $('<span class="td_row_s_'+i+'" style="display:show">'+v+'</span>');
+                                var tbthinput = $('<input type="text" class="td_row_i_'+i+'" value="'+v+'" style="display:none;width:100%" />');
 
 
 
-    	//
-    	if(editable){
-    		$('tr[id^="tr_row_"]').dblclick(function(){
-    			rowId = $(this).attr('id').split('tr_row_')[1];
-    			clickCnt = rowId;
 
-        		if(!editableFlag){
-            		$('input[class^="td_row_i_'+rowId+'"').css('display', 'block');
-            		$('span[class^="td_row_s_'+rowId+'"').css('display', 'none');
-            		editableFlag = true;
-        		}else{
-            		$('input[class^="td_row_i_'+rowId+'"').css('display', 'none');
-            		$('span[class^="td_row_s_'+rowId+'"').css('display', 'block');
 
-            		rowId = -1;
-            		editableFlag = false;
-        		}
-    		});
+                                tbth.append(tbthspan);
+                                tbth.append(tbthinput);
 
-    	}else{
+                                tbtr.append(tbth);
+                                return false;
+                            }
+                        });
+                    }
 
-//    		$('tr[id^="tr_row_"]').click(function(){
-//    			gridRowGridBlurEvent($(this));
-//    		});
-    	}
+                    if(editable){
+                        tbtr.dblclick(function(e){
+                            rowId = $(this).attr('class').split('tr_row_')[1];
+                            clickCnt = rowId;
+
+                            $('input[class="td_row_i_'+rowId+'"').on('change blur', function(){
+                                $($(this).siblings()[0]).text($(this).val());
+
+                                $('input[class^="td_row_i_'+rowId+'"').css('display', 'none');
+                                $('span[class^="td_row_s_'+rowId+'"').css('display', 'block');
+
+                                rowId = -1;
+                                editableFlag = false;
+                            });
+
+                            if(!editableFlag){
+                                $('input[class^="td_row_i_'+rowId+'"').css('display', 'block');
+                                $('span[class^="td_row_s_'+rowId+'"').css('display', 'none');
+
+                                editableFlag = true;
+                            }else{
+                                $('input[class^="td_row_i_'+rowId+'"').css('display', 'none');
+                                $('span[class^="td_row_s_'+rowId+'"').css('display', 'block');
+
+                                rowId = -1;
+                                editableFlag = false;
+                            }
+                        });
+
+                    }else{
+
+            //    		$('tr[id^="tr_row_"]').click(function(){
+            //    			gridRowGridBlurEvent($(this));
+            //    		});
+                    }
+                    tbody.append(tbtr);
+                }
+                table.append(thead);
+                table.append(tbody);
+                //table End
+
+                //버튼 그룹과 테이블 그룹을 한 div로 합침.
+                var tableParentDiv = $('<div class="col-xs-w100"/>');
+                tableParentDiv.append(table);
+                divBtnGroup.append(tableParentDiv);
+                gridDivContainer.append(divBtnGroup);
+
+                //타이틀, 테이블 버튼, 테이블 화면에 그림.
+        //    	gridDivContainer.append(tableParentDiv);
+                $('#'+programId+'Grid').html(gridDivContainer);
+    		}
+    	});
+
+
+
     	
     	//첫행 블러오기
     	//gridRowGridBlurEvent($('#tr_row_0'));

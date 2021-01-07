@@ -15,6 +15,9 @@ public class MenuListResponseDto {
     private String menuOrder;
     private String deviceFlag;
     private String useYn;
+    private String delYn;
+    private String inUserId;
+    private String upUserId;
 
     public MenuListResponseDto(Menu entity) {
         this.menuSeq = entity.getMenuSeq();
@@ -26,5 +29,9 @@ public class MenuListResponseDto {
         this.menuOrder = entity.getMenuOrder();
         this.deviceFlag = entity.getDeviceFlag();
         this.useYn = entity.getUseYn();
+        this.delYn = entity.getDelYn();
+        this.inUserId = entity.getInUserId();
+        this.upUserId = entity.getUpUserId();
+
     }
 }

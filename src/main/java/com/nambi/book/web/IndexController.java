@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,7 +34,7 @@ public class IndexController {
     /************************************************************
      * 이력서
      *************************************************************/
-    @GetMapping("/common/resume")
+    @GetMapping("/resume")
     public String resume(){
         return "resume";
     }
@@ -40,10 +42,11 @@ public class IndexController {
     /************************************************************
      * 로그인 페이지로 이동
      *************************************************************/
-    @GetMapping("/common/loginUser")
+    @GetMapping("/login")
     public String login(){
-        return "loginUser";
+        return "/login";
     }
+
 
 
     /************************************************************
@@ -58,7 +61,7 @@ public class IndexController {
         return "menu";
     }
 
-    private final MenuService menuService;
+
     /************************************************************
     * 메인화면 게시판
     *************************************************************/

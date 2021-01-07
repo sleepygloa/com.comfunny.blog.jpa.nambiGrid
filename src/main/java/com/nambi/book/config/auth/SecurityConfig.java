@@ -23,14 +23,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 "/api/**", "/api/juso/**"
                                 , "/popup/**"
                                 , "/resume"
+                                , "/common/**"
+                            ,"/login"
+                            ,"/menu/**"
                                 ).permitAll()
-                    .antMatchers("/api/v1/**",  "/common/**").hasRole(Role.USER.name())
+                    .antMatchers("/api/v1/**").hasRole(Role.USER.name())
                     .anyRequest().authenticated()
                 .and()
                     .logout()
                         .logoutSuccessUrl("/")
                 .and()
                     .oauth2Login()
+                    .loginPage("/login")
                         .userInfoEndpoint()
                             .userService(customOAuth2UserService);
 
