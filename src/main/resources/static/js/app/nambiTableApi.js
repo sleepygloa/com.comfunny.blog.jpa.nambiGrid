@@ -878,18 +878,18 @@ function fnSaveReIdx(el){
 
     function gridRowGridBlurEvent(rowId){
     	if(programInitData.idx != undefined){
-    		getView('VIEW');
+    		getView('VIEW', rowId);
     	}
     }
 
-    function getView(flag){
+    function getView(flag, rowId){
 			//내용 초기화
-			$('#'+tableInitData.programId+'Title').empty();
-			$('#'+tableInitData.programId+'Subject').empty();
-			$('#'+tableInitData.programId+'ViewArea').empty();
-			
-			$('#'+tableInitData.programId+'View').css('display', 'block');
-			fnMakeCombo(tableInitData.programId+'Title', 'BLOG_TITLE_CD');
+//			$('#'+tableInitData.programId+'Title').empty();
+//			$('#'+tableInitData.programId+'Subject').empty();
+//			$('#'+tableInitData.programId+'ViewArea').empty();
+//
+//			$('#'+tableInitData.programId+'View').css('display', 'block');
+//			fnMakeCombo(tableInitData.programId+'Title', 'BLOG_TITLE_CD');
 
 
 
@@ -897,7 +897,9 @@ function fnSaveReIdx(el){
 	    	contentLength = 0;
 	    	$.ajax({
 				url	 	: tableInitData.programId + '/view',
-				data 	: JSON.stringify(programInitData),
+				data 	: {
+				    "idx" : tableInitData.dtData1[rowId].idx
+				},
 				type 	: "POST",
 				async	: false,
 				contentType : 'application/json; charset=utf-8',

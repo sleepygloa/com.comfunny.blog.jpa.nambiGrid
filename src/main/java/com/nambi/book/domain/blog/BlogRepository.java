@@ -22,4 +22,7 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     @Query(value = "INSERT INTO blogDetail (IDX, I, TYPE, CONTENT, IMG_WIDTH_SCALE) VALUES (:idx, :i, :type, :content, :imgWidthScale)", nativeQuery = true)
     void saveDetail(@Param("idx") int idx, @Param("i") int i, @Param("type") String type, @Param("content") String content, @Param("imgWidthScale") String imgWidthScale);
 
+    @Query("SELECT p FROM BlogDetail p ORDER BY p.idx ASC")
+    List<BlogDetail> findBlogDetailAllDesc();
+
 }

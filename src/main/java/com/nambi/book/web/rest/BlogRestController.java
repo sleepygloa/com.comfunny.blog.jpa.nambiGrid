@@ -1,6 +1,7 @@
 package com.nambi.book.web.rest;
 
 import com.nambi.book.service.blog.BlogService;
+import com.nambi.book.web.dto.blog.BlogDetailListResponseDto;
 import com.nambi.book.web.dto.blog.BlogListResponseDto;
 import com.nambi.book.web.dto.blog.BlogSaveRequestDto;
 import com.nambi.book.web.dto.post.PostsSaveRequestDto;
@@ -24,6 +25,10 @@ public class BlogRestController {
     @PostMapping("/blog/save")
     public void save(@RequestBody Map map){
         blogService.save((List<Map<String, Object>>)map.get("list"));
+    }
 
+    @GetMapping("/blog/view/{idx}")
+    public List<BlogDetailListResponseDto> findById(@PathVariable Long idx){
+        return blogService.findById(idx);
     }
 }

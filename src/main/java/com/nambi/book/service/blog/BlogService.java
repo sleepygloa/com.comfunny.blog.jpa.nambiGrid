@@ -1,6 +1,9 @@
 package com.nambi.book.service.blog;
 
+import com.nambi.book.domain.blog.Blog;
+import com.nambi.book.domain.blog.BlogDetail;
 import com.nambi.book.domain.blog.BlogRepository;
+import com.nambi.book.web.dto.blog.BlogDetailListResponseDto;
 import com.nambi.book.web.dto.blog.BlogListResponseDto;
 import com.nambi.book.web.dto.blog.BlogSaveRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -51,12 +54,11 @@ public class BlogService {
 //        return id;
 //    }
 //
-//    public PostsResponseDto findById(Long id){
-//        Blog entity = blogRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id = " + id));
-//
-//        return new BlogResponseDto(entity);
-//    }
+    public List<BlogDetailListResponseDto> findById(Long idx){
+        return blogRepository.findBlogDetailAllDesc().stream()
+                .map(BlogDetailListResponseDto::new)
+                .collect(Collectors.toList());
+    }
 
     @Transactional(readOnly = true)
     public List<BlogListResponseDto> findAlldesc(){
