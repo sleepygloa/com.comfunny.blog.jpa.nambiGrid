@@ -16,6 +16,8 @@ var menuJs = function(){
 			programId 	: 'menu',
 			programNm 	: '메뉴', 
 			editable 	: true,
+			viewContents : false,
+			viewContentsRe : false,
 			//colName		: ['MENU_SEQ', 'MENU_PARENT_SEQ', 'PRO_CD', 'MENU_NM', 'MENU_URL', 'MENU_ICO', 'MENU_ORDER', 'USE_YN'],
 			colOption	: [
 				{id:'menuSeq', 		title:'번호', 			width:"50px"},

@@ -1,4 +1,4 @@
-package com.nambi.book.web;
+package com.nambi.book.web.rest;
 
 import com.nambi.book.config.auth.LoginUser;
 import com.nambi.book.config.auth.dto.SessionUser;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-public class MenuController {
+public class MenuRestController {
 
     private final MenuService menuService;
 

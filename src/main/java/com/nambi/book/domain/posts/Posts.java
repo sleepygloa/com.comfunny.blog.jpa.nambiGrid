@@ -1,6 +1,7 @@
 package com.nambi.book.domain.posts;
 
 import com.nambi.book.domain.BaseTimeEntity;
+import com.nambi.book.domain.BaseTimeEntity2;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

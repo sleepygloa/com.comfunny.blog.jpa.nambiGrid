@@ -54,11 +54,17 @@ public class IndexController {
      *************************************************************/
     @GetMapping("/menu")
     public String menu(Model model){
-//        model.addAttribute("menu", menuService.findAlldesc());
-//        if(user != null){
-//            model.addAttribute("userName", user.getName());
-//        }
         return "menu";
+    }
+
+    /************************************************************
+     * 블로그 페이지로 이동
+     *************************************************************/
+    @GetMapping("/blog")
+    public String blog(Model model){
+        model.addAttribute("ADMIN_YN" , "Y");
+
+        return "blog/blog";
     }
 
 
