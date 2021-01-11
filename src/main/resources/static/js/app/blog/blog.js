@@ -43,7 +43,7 @@ var blogJs = function(){
 				],
 				viewContents : true,
 				viewContentsRe : true,
-				btn			: ['insert', 'update', 'save']
+				btn			: ['insert', 'update', 'save', 'delete']
 			});
 
 	  }

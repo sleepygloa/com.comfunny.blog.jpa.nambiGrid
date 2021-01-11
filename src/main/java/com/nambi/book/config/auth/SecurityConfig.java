@@ -26,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 , "/common/**"
                             ,"/login"
                             ,"/menu/**"
+                            ,"/blog/**"
                                 ).permitAll()
                     .antMatchers("/api/v1/**").hasRole(Role.USER.name())
                     .anyRequest().authenticated()

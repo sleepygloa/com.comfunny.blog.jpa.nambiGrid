@@ -2,6 +2,7 @@ package com.nambi.book.service.blog;
 
 import com.nambi.book.domain.blog.Blog;
 import com.nambi.book.domain.blog.BlogDetail;
+import com.nambi.book.domain.blog.BlogDetailRepository;
 import com.nambi.book.domain.blog.BlogRepository;
 import com.nambi.book.web.dto.blog.BlogDetailListResponseDto;
 import com.nambi.book.web.dto.blog.BlogListResponseDto;
@@ -21,26 +22,39 @@ public class BlogService {
 
     private final BlogRepository blogRepository;
 
+    private final BlogDetailRepository blogDetailRepository;
+
     @Transactional
     public int save(List<Map<String, Object>> list){
         int rLong = 0;
 
         if(list.size() == 0){ return 0; }
 
-        if(list.get(0).get("flag").equals("INSERT")){
+
             Map<String, Object> mMap = list.get(0);
-            System.out.println(mMap.toString());
-            blogRepository.saveMaster((int)mMap.get("idx"), (int)mMap.get("pIdx"), (String)mMap.get("categoryA"), (String)mMap.get("categoryB"), (String)mMap.get("categoryC"),
-                    (String)mMap.get("hashIndex"),(String)mMap.get("subject"));
 
-            for(Map<String, Object> map : list){
-                blogRepository.saveDetail((int)map.get("idx"), (int)map.get("i"), (String)map.get("type"), (String)map.get("content"), (String)map.get("imgWidthScale"));
-                rLong++;
+            int idx = (int)mMap.get("idx");
+            int cnt = blogRepository.findMaster(idx);
+            if(cnt == 0){
+                idx = blogRepository.findMaxMaster();
+                blogRepository.insertMaster(idx, (int)mMap.get("pIdx"), (String)mMap.get("categoryA"), (String)mMap.get("categoryB"), (String)mMap.get("categoryC"),
+                        (String)mMap.get("hashIndex"),(String)mMap.get("subject"));
+
+                blogDetailRepository.deleteDetail(idx);
+                for(Map<String, Object> map : list){
+                    blogDetailRepository.saveDetail(idx, (int)map.get("i"), (String)map.get("type"), (String)map.get("content"), (String)map.get("imgWidthScale"));
+                    rLong++;
+                }
+            }else{
+                blogRepository.updateMaster(idx, (String)mMap.get("categoryA"), (String)mMap.get("categoryB"), (String)mMap.get("categoryC"),
+                        (String)mMap.get("hashIndex"),(String)mMap.get("subject"));
+
+                blogDetailRepository.deleteDetail(idx);
+                for(Map<String, Object> map : list){
+                    blogDetailRepository.saveDetail(idx, (int)map.get("i"), (String)map.get("type"), (String)map.get("content"), (String)map.get("imgWidthScale"));
+                    rLong++;
+                }
             }
-
-        }
-
-
         return rLong;
     }
 //
@@ -54,8 +68,8 @@ public class BlogService {
 //        return id;
 //    }
 //
-    public List<BlogDetailListResponseDto> findById(Long idx){
-        return blogRepository.findBlogDetailAllDesc().stream()
+    public List<BlogDetailListResponseDto> findById(int idx){
+        return blogDetailRepository.findBlogDetailAllDesc(idx).stream()
                 .map(BlogDetailListResponseDto::new)
                 .collect(Collectors.toList());
     }
@@ -67,11 +81,11 @@ public class BlogService {
                 .collect(Collectors.toList());
     }
 
-//    @Transactional
-//    public void delete (Long id){
-//        Blog posts = blogRepository.findById(id)
-//                .orElseThrow(()->new IllegalArgumentException("해당 게시글이 없습니다. id="+id));
-//
-//        blogRepository.delete(posts);
-//    }
+    @Transactional
+    public void deleteMaster (int idx){
+        int cnt = blogRepository.findMaster(idx);
+        if(cnt == 0) new IllegalArgumentException("해당 게시글이 없습니다. id="+idx);
+
+        blogRepository.deleteMaster(idx);
+    }
 }

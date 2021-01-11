@@ -137,123 +137,40 @@ function fnSaveReIdx(el){
 	        		if(btnName == 'search'){
                         gridBtnGrpList.append($('<a href="#" id="'+data.programId+'SearchBtn" class="btn btn-save btn-sm pull-right" >검색</a>'));
 	        		}else if(btnName == 'insert'){
+	        		    rowId = 0;
 	        		    var insert = $('<a href="#"  class="btn btn-save btn-sm pull-right" >글 추가</a>');
 	        		    insert.on('click', function(){
-                            if($('#'+data.programId+'View').css('display') == "none"){
-                                $('#'+data.programId+'View').css('display', 'block');
-
-                                var div = $('<div class="col-xs-w100" />');
-                                    var div2 = $('<div class="col-xs-w100" />');
-                                    var textBox = $('<a type="button" style="float:left" >글상자</a>');
-                                    textBox.on('click', function(){ fnAddTextBox('INSERT',  {}, 'TEXT'); });
-                                    var codeBox = $('<a type="button" class="blogUpdateFlag" style="float:left">코드</a>');
-                                    codeBox.on('click', function(){ fnAddTextBox('INSERT',  {}, 'CODE'); });
-                                    var imgBox = $('<a type="button" class="blogUpdateFlag" style="float:left">이미지</a>');
-                                    imgBox.on('click', function(){ fnAddImg('INSERT',  {}); });
-                                    var fileBox = $('<input id="blogImgAddBtn_input" type="file" style="display:none;" />');
-                                    var delBox = $('<a type="button" class="blogUpdateFlag" style="float:left">컨텐츠삭제</a>');
-                                    delBox.on('click', function(){ $('#row_'+focusIdx).remove(); });
-                                    var saveBox = $('<a type="button" class="blogUpdateFlag" style="float:right">저장하기</a>');
-                                    saveBox.on('click', function(){
-
-
-                                        var list = [];
-                                        var count = 0;
-                                        for(var i = 0; i < contentLength; i++){
-
-                                            //글(컨텐츠) 가 작성된 개수, 있을 때.
-                                            if($('#row_'+i).val() == undefined){
-                                                count++;
-                                            }else{
-
-                                                //데이터 세팅
-                                                var initData = {
-                                                        text		: $('#text_'+i).val(),
-                                                        type			: $('#type_'+i).val(),
-                                                        imgWidthScale	: $('#text_'+i).attr('width')
-                                                }
-
-                                                //이미지 일 경우
-                                                if(initData.type == 'IMG'){
-
-                                                    initData.text = $('#text_'+i).attr('src');
-                                                    if(initData.imgWidthScale != ''){
-                                                        initData.imgWidthScale = initData.imgWidthScale.replace(/[^0-9]/g,"");
-                                                    }
-                                                }
-
-                                                //바인딩
-                                                var	dataList = {
-                                                        flag            : "INSERT",
-                                                        idx 			: 0,
-                                                        pIdx 			: 0,
-                                                        categoryA		: "q",
-                                                        categoryB		: "q",
-                                                        categoryC		: "q",
-                                                        hashIndex          : "q",
-                                                        i   			: i-count,
-                                                        type 			: initData.type,
-                                                        content 		: initData.text,
-                                                        imgWidthScale 	: initData.imgWidthScale,
-                                                        title : $('#'+data.programId+'Title').val(),
-                                                        subject : $('#'+data.programId+'Subject').val()
-
-                                                }
-                                                list.push(dataList);
-                                            }
-                                        }
-
-                                        $.ajax({
-                                            url      : data.programId + "/save",
-                                            data     : JSON.stringify({"list":list}),
-                                            dataType : 'json',
-                                            type     : 'POST',
-                                            cache    : false,
-                                            contentType : 'application/json; charset=utf-8',
-                                            success  : function(data) {
-                                                alert("저장되었습니다.");
-                                            }
-                                        });
-                                    });
-
-                                    div2.append(textBox).append(codeBox).append(imgBox).append(fileBox).append(delBox).append(saveBox);
-                                div.append(div2);
-
-                                    var div3 = $('<div class="col-xs-w100" />');
-                                    var categoryLabel = $('<span >카테고리</span>')
-                                    var categoryBox = $('<input id="'+data.programId+'Title" />');
-                                    var subjectLabel = $('<span >제목</span>')
-                                    var subjectBox = $('<input id="'+data.programId+'Subject" />');
-                                    div3.append(categoryLabel).append(categoryBox).append(subjectLabel).append(subjectBox);
-                                div.append(div3);
-
-                                $('#'+data.programId+'View').empty();
-                                $('#'+data.programId+'View').append(div);
-                            }
-
-
-
-                            //$('.'+data.programId+'UpdateFlag').css('display', 'block');
-
-                            //내용 초기화
-                            $('#'+data.programId+'Title').empty();
-                            $('#'+data.programId+'Subject').empty();
-                            $('#'+data.programId+'ViewArea').empty();
-
-                            //fnMakeCombo(data.programId+'Title', 'BLOG_TITLE_CD');
-                            return false;
+                            getView('INSERT', 0);
 	        		    })
                         gridBtnGrpList.append(insert);
 	        		}else if(btnName == 'update'){
-	        		    gridBtnGrpList.append($('<a href="#" id="'+data.programId+'UpdateBtn" class="btn btn-update btn-sm pull-right" >글 수정</a>'));
+	        		    var update = $('<a href="#"  class="btn btn-update btn-sm pull-right" >글 수정</a>');
+	        		    update.on('click', function(){
+                            getView('UPDATE', rowId);
+	        		    })
+                        gridBtnGrpList.append(update);
 	        		}else if(btnName == 'delete'){
-	        		    gridBtnGrpList.append($('<a href="#" id="'+data.programId+'DeleteBtn" class="btn btn-delete btn-sm pull-right" >글 삭제</a>'));
+	        		    var del = $('<a href="#" id="'+data.programId+'DeleteBtn" class="btn btn-delete btn-sm pull-right" >글 삭제</a>');
+                        del.on('click', function(){
+                            if(confirm("삭제 하시겠습니까?")){
+                                blogDelete(rowId);
+                            }
+                        })
+
+	        		    gridBtnGrpList.append(del);
+	        		}else if(btnName == 'save'){
+	        		    var save = $('<a href="#" id="'+data.programId+'SaveBtn" class="btn btn-save btn-sm pull-right" >글 저장</a>');
+                        save.on('click', function(){
+                            if(confirm("저장 하시겠습니까?")){
+                                blogSave();
+                            }
+                        })
+
+	        		    gridBtnGrpList.append(save);
 	        		}else if(btnName == 'addRow'){
 	        		    gridBtnGrpList.append($('<a href="#" id="'+data.programId+'AddRowBtn" class="btn btn-add btn-sm pull-right" >행추가</a>'));
 	        		}else if(btnName == 'delRow'){
 	        		    gridBtnGrpList.append($('<a href="#" id="'+data.programId+'DelRowBtn" class="btn btn-delete btn-sm pull-right" >행삭제</a>'));
-//	        		}else if(btnName == 'save'){
-//	        			gridBtnGrpStr += '<a href="#" id="'+data.programId+'SaveBtn" class="btn btn-save btn-sm pull-right" >글 저장</a>';
 	        		}else if(btnName == 'saveRow'){
 	        		    gridBtnGrpList.append($('<a href="#" id="'+data.programId+'SaveRowBtn" class="btn btn-save btn-sm pull-right" >행저장</a>'));
 	        		}
@@ -348,10 +265,6 @@ function fnSaveReIdx(el){
                                 var tbthspan = $('<span class="td_row_s_'+i+'" style="display:show">'+v+'</span>');
                                 var tbthinput = $('<input type="text" class="td_row_i_'+i+'" value="'+v+'" style="display:none;width:100%" />');
 
-
-
-
-
                                 tbth.append(tbthspan);
                                 tbth.append(tbthinput);
 
@@ -359,12 +272,10 @@ function fnSaveReIdx(el){
 
                                 if(data.viewContents){
                                     tbth.on('click', function(){
-                                        gridRowGridBlurEvent(tbth.attr('class').split('td_row_')[1]);
+                                        rowId = parseInt(tbth.attr('class').split('td_row_')[1]);
+                                        getView('VIEW', rowId);
                                     });
                                 }
-
-
-
                                 return false;
                             }
                         });
@@ -401,12 +312,6 @@ function fnSaveReIdx(el){
 
                     }else{
 
-            //    		$('tr[id^="tr_row_"]').click(function(){
-            //    			gridRowGridBlurEvent($(this));
-            //    		});
-                    }
-
-
                     tbody.append(tbtr);
 
                 }
@@ -425,12 +330,12 @@ function fnSaveReIdx(el){
                 $('#'+data.programId+'Grid').html(gridDivContainer);
     		}
     	});
-
-
-
-    	
     	//첫행 블러오기
-    	//gridRowGridBlurEvent($('#tr_row_0'));
+    	if(tableInitData.data1.length > 0) getView('VIEW', $('#tr_row_0'));
+    }
+
+    function getList(){
+
     }
 
     /**
@@ -816,146 +721,177 @@ function fnSaveReIdx(el){
     		
     		$('#'+tableInitData.programId+'ViewArea').after(reBody);
     }
-    
-
-    //행 선택 시 데이터 세팅
-//    function gridDataSetting(thisData){
-//    	var thisData = thisData;
-//    	var rowId = thisData.attr('class').split('tr_row_')[1];
-//    	var tdData = thisData.children('td');
-//    	var tdRowData = {};
-//    	clickCnt = rowId;
-//
-//    	programInitData.idx = rowId;
-//    	var faFlag = null;
-//
-//    	var elI = $(tdData[0]).children('i');
-//
-//    	if(elI.hasClass('fa-plus')){
-//    		for(var i = 0; i < tdData.length; i++){
-//        		var el = $(tdData[i]);
-//
-//    			var inputData = el.children('input')[0].value;
-//        		var inputKeyTrans = el.attr('class').split('td_row_')[1].toLowerCase();
-//
-//        		var inputKeyArr = inputKeyTrans.split("_");
-//        		var inputKey = '';
-//
-//        		for(var j = 0 ; j < inputKeyArr.length;j++){
-//        			if(j == 0){
-//        				inputKey += inputKeyArr[j];
-//        			}else{
-//        				inputKey += inputKeyArr[j].charAt(0).toUpperCase() + inputKeyArr[j].slice(1);
-//        			}
-//        		}
-//        		tdRowData[inputKey] = inputData;
-//        	}
-//    	}else{
-//    		for(var i = 0; i < tdData.length; i++){
-//        		var el = $(tdData[i]);
-//
-//        		var tdKeyTrans = el.attr('class').split('td_row_')[1].toLowerCase();
-//        		var tdKeyArr = tdKeyTrans.split("_");
-//        		var tdKey = '';
-//
-//        		for(var j = 0 ; j < tdKeyArr.length;j++){
-//        			if(j == 0){
-//        				tdKey += tdKeyArr[j];
-//        			}else{
-//        				tdKey += tdKeyArr[j].charAt(0).toUpperCase() + tdKeyArr[j].slice(1);
-//        			}
-//        		}
-//        		if(i == 0){
-//        			var tdFlagData = el.children('.td_row_flag_input')[0].value;
-//        			tdRowData[tdKey] = tdFlagData;
-//        		}else{
-//        			tdRowData[tdKey] = el.text();
-//        		}
-//        	}
-//    	}
-//    	programInitData = tdRowData;
-//    }
-
-    function gridRowGridBlurEvent(rowId){
-    	if(programInitData.idx != undefined){
-    		getView('VIEW', rowId);
-    	}
-    }
 
     function getView(flag, rowId){
-			//내용 초기화
-//			$('#'+tableInitData.programId+'Title').empty();
-//			$('#'+tableInitData.programId+'Subject').empty();
-//			$('#'+tableInitData.programId+'ViewArea').empty();
-//
-//			$('#'+tableInitData.programId+'View').css('display', 'block');
-//			fnMakeCombo(tableInitData.programId+'Title', 'BLOG_TITLE_CD');
-
-
-
 			//컨텐츠 개수 초기화
 	    	contentLength = 0;
 	    	$.ajax({
 				url	 	: tableInitData.programId + '/view',
-				data 	: {
-				    "idx" : tableInitData.dtData1[rowId].idx
+				data    : {
+				"idx" : rowId
 				},
-				type 	: "POST",
+				type 	: "GET",
 				async	: false,
 				contentType : 'application/json; charset=utf-8',
 				success : function(result){
-					
+                    var dt_grid = result;
+
 					//CSS
-					$('#'+tableInitData.programId+'ViewArea').css({
+					$('#'+tableInitData.programId+'View').css({
 						"padding-bottom"	: "20px",
-						"border-bottom" 	: "0.5px solid gray"
+						"border-bottom" 	: "0.5px solid gray",
+						"display"           : "block"
 					});
-					
+
 					//블로그 내용 초기화
-					$('#'+tableInitData.programId+'ViewArea').empty();
-					
-					var dt_grid = result.dt_grid;
-						
-						//타이틀, 주제 입력
-						$('#'+tableInitData.programId+'Title option:contains('+dt_grid[0].TITLE+')').attr('selected', 'selected');
-						$('#'+tableInitData.programId+'Subject').val(dt_grid[0].SUBJECT);
-						
+					$('#'+tableInitData.programId+'View').empty();
+					$('#'+tableInitData.programId+'ViewHidden').empty();
+
+                    //flag 검사
+                    if(flag == 'INSERT' || flag == 'UPDATE'){
+
+                        var div = $('<div class="col-xs-w100" />');
+                            var div2 = $('<div class="col-xs-w100" />');
+                                var textBox = $('<a type="button" style="float:left" >글상자</a>');
+                                textBox.on('click', function(){ fnAddTextBox('INSERT',  {}, 'TEXT'); });
+                                var codeBox = $('<a type="button" class="blogUpdateFlag" style="float:left">코드</a>');
+                                codeBox.on('click', function(){ fnAddTextBox('INSERT',  {}, 'CODE'); });
+                                var imgBox = $('<a type="button" class="blogUpdateFlag" style="float:left">이미지</a>');
+                                imgBox.on('click', function(){ fnAddImg('INSERT',  {}); });
+                                var fileBox = $('<input id="blogImgAddBtn_input" type="file" style="display:none;" />');
+                                var delBox = $('<a type="button" class="blogUpdateFlag" style="float:left">컨텐츠삭제</a>');
+                                delBox.on('click', function(){ $('#row_'+focusIdx).remove(); });
+                            div2.append(textBox).append(codeBox).append(imgBox).append(fileBox).append(delBox);
+                        div.append(div2);
+                        $('#'+tableInitData.programId+'View').append(div);
+                    }
+
+                    var div = $('<div class="col-xs-w100" />');
+                        var div3 = $('<div class="col-xs-w100" />');
+                        var categoryLabel = $('<span >카테고리</span>')
+                        var categoryBox = $('<input id="'+tableInitData.programId+'Title" />');
+                        var subjectLabel = $('<span >제목</span>')
+                        var subjectBox = $('<input id="'+tableInitData.programId+'Subject" />');
+
+                        //flag 검사
+                            if(flag == 'UPDATE' || flag == 'VIEW'){
+                                categoryBox.val(dt_grid[0].catagoryA);
+                                subjectBox.val(dt_grid[0].subject);
+                            }
+
+                            //글 보기
+                            if(flag == 'VIEW'){
+                                categoryBox.attr('readonly', true);
+                                subjectBox.attr('readonly', true);
+                            }
+
+
+                        div3.append(categoryLabel).append(categoryBox).append(subjectLabel).append(subjectBox);
+                    div.append(div3);
+
+                    $('#'+tableInitData.programId+'View').append(div);
+
+                    //flag 검사
+                    if(flag == 'INSERT') return;
+
 						//컨텐츠 입력(루프)
 						for(var i = 0; i < dt_grid.length; i++){
-							if(flag == 'VIEW'){
-								if(dt_grid[i].TYPE == 'IMG'){
-									fnAddImg(flag, dt_grid[i]);
-								}else if(dt_grid[i].TYPE == 'CODE'){
-									fnAddTextBox(flag, dt_grid[i], dt_grid[i].TYPE);
-								}else{
-									fnAddTextBox(flag, dt_grid[i], dt_grid[i].TYPE);
-								}
-							}else{
-								if(dt_grid[i].TYPE == 'IMG'){
-									fnAddImg(flag, dt_grid[i]);
-								}else if(dt_grid[i].TYPE == 'CODE'){
-									fnAddTextBox(flag, dt_grid[i], dt_grid[i].TYPE);
-								}else{
-									fnAddTextBox(flag, dt_grid[i], dt_grid[i].TYPE);
-								}
-							}
+                            if(dt_grid[i].type == 'IMG'){
+                                fnAddImg(flag, dt_grid[i]);
+                            }else if(dt_grid[i].type == 'CODE'){
+                                fnAddTextBox(flag, dt_grid[i], dt_grid[i].TYPE);
+                            }else{
+                                fnAddTextBox(flag, dt_grid[i], dt_grid[i].TYPE);
+                            }
 						}
 
 						//유저 세팅
-						programInitData.userId = dt_grid[0].IN_USER_ID;
-						
-						if(flag != 'VIEW' && seonhoblogData.s_userId == dt_grid[0].IN_USER_ID){
-							$('.'+programInitData.programId+'UpdateFlag').css('display', 'block');
-						}
-						
-						
-						if(viewContentsRe){
-							getViewReContent('VIEW');
+						//lgSeS.userId = dt_grid[0].IN_USER_ID;
+//						if(flag != 'VIEW' && $('#lgSes').val() == dt_grid[0].IN_USER_ID){
+//							$('.'+programInitData.programId+'UpdateFlag').css('display', 'block');
+//						}
+
+						if(tableInitData.viewContentsRe){
+							//getViewReContent('VIEW');
 						}
 				}
 			})
 
 
+    }
+
+
+    //글저장
+    function blogSave(){
+        var list = [];
+        var count = 0;
+        for(var i = 0; i < contentLength; i++){
+
+            //글(컨텐츠) 가 작성된 개수, 있을 때.
+            if($('#row_'+i).val() == undefined){
+                count++;
+            }else{
+
+                //데이터 세팅
+                var initData = {
+                        text		: $('#text_'+i).val(),
+                        type			: $('#type_'+i).val(),
+                        imgWidthScale	: $('#text_'+i).attr('width')
+                }
+
+                //이미지 일 경우
+                if(initData.type == 'IMG'){
+
+                    initData.text = $('#text_'+i).attr('src');
+                    if(initData.imgWidthScale != ''){
+                        initData.imgWidthScale = initData.imgWidthScale.replace(/[^0-9]/g,"");
+                    }
+                }
+
+                //바인딩
+                var	dataList = {
+                        idx 			: rowId,
+                        pIdx 			: 0,
+                        categoryA		: "q",
+                        categoryB		: "q",
+                        categoryC		: "q",
+                        hashIndex       : "q",
+                        i   			: i-count,
+                        type 			: initData.type,
+                        content 		: initData.text,
+                        imgWidthScale 	: initData.imgWidthScale,
+                        title : $('#'+tableInitData.programId+'Title').val(),
+                        subject : $('#'+tableInitData.programId+'Subject').val()
+
+                }
+                list.push(dataList);
+            }
+        }
+
+        $.ajax({
+            url      : tableInitData.programId + "/save",
+            data     : JSON.stringify({"list":list}),
+            dataType : 'json',
+            type     : 'POST',
+            cache    : false,
+            contentType : 'application/json; charset=utf-8',
+            success  : function(data) {
+                alert("저장되었습니다.");
+            }
+        });
+    }
+    //글 삭제
+    function blogDelete(rowId){
+        $.ajax({
+            url      : tableInitData.programId + "/delete",
+            data     : {
+            "idx": rowId
+            },
+            type     : 'DELETE',
+            success  : function(data) {
+                alert("삭제 되었습니다.");
+            }
+        });
     }
 
     //그리드와 관련된 버튼을 클릭 했을때 이벤트
@@ -1061,7 +997,7 @@ function fnSaveReIdx(el){
 //    			delInput.value = "delete";
 //    		}else{
 //    		}
-//    		gridRowGridBlurEvent($('.tr_row_'+clickCnt));
+//    		getView('VIEW', $('.tr_row_'+clickCnt));
 //			return false;
 //    	//그리드 행 저장
 //    	}else if(thisId.indexOf('SaveRow') != -1){
@@ -1111,96 +1047,7 @@ function fnSaveReIdx(el){
 
 //        //글저장
 //    	}else if(thisId.indexOf('Save') != -1){
-//			newUrl = 'update'+ tableInitData.uProgramId;
-//
-//
-////			var form = $('mainBlogUpdateForm')[0];
-////			var formData = new FormData(form);
-////
-////			if($('#'+programId+'FileUploadText').val() != ''){
-////				formData.append('file_0', $('#'+ tableInitData.programId+'FileUpload')[0].files[0]);
-////			}
-//
-//
-//
-//			var dataDt = [];
-//			var count = 0;
-//			for(var i = 0; i < contentLength; i++){
-//
-//				//글(컨텐츠) 가 작성된 개수, 있을 때.
-//				if($('#row_'+i).val() != undefined){
-//
-//					//데이터 세팅
-//					var initData = {
-//							text		: $('#text_'+i).val(),
-//							type			: $('#type_'+i).val(),
-//							imgWidthScale	: $('#text_'+i).attr('width')
-//					}
-//
-//
-//					//이미지 일 경우
-//					if(initData.type == 'IMG'){
-//
-//						initData.text = $('#text_'+i).attr('src');
-////						initData.text = dataURItoBlob($('#text_'+i).attr('src'));
-//						if(initData.imgWidthScale != ''){
-//							initData.imgWidthScale = initData.imgWidthScale.replace(/[^0-9]/g,"");
-//						}
-//					}
-//
-//					//바인딩
-//					var	dataList = {
-//							idx 			: programInitData.idx,
-//							i   			: i-count,
-//							type 			: initData.type,
-//							content 		: initData.text,
-//							imgWidthScale 	: initData.imgWidthScale,
-//					}
-//					dataDt.push(dataList);
-//				}else{
-//					count++;
-//				}
-//			}
-//
-//			var sendData = {
-//				title : $('#'+tableInitData.programId+'Title option:selected').text(),
-//				subject : $('#'+tableInitData.programId+'Subject').val(),
-//				dt_data  : dataDt
-//			}
-//
-//			if(programInitData.idx != ''){
-//				sendData["idx"] = programInitData.idx;
-//			}
-//
-//			SeonhoblogUtil.ajax(
-//					JSON.stringify(sendData),
-//					tableInitData.url + "save" + tableInitData.uProgramId + "Contents",
-//					false,
-//					function callbackFunc(data){
-//
-////						if($('#'+programId+'FileUploadText').val() != ''){
-////						$.ajax({
-////							url 	: tableInitData.url + "/save"+tableInitData.uProgramId+"FileUpload",
-////							type	: 'POST',
-////							data    : formData,
-////							contentType : false,
-////							processData : false,
-////							async 	: false,
-////							success	: function(){
-////								if(result.SUCCESS){
-////									alert(result.SUCCESS);
-////
-////								}
-////							}
-////						})
-////					}
-//
-//						window.location.href="/";
-//					}
-//			)
-//
-//
-//return false;
+
 //
 //		//글수정
 //    	}else if(thisId.indexOf('Update') != -1){
@@ -1283,73 +1130,61 @@ function fnSaveReIdx(el){
     *******************************************************/
     function fnAddTextBox(flag, data, type){
     	var cnt = contentLength;
-    	var dd = $('<div id="row_'+cnt+'" class="col-xs-w100" />');
 
-    		var childInput1 = $('<input type="hidden" id="idx_'+cnt+'" value="'+cnt+'" />');
-    		var childInput2 = $('<input type="hidden" id="type_'+cnt+'" value="TEXT" />');
-    		
-    		if(type == "TEXT"){
-    			childInput2.val('TEXT');	
-    		}else{
-    			childInput2.val('CODE');
-    		}
-    		
-    		dd.append(childInput1).append(childInput2);
+    	var divRowHidden = $('#'+tableInitData.programId+'ViewHidden');
+
+                var childInput1 = $('<input type="hidden" id="idx_'+cnt+'" value="'+cnt+'" />');
+                var childInput2 = $('<input type="hidden" id="type_'+cnt+'" value="TEXT" />');
+                //타입값 지정.
+                if(type == "TEXT"){
+                    childInput2.val('TEXT');
+                }else{
+                    childInput2.val('CODE');
+                }
+    		divRowHidden.append(childInput1).append(childInput2);
     		
     		//삽입,수정
-    		if(flag != "VIEW"){
-        		var childTextArea = $('<textarea id="text_'+cnt+'" class="col-xs-w100" style="min-height:50px; padding:10px;" />');
-        		childTextArea.keydown(function(el){
-        			resize(el);
-        		});
-        		
-        		if(flag == "UPDATE"){
-        			childTextArea.text(data.CONTENT);
-        		}else{
+                var childTextArea = $('<textarea id="text_'+cnt+'" style="opacity:0;width:0px; height:0px;" />');
 
-        		}
-        		if(type == "CODE"){
-            		childTextArea.css({
-	        			"background-color" 	: "gray",
-	        			"color"				: "white"
-	        		})
-        		}
-        		if(type == "CODE"){
-            		childTextArea.css({
-	        			"background-color" 	: "gray",
-	        			"color"				: "white"
-	        		})
-        		}
-        		
-        		dd.append(childTextArea);
-        		
-        		dd.click(function(){
-        			fnSaveIdx(cnt);
-        		})
-    		}else{
-        		var childTextArea = $('<div id="text_'+cnt+'" class="col-xs-w100" style="min-height:50px; padding:10px;" />');
-//        		childTextArea.keydown(function(el){
-//        			resize(el);
-//        		});
-//        		childTextArea.css({
-//        			"text-align"		: "center"
-//        		})
-        		
-        		childTextArea.text(data.CONTENT);
-        		if(type == "CODE"){
-            		childTextArea.css({
-	        			"background-color" 	: "gray",
-	        			"color"				: "white"
-	        		})
-        		}
-        		
-        		dd.append(childTextArea);
-    		}
+                childTextArea.text(data.content);
+                childTextArea.on('keyup', function(e){
+                    //resize(e);
+                    $('#pre_'+cnt).text($('#text_'+cnt).val());
+                });
+            divRowHidden.append(childTextArea);
+
+
+
+        	var divRow = $('<div id="row_'+cnt+'" class="col-xs-w100" />');
+                var childTextAreaView = $('<div id="view_'+cnt+'" class="col-xs-w100" style="border:solid 0.5px gray;min-height:50px; padding:10px;" />');
+
+                //글보기 아닐때만 가능
+                if(flag == 'INSERT' || flag == 'UPDATE'){
+                    childTextAreaView.on('click', function(){
+                        $('#text_'+cnt).focus();
+                    });
+                }
+                var childTextAreaViewPre = $('<pre id="pre_'+cnt+'" />');
+                childTextAreaViewPre.text(data.content);
+
+                childTextAreaView.append(childTextAreaViewPre);
+                if(type == "CODE"){
+                    childTextAreaView.css({
+                        "background-color" 	: "gray",
+                        "color"				: "white"
+                    })
+                }
+            divRow.append(childTextAreaView);
+
+            //row index 전역변수에 저장.
+            divRow.click(function(){
+                fnSaveIdx(cnt);
+            })
     		
-    		$('#'+tableInitData.programId+'View').append(dd);
+    		$('#'+tableInitData.programId+'View').append(divRow);
     		
 	    	contentLength++;
-	    	focusIdx = contentLength;
+	    	fnSaveIdx(contentLength);
     }
     
     

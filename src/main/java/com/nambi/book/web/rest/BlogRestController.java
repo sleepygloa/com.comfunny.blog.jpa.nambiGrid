@@ -27,8 +27,13 @@ public class BlogRestController {
         blogService.save((List<Map<String, Object>>)map.get("list"));
     }
 
-    @GetMapping("/blog/view/{idx}")
-    public List<BlogDetailListResponseDto> findById(@PathVariable Long idx){
+    @DeleteMapping("/blog/delete")
+    public void deleteMaster(@RequestParam int idx){
+        blogService.deleteMaster(idx);
+    }
+
+    @GetMapping("/blog/view")
+    public List<BlogDetailListResponseDto> findById(@RequestParam int idx){
         return blogService.findById(idx);
     }
 }

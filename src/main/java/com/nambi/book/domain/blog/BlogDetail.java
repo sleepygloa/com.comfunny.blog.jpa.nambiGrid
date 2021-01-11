@@ -17,6 +17,18 @@ public class BlogDetail extends BaseTimeEntity2 {
     private Long idx;
 
     @Column(nullable = false)
+    private String categoryA;
+
+    @Column(nullable = false)
+    private String categoryB;
+
+    @Column(nullable = false)
+    private String categoryC;
+
+    @Column(nullable = false)
+    private String subject;
+
+    @Column(nullable = false)
     private Long i;
 
     @Column(nullable = false)
@@ -29,27 +41,15 @@ public class BlogDetail extends BaseTimeEntity2 {
     private String imgWidthScale;
 
     @Builder
-    public BlogDetail(Long idx, Long i, String content, String type, String imgWidthScale) {
+    public BlogDetail(Long idx, String categoryA, String categoryB, String categoryC, String subject, Long i, String content, String type, String imgWidthScale) {
         this.idx = idx;
+        this.categoryA = categoryA;
+        this.categoryB = categoryB;
+        this.categoryC = categoryC;
+        this.subject = subject;
         this.i = i;
         this.content = content;
         this.type = type;
         this.imgWidthScale = imgWidthScale;
     }
-
-
-//    public void update(Long idx, Long pIdx, String title, String subject, String content, String useYn, String delYn, String inUserId, String upUserId){
-//        this.idx = idx;
-//        this.pIdx = pIdx;
-//        this.title = title;
-//        this.subject = subject;
-//        this.content = content;
-//        this.useYn = useYn;
-//        this.delYn = delYn;
-//        this.inUserId = inUserId;
-//        this.upUserId = upUserId;
-//    }
-
-
-
 }

@@ -1,11 +1,11 @@
+var lgSeS = "none";
 var main = {
+
     init : function(){
         var _this = this;
 
         $('#side-menu-button').on('click', function(){
             $('.side-menu-bar').css('left', '0px');
-
-
         });
         //닫기
 
@@ -84,7 +84,8 @@ var main = {
         }).fail(function(error){
             alert(JSON.stringify(error));
         });
-    }
+    },
+
 
 };
 
