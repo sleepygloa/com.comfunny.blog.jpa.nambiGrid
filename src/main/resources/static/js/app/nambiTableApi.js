@@ -311,8 +311,8 @@ function fnSaveReIdx(el){
                         });
 
                     }else{
-
-                    tbody.append(tbtr);
+                        tbody.append(tbtr);
+                    }
 
                 }
                 table.append(thead);
@@ -330,8 +330,9 @@ function fnSaveReIdx(el){
                 $('#'+data.programId+'Grid').html(gridDivContainer);
     		}
     	});
+
     	//첫행 블러오기
-    	if(tableInitData.data1.length > 0) getView('VIEW', $('#tr_row_0'));
+//    	if(tableInitData.data1.length > 0) getView('VIEW', 0);
     }
 
     function getList(){
