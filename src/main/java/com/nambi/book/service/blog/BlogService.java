@@ -25,37 +25,25 @@ public class BlogService {
     private final BlogDetailRepository blogDetailRepository;
 
     @Transactional
-    public int save(List<Map<String, Object>> list){
-        int rLong = 0;
+    public void save(List<Map<String, Object>> list){
 
-        if(list.size() == 0){ return 0; }
+        Map<String, Object> mMap = list.get(0);
 
+        int idx = (int)mMap.get("idx");
+        int cnt = blogRepository.findMaster(idx);
+        if(cnt == 0){
+            idx = blogRepository.findMaxMaster();
+            blogRepository.insertMaster(idx, (int)mMap.get("pIdx"), (String)mMap.get("categoryA"), (String)mMap.get("categoryB"), (String)mMap.get("categoryC"),
+                    (String)mMap.get("hashIndex"),(String)mMap.get("subject"));
+        }else{
+            blogRepository.updateMaster(idx, (String)mMap.get("categoryA"), (String)mMap.get("categoryB"), (String)mMap.get("categoryC"),
+                    (String)mMap.get("hashIndex"),(String)mMap.get("subject"));
+        }
+        blogDetailRepository.deleteDetail(idx);
+        for(Map<String, Object> map : list){
+            blogDetailRepository.saveDetail(idx, (int)map.get("i"), (String)map.get("type"), (String)map.get("content"), (String)map.get("imgWidthScale"));
+        }
 
-            Map<String, Object> mMap = list.get(0);
-
-            int idx = (int)mMap.get("idx");
-            int cnt = blogRepository.findMaster(idx);
-            if(cnt == 0){
-                idx = blogRepository.findMaxMaster();
-                blogRepository.insertMaster(idx, (int)mMap.get("pIdx"), (String)mMap.get("categoryA"), (String)mMap.get("categoryB"), (String)mMap.get("categoryC"),
-                        (String)mMap.get("hashIndex"),(String)mMap.get("subject"));
-
-                blogDetailRepository.deleteDetail(idx);
-                for(Map<String, Object> map : list){
-                    blogDetailRepository.saveDetail(idx, (int)map.get("i"), (String)map.get("type"), (String)map.get("content"), (String)map.get("imgWidthScale"));
-                    rLong++;
-                }
-            }else{
-                blogRepository.updateMaster(idx, (String)mMap.get("categoryA"), (String)mMap.get("categoryB"), (String)mMap.get("categoryC"),
-                        (String)mMap.get("hashIndex"),(String)mMap.get("subject"));
-
-                blogDetailRepository.deleteDetail(idx);
-                for(Map<String, Object> map : list){
-                    blogDetailRepository.saveDetail(idx, (int)map.get("i"), (String)map.get("type"), (String)map.get("content"), (String)map.get("imgWidthScale"));
-                    rLong++;
-                }
-            }
-        return rLong;
     }
 //
 //    @Transactional

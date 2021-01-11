@@ -146,14 +146,14 @@ function fnSaveReIdx(el){
 	        		}else if(btnName == 'update'){
 	        		    var update = $('<a href="#"  class="btn btn-update btn-sm pull-right" >글 수정</a>');
 	        		    update.on('click', function(){
-                            getView('UPDATE', rowId);
+                            getView('UPDATE', parseInt($('.td_row_s_'+rowId+'_idx').text()));
 	        		    })
                         gridBtnGrpList.append(update);
 	        		}else if(btnName == 'delete'){
 	        		    var del = $('<a href="#" id="'+data.programId+'DeleteBtn" class="btn btn-delete btn-sm pull-right" >글 삭제</a>');
                         del.on('click', function(){
                             if(confirm("삭제 하시겠습니까?")){
-                                blogDelete(rowId);
+                                blogDelete(parseInt($('.td_row_s_'+rowId+'_idx').text()));
                             }
                         })
 
@@ -162,7 +162,7 @@ function fnSaveReIdx(el){
 	        		    var save = $('<a href="#" id="'+data.programId+'SaveBtn" class="btn btn-save btn-sm pull-right" >글 저장</a>');
                         save.on('click', function(){
                             if(confirm("저장 하시겠습니까?")){
-                                blogSave();
+                                blogSave(parseInt($('.td_row_s_'+rowId+'_idx').text()));
                             }
                         })
 
@@ -183,7 +183,7 @@ function fnSaveReIdx(el){
         /***************************
         * 테이블
         ****************************/
-    	var table = $('<table class="table center-aligned-table table-hover tableScrollX" />');
+    	var table = $('<table id="'+data.programId+'Table" class="table center-aligned-table table-hover tableScrollX" />');
 
     	//테이블 헤더
     	var thead = $('<thead />');
@@ -206,12 +206,34 @@ function fnSaveReIdx(el){
     	var thth = $(ththData);
     	thead.append(thth);
 
+        var tbody = $('<tbody id="'+data.programId+'Tbody" />');
 
+        table.append(thead);
+        table.append(tbody);
+        //table End
 
+        //버튼 그룹과 테이블 그룹을 한 div로 합침.
+        var tableParentDiv = $('<div class="col-xs-w100"/>');
+        tableParentDiv.append(table);
+        divBtnGroup.append(tableParentDiv);
+        gridDivContainer.append(divBtnGroup);
+
+        //타이틀, 테이블 버튼, 테이블 화면에 그림.
+//    	gridDivContainer.append(tableParentDiv);
+        $('#'+data.programId+'Grid').html(gridDivContainer);
+
+        getDataList();
+
+    	//첫행 블러오기
+//    	if(tableInitData.data1.length > 0) getView('VIEW', 0);
+    }
+
+    //데이터셋만 재조회
+    function getDataList(){
     	//그리드 컬럼 만드는 로직
     	$.ajax({
     	    type:"GET",
-    		url : "/"+data.programId + "/list",
+    		url : "/"+tableInitData.programId + "/list",
     		dataType : "json",
     		contentType:"application/json",
     		success : function(result){
@@ -225,14 +247,15 @@ function fnSaveReIdx(el){
                  * ViewContents == true; --> 글보기
                  * ViewContents == false; --> 글보기 없음
                  * */
-                var tbody = $('<tbody />');
+                var tbody = $('#'+tableInitData.programId+'Tbody');
+                tbody.empty();
 
                 for(var i = 0; i < result.length; i++){
                     trCnt++;
                     var tbtr = $('<tr id="tr_row_'+i+'" class="tr_row_'+i+'" />');
 
                     //글 상세 보기 속성 있을때 클래스 추가
-                    if(data.viewContents){
+                    if(tableInitData.viewContents){
                         tbtr.addClass('viewContents_'+result[i].menuSeq);
                     }
 
@@ -244,7 +267,7 @@ function fnSaveReIdx(el){
                     var rowData = result[i];
                     var keyName = Object.keys(rowData);
 
-                    for(var j = 0; j < data.colOption.length; j++){
+                    for(var j = 0; j < tableInitData.colOption.length; j++){
                         $.each(rowData, function(k, v){
                             var tdTitle = '';
                             var tdWidth = '100px';
@@ -252,28 +275,28 @@ function fnSaveReIdx(el){
                             var tdHiddenCss = 'show';
 
 
-                            if(data.colOption[j].id == k){
-                                (data.colOption[j].title != '' ? tdTitle = data.colOption[j].title : tdTitle = data.colOption[j].id);
-                                (data.colOption[j].width != '' ? tdWidth = data.colOption[j].width : tdWidth = tdWidth);
-                                (data.colOption[j].hidden != '' ? tdHidden = data.colOption[j].hidden : tdHidden = false);
+                            if(tableInitData.colOption[j].id == k){
+                                (tableInitData.colOption[j].title != '' ? tdTitle = tableInitData.colOption[j].title : tdTitle = tableInitData.colOption[j].id);
+                                (tableInitData.colOption[j].width != '' ? tdWidth = tableInitData.colOption[j].width : tdWidth = tdWidth);
+                                (tableInitData.colOption[j].hidden != '' ? tdHidden = tableInitData.colOption[j].hidden : tdHidden = false);
                                 if(tdHidden) tdHiddenCss = 'none';
 
                                 var tbth = $('<td />');
                                 tbth.addClass('td_row_'+i);
                                 tbth.css('width', tdWidth);
                                 tbth.css('display', tdHiddenCss);
-                                var tbthspan = $('<span class="td_row_s_'+i+'" style="display:show">'+v+'</span>');
-                                var tbthinput = $('<input type="text" class="td_row_i_'+i+'" value="'+v+'" style="display:none;width:100%" />');
+                                var tbthspan = $('<span class="td_row_s_'+i+'_'+k+'" style="display:show"></span>');
+                                var tbthinput = $('<input type="text" class="td_row_i_'+i+'_'+k+'"  style="display:none;width:100%" />');
 
                                 tbth.append(tbthspan);
                                 tbth.append(tbthinput);
 
                                 tbtr.append(tbth);
 
-                                if(data.viewContents){
+                                if(tableInitData.viewContents){
                                     tbth.on('click', function(){
-                                        rowId = parseInt(tbth.attr('class').split('td_row_')[1]);
-                                        getView('VIEW', rowId);
+                                        rowId = parseInt(tbth.attr('class').split('td_row_')[1]); //rowId 세팅
+                                        getView('VIEW', parseInt($('.td_row_s_'+rowId+'_idx').text()));
                                     });
                                 }
                                 return false;
@@ -281,7 +304,7 @@ function fnSaveReIdx(el){
                         });
                     }
 
-                    if(editable){
+                    if(tableInitData.editable){
                         tbtr.dblclick(function(e){
                             rowId = $(this).attr('class').split('tr_row_')[1];
                             clickCnt = rowId;
@@ -315,28 +338,41 @@ function fnSaveReIdx(el){
                     }
 
                 }
-                table.append(thead);
-                table.append(tbody);
-                //table End
 
-                //버튼 그룹과 테이블 그룹을 한 div로 합침.
-                var tableParentDiv = $('<div class="col-xs-w100"/>');
-                tableParentDiv.append(table);
-                divBtnGroup.append(tableParentDiv);
-                gridDivContainer.append(divBtnGroup);
 
-                //타이틀, 테이블 버튼, 테이블 화면에 그림.
-        //    	gridDivContainer.append(tableParentDiv);
-                $('#'+data.programId+'Grid').html(gridDivContainer);
+                //데이터 입력
+                getList();
     		}
     	});
-
-    	//첫행 블러오기
-//    	if(tableInitData.data1.length > 0) getView('VIEW', 0);
     }
 
+    //데이터 넣기
     function getList(){
+        var result = tableInitData.dtInitData1;
 
+        for(var i = 0; i < result.length; i++){
+            trCnt++;
+            var tbtr = $('<tr id="tr_row_'+i+'" class="tr_row_'+i+'" />');
+
+
+            var rowData = result[i];
+            var keyName = Object.keys(rowData);
+
+            for(var j = 0; j < tableInitData.colOption.length; j++){
+                $.each(rowData, function(k, v){
+                    if(tableInitData.colOption[j].id == k){
+                        var tbthspan = $('.td_row_s_'+i+'_'+k);
+                        tbthspan.text(v);
+                        var tbthinput = $('.td_row_i_'+i+'_'+k);
+                        tbthinput.val(v);
+
+                        return false;
+                    }
+                });
+            }
+
+
+        }
     }
 
     /**
@@ -823,7 +859,7 @@ function fnSaveReIdx(el){
 
 
     //글저장
-    function blogSave(){
+    function blogSave(idx){
         var list = [];
         var count = 0;
         for(var i = 0; i < contentLength; i++){
@@ -851,7 +887,7 @@ function fnSaveReIdx(el){
 
                 //바인딩
                 var	dataList = {
-                        idx 			: rowId,
+                        idx 			: idx,
                         pIdx 			: 0,
                         categoryA		: "q",
                         categoryB		: "q",
@@ -872,12 +908,12 @@ function fnSaveReIdx(el){
         $.ajax({
             url      : tableInitData.programId + "/save",
             data     : JSON.stringify({"list":list}),
-            dataType : 'json',
             type     : 'POST',
-            cache    : false,
             contentType : 'application/json; charset=utf-8',
             success  : function(data) {
+
                 alert("저장되었습니다.");
+                getDataList();
             }
         });
     }
@@ -891,6 +927,7 @@ function fnSaveReIdx(el){
             type     : 'DELETE',
             success  : function(data) {
                 alert("삭제 되었습니다.");
+                getDataList();
             }
         });
     }
