@@ -1,5 +1,12 @@
 var lgSeS = "none";
+var app = {
+    userName : "",
+    userEmail : ""
+}
+
 var main = {
+
+
 
     init : function(){
         var _this = this;
@@ -26,6 +33,8 @@ var main = {
         $('#callApiJuso').on('click', function(){
             _this.delete();
         });
+
+        _this.session();
 
     },
 
@@ -85,7 +94,20 @@ var main = {
             alert(JSON.stringify(error));
         });
     },
+    session : function(){
 
+        $.ajax({
+            type : 'GET',
+            url : '/session',
+            dataType : 'json',
+            contentType : 'application/json; charset=utf-8'
+            }).done(function(data){
+                app.userName = data.userName;
+                app.userEmail = data.userEmail;
+            }).fail(function(error){
+                alert(JSON.stringify(error));
+            });
+    }
 
 };
 

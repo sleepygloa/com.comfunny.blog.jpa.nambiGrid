@@ -27,10 +27,10 @@ public class IndexController {
         model.addAttribute("posts", postsService.findAlldesc());
         if(user != null){
             model.addAttribute("userName", user.getName());
+            model.addAttribute("userEmail", user.getEmail());
         }
         return "index";
     }
-
     /************************************************************
      * 이력서
      *************************************************************/
