@@ -81,13 +81,16 @@ public class BlogService {
         String flag = (String)map.get("flag");
         if(flag.equals("INSERT")){
             int ref = blogReRepository.findMaxMaster();
-            blogReRepository.insertMaster((int)map.get("idx"), ref, 0, (String)map.get("writer"), (String)map.get("content"));
+            blogReRepository.insertMaster((int)map.get("idx"), ref, 0, (String)map.get("name"), (String)map.get("writer"), (String)map.get("content"));
         }else if(flag.equals("UPDATE")){
             int ref = (int)map.get("ref");
             int cnt = blogReRepository.findMaster(ref);
             if(cnt == 0) new IllegalArgumentException("해당 게시글이 없습니다. id="+ref);
 
             blogReRepository.updateMaster((int)map.get("idx"), ref, (String)map.get("content"));
+        }else if(flag.equals("INSERT_RE")){
+            int ref = blogReRepository.findMaxMaster();
+            blogReRepository.insertMaster((int)map.get("idx"), ref, (int)map.get("pRef"), (String)map.get("name"), (String)map.get("writer"), (String)map.get("content"));
         }
 
 

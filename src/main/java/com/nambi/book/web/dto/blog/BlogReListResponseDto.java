@@ -18,6 +18,7 @@ public class BlogReListResponseDto {
     private String delYn;
     private String inUserId;
     private String upUserId;
+    private String inUserEmail;
 
     private LocalDateTime inDt;
     private LocalDateTime upDt;
@@ -31,6 +32,7 @@ public class BlogReListResponseDto {
         this.delYn = entity.getDelYn();
         this.inUserId = entity.getInUserId();
         this.upUserId = entity.getUpUserId();
+        this.inUserEmail = entity.getInUserEmail();
         this.inDt = entity.getInDt();
         this.upDt = entity.getUpDt();
     }

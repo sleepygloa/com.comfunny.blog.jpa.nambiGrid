@@ -9,12 +9,11 @@ import java.util.List;
 
 public interface BlogReRepository extends JpaRepository<BlogRe, Long> {
 
-    @Query(value = "SELECT a.REF, a.P_REF, a.IDX, a.CONTENT, a.DEL_YN, a.IN_USER_ID, a.UP_USER_ID, a.IN_DT, a.UP_DT, CONCAT_WS('>', c.REF, b.REF, a.REF) LEVEL" +
+    @Query(value = "SELECT a.REF, a.P_REF, a.IDX, a.CONTENT, a.DEL_YN, a.IN_USER_ID, a.UP_USER_ID, a.IN_USER_EMAIL, a.IN_DT, a.UP_DT, CASE WHEN b.p_ref IS NULL THEN a.ref ELSE b.ref END LEVEL" +
                    "  FROM blog_re a" +
         "  LEFT OUTER JOIN blog_re b ON a.P_REF = b.REF" +
-        "  LEFT OUTER JOIN blog_re c ON b.P_REF = c.REF" +
-                   " WHERE a.P_REF = 0 AND a.IDX = :idx AND a.DEL_YN = 'N' " +
-                " ORDER BY a.CONTENT", nativeQuery = true)
+                   " WHERE a.IDX = :idx  " +
+                " ORDER BY LEVEL, a.REF", nativeQuery = true)
     List<BlogRe> findDesc(@Param("idx") int idx);
 
     @Query(value = "SELECT count(*) as cnt FROM blog_re WHERE REF = :ref ", nativeQuery = true)
@@ -23,9 +22,9 @@ public interface BlogReRepository extends JpaRepository<BlogRe, Long> {
     @Query(value = "SELECT CASE WHEN MAX(REF) IS NULL THEN 1 ELSE MAX(REF)+1 END AS MAX FROM blog_re ", nativeQuery = true)
     int findMaxMaster();
 
-    @Query(value = "INSERT INTO blog_re (IDX, REF, P_REF, CONTENT, IN_USER_ID, UP_USER_ID, IN_DT, UP_DT) VALUES " +
-                                    "(:idx, :ref, :pRef, :content, :writer, :writer, now(), now() )", nativeQuery = true)
-    void insertMaster(@Param("idx") int idx, @Param("ref") int ref, @Param("pRef") int pRef, @Param("writer") String writer, @Param("content") String content);
+    @Query(value = "INSERT INTO blog_re (IDX, REF, P_REF, CONTENT, IN_USER_ID, UP_USER_ID, IN_USER_EMAIL, IN_DT, UP_DT) VALUES " +
+                                    "(:idx, :ref, :pRef, :content, :name, :name, :email, now(), now() )", nativeQuery = true)
+    void insertMaster(@Param("idx") int idx, @Param("ref") int ref, @Param("pRef") int pRef, @Param("name") String name, @Param("email") String email, @Param("content") String content);
 
     @Query(value = "UPDATE blog_re SET DEL_YN = 'Y' WHERE REF = :ref", nativeQuery = true)
     void deleteRe(@Param("ref") int ref);

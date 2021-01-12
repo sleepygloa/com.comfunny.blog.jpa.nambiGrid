@@ -527,229 +527,7 @@ function fnSaveReIdx(el){
         });
     }
 
-    //그리드와 관련된 버튼을 클릭 했을때 이벤트
-//    $(document).on('click','a[id$=Btn]', function(e){
-//    	var thisId = $(this).attr('id');
-//
-//    	var flag = '';
-//    	var newUrl = '';
-//    	var sendData = '';
-//    	var gridData = {};
-//
-//    	if(thisId.indexOf('TextBoxAdd') != -1){
-//    		fnAddTextBox('INSERT',  {}, 'TEXT');
-//    		return false;
-//    	}else if(thisId.indexOf('CodeAdd') != -1){
-//    		fnAddTextBox('INSERT', {}, 'CODE');
-//    		return false;
-//    	}else if(thisId.indexOf('ImgAdd') != -1){
-//    		fnAddImg('INSERT',  {});
-//    		return false;
-//    	}else if(thisId.indexOf('DelBox') != -1){
-//
-//			$('#row_'+focusIdx).remove();
-//			return false;
-//    	//댓댓글 저장
-//    	}else if(thisId.indexOf('ReReSaveBtn') != -1){
-//
-//    		flag = 'insert';
-//    		newUrl = 'saveReRe' + tableInitData.uProgramId;
-//    		if($('#'+tableInitData.programId+'ReReWriter').val() == ''){
-//    			alert('로그인을 해주세요.');
-//    			return false;
-//    		}else if($('#'+tableInitData.programId+'ReReContent').val() == ''){
-//    			alert('내용을 입력해주세요');
-//    			return false;
-//    		}
-//
-//    		var saveInput = $(this).children('input');
-//
-//    		sendData = {
-//    				idx		:	blogData.idx,
-//    				writer	:	$('#'+tableInitData.programId+'ReReWriter').val(),
-//    				content	:	$('#'+tableInitData.programId+'ReReContent').val(),
-//    				ref		:   saveInput[0].value,
-//    				reStep  :   saveInput[1].value
-//    		}
-//
-//    	//댓글추가
-//    	}else if(thisId.indexOf('ReAddBtn') != -1){
-//
-//    		var addInput = $(this).children('input');
-//    		var getRef = addInput[0].value;
-//    		var gerReStep = addInput[1].value;
-//    		var refId = '#'+tableInitData.programId+'ReContentPlace_'+getRef+'_'+gerReStep;
-//
-//			var reContentNew =
-//				'<div class="col-lg-12 re-contents-input" style="display:inline-block">'
-//
-//					+ '<div class="" style="float:left;"><a><img class="re-cp-img" src="#"  /></a></div>'
-//					+ '<input id="'+tableInitData.programId+'ReReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;display:none;" />'
-//					+ '<div class="" style="float:right;min-width:220px;width:90%" ><textarea id="'+tableInitData.programId+'ReReContent" style="height:100%;width:100%" ></textarea></div>'
-//					+ '<div style="float:right;min-width:220px;width:90%;height:50px;">'
-//
-//
-//						+ '<a class="btn btn-default" id="'+tableInitData.programId+'ReReSaveBtn">댓글쓰기'
-//						+ '<input class="ref" type="hidden" value="'+getRef+'" />'
-//						+ '<input class="reStep" type="hidden" value="'+gerReStep+'" />'
-//						+ '</a>'
-//					+ '</div>'
-//				+ '</div>';
-//
-//    		$(refId).append(reContentNew);
-//    		return false;
-//    	//검
-//    	}else if(thisId.indexOf('Search') != -1){
-//
-//    		flag = 'search';
-//    		newUrl = 'get' + tableInitData.uProgramId;
-//    	//그리드행추가
-//    	}else if(thisId.indexOf('AddRow') != -1){
-//    		trCnt++;
-//    		clickCnt = trCnt;
-//
-//    		var str = '<tr class="tr_row_'+trCnt+'" >';
-//			str += '<td class="td_row_flag">';
-//				str += '<i class="fa fa-plus"></i>';
-//				str += '<input class="td_row_flag_input input-sm" type="hidden" value="INSERT" />';
-//			str += '</td>';
-//    		$.each(tableInitData.colName, function(i, v){
-//    			str += '<td class="td_row_'+v+'">';
-//    			str += '<input class="td_row_'+v+'_input input-sm" type="text" value="" />';
-//    			str += '</td>';
-//    		});
-//    			str += '</tr>';
-//			$('tbody').append(str);
-//    		return false;
-//    	//그리드행삭제
-//    	}else if(thisId.indexOf('DelRow') != -1){
-//    		var delI = $('.tr_row_'+clickCnt).find('i')[0];
-//    		var delInput = $('.tr_row_'+clickCnt).find('input.td_row_flag_input')[0];
-//    		if(delInput.value == ""){
-//    			delI.classList.add('fa-minus');
-//    			delInput.value = "delete";
-//    		}else{
-//    		}
-//    		getView('VIEW', $('.tr_row_'+clickCnt));
-//			return false;
-//    	//그리드 행 저장
-//    	}else if(thisId.indexOf('SaveRow') != -1){
-//    		var saveId = $('.tr_row_'+clickCnt);
-//    		var saveTds = saveId.find('td');
-//
-//    		var saveData = {};
-//
-//    		saveData["idx"] = clickCnt;
-//
-//    		for(var j = 0; j < saveTds.length; j++){
-//    			var rowNm = $(saveTds[j]).attr('class').split('td_row_')[1];
-//
-////    			if(rowNm == 'flag') continue;
-//
-//    			var rowNmSplit = rowNm.split('_');
-//    			var str = '';
-//    			for(var k = 0; k < rowNmSplit.length; k++){
-//    				if(k == 0){
-//    					str += rowNmSplit[k].toLowerCase();
-//    				}else{
-//    					var rowNmSplitChar = rowNmSplit[k].toLowerCase();
-//    					str += rowNmSplitChar.charAt(0).toUpperCase() + rowNmSplitChar.slice(1);
-//    				}
-//    			}
-//
-//    			var saveSpan = $(saveTds[j]).find('span').text();
-//    			var saveInput = $(saveTds[j]).find('input').val();
-//
-//    			gridDataSetting(saveId);
-//    			if(saveSpan == saveInput) {
-//    				saveData[str] = saveSpan;
-//    			}else{
-//        			saveData[str] = saveInput;
-//    			};
-//    		}
-//
-//    		if(saveData["flag"] != "INSERT"){
-//    			saveData["flag"] = "UPDATE";
-//    		}
-//
-//    		gridData = saveData;
-//
-//    		newUrl = 'update'+ tableInitData.uProgramId;
-//		//글추가
-//    	}else if(thisId.indexOf('Add') != -1){
 
-//        //글저장
-//    	}else if(thisId.indexOf('Save') != -1){
-
-//
-//		//글수정
-//    	}else if(thisId.indexOf('Update') != -1){
-//
-//    		$('.'+tableInitData.programId+'UpdateFlag').css('display', 'block');
-//
-//			getView('UPDATE');
-//			return false;
-//		//글삭제
-//    	}else if(thisId.indexOf('Delete') != -1){
-//
-//    		flag = 'delete';
-//    		newUrl = 'modify' + tableInitData.uProgramId
-//    	//글취소
-//    	}else if(thisId.indexOf('Cancel') != -1){
-//
-//    		flag = 'cancel';
-//    		window.location.href="/";
-//    		return false;
-//    	}
-//    	if(thisId.indexOf('Box') != -1){
-//
-//    	}else if(thisId.indexOf('Re') != -1){
-//    		$.ajax({
-//    			url		: tableInitData.url + newUrl,
-//        		type	: "POST",
-//        		data	: JSON.stringify(sendData),
-//        		dataType : "json",
-//                async	: false,
-//    			contentType : "application/json, charset=utf-8",
-//    			success : function(result){
-//    				$('#'+tableInitData.programId+'Re').empty();
-//    				$('#'+tableInitData.programId+'Re').getBlogRe();
-//    			}
-//    		});
-//    	}else if(thisId.indexOf('Row') != -1){
-//        	$.ajax({
-//        		url		: tableInitData.url + newUrl,
-//        		type	: "POST",
-//        		data	: JSON.stringify(gridData),//???????????????????
-//                dataType: 'json',
-//                async	: false,
-//    			contentType : "application/json, charset=utf-8",
-//        		success : function(data){
-//
-//        			$('#'+tableInitData.programId+'Grid').remove();
-//        			$('#'+tableInitData.programId+'Grid').fnList(initData);
-//        		}
-//        	});
-//    	}else{
-//        	$.ajax({
-//        		url		: tableInitData.url + newUrl,
-//        		type	: "POST",
-//        		data	: JSON.stringify(blogData),
-//                dataType: 'json',
-//                async	: false,
-//    			contentType : "application/json, charset=utf-8",
-//        		success : function(data){
-//
-//        			$('#view'+tableInitData.uProgramId).empty();
-//        			$('#view'+tableInitData.uProgramId).html(data);
-//        		}
-//        	});
-//    	}
-//    });
-
-
-
-    
     /******************************************************
     * 글 상자 자동조절 높이
     *******************************************************/
@@ -970,9 +748,14 @@ function fnSaveReIdx(el){
                             //-1 : 댓글 신규 작성 폼.
 							for(var i = -1; i < dt_grid.length; i++){
 
-								var dtGridRef = (i == -1? "0" : dt_grid[i].ref); //순번
-								var dtGridPRef = (i == -1? "0" : dt_grid[i].pref);
-								var dtGridLevel = (i == -1? "0" : dt_grid[i].level);
+								var dtGridRef = (i == -1? 0 : parseInt(dt_grid[i].ref)); //순번
+								var dtGridPRef = (i == -1? 0 : parseInt(dt_grid[i].pref));
+								var dtGridLevel = (i == -1? 0 : parseInt(dt_grid[i].level));
+
+                                if(ref == 0 && reStep == dtGridRef && flag == "VIEW"){
+                                    dtGridRef = 0;
+                                    dtGridPRef = reStep;
+                                }
 
 //								if(flag == "READD" || dtGridLevel == 2){
 //									reContent = 5;
@@ -986,301 +769,297 @@ function fnSaveReIdx(el){
 								var dd = $('<div class="col-xs-w100"  />');
 								if(i == -1) dd.css({"border-bottom" : "0.5px solid gray","margin": "5px 0px"});
 
+                                /*******************************************
+                                * 들여쓰기 ㄴ
+                                ********************************************/
+                                var ddTextRe = $('<div class="col-xs-w'+reContent+'" style="height:50px; text-align:center;" />');
+                                ddTextRe.text('ㄴ');
+
+
+                                var ddDiv = $('<div class="col-xs-w'+contentWidth+'" />');
+
                                     /*******************************************
-                                    * 들여쓰기 ㄴ
+                                    * 사용자 그룹
                                     ********************************************/
-									var ddTextRe = $('<div class="col-xs-w'+reContent+'" style="height:50px; text-align:center;" />');
-									ddTextRe.text('ㄴ');
+                                    //이름영역
+                                    var ddIdDiv = $('<div class="col-xs-w100" style:"min-height:25px;"/>');
+                                        var ddIdSpanName = $('<span >이름 : </span>');
+                                        var ddIdInputName = $('<input id="'+tableInitData.programId+'Name_'+dtGridRef+'_'+dtGridPRef+'" type="type" value="" readonly />');
+                                        var ddIdSpanDt = $('<span >작성시간 : </span>');
+                                        var ddIdInputDt = $('<input type="type" value="" readonly />');
 
 
-									var ddDiv = $('<div class="col-xs-w'+contentWidth+'" />');
-									    //이름영역
-										var ddIdDiv = $('<div class="col-xs-w100" style:"min-height:25px;"/>');
-                                            var ddIdSpanName = $('<span >이름 : </span>');
-                                            var ddIdInputName = $('<input id="'+tableInitData.programId+'Writer_'+dtGridRef+'_'+dtGridPRef+'" type="type" value="" readonly />');
-                                            var ddIdSpanDt = $('<span >작성시간 : </span>');
-                                            var ddIdInputDt = $('<input type="type" value="" readonly />');
-                                        //컨텐츠영역
-										var ddContentDiv = $('<div class="col-xs-w100" style="min-height:35px;" />');
+                                    //컨텐츠영역
+                                    var ddContentDiv = $('<div class="col-xs-w100" style="min-height:35px;" />');
+                                        //신규글쓰기
+                                        if(i == -1){
+                                            var ddIdTextArea = $('<textarea id="'+tableInitData.programId+'Content_'+dtGridRef+'_'+dtGridPRef+'" class="col-xs-w100" style="border:0px;" readonly />');
+                                            ddIdTextArea.keydown(function(el){
+                                                resize(el);
+                                            });
 
-										//신규글쓰기
-										if(i == -1){
-                                            if(app.userName != "") ddIdInputName.val(app.userName);
+                                            if(app.userEmail != "") {
+                                                ddIdTextArea.attr('readonly', false);
+                                                ddIdInputName.val(app.userName);
+                                            }else{
+                                                ddIdTextArea.text('로그인 후 이용해 주세요. 소통과 알림을 위해 로그인을 권장하고있습니다.');
+                                            }
 
-                                            ddIdInputName.attr('readonly', false);
-
-											var ddIdTextArea = $('<textarea id="'+tableInitData.programId+'Content_'+dtGridRef+'_'+dtGridPRef+'" class="col-xs-w100" style="border:0px;"  />');
-											ddIdTextArea.keydown(function(el){
-							        			resize(el);
-							        		});
-
-										}else{
+                                        }else{
                                             //글 리스트
                                             ddIdInputName.val(dt_grid[i].inUserId);
                                             ddIdInputDt.val(dt_grid[i].upDt);
-                                            console.log(ref, dtGridRef, reStep, dtGridPRef, flag);
-                                            if(ref == dtGridRef && reStep == dtGridPRef && (flag == "RESAVE" || flag == "UPDATE")){
+
+
+                                            if(ref == dtGridRef && reStep == dtGridPRef && (flag == "RESAVE" || flag == "UPDATE" || flag == "VIEW")
+                                            ){
                                                 var ddIdTextArea = $('<textarea id="'+tableInitData.programId+'Content_'+dtGridRef+'_'+dtGridPRef+'" class="col-xs-w100" />');
                                                 ddIdTextArea.keydown(function(el){
                                                     resize(el);
                                                 });
-                                                ddIdTextArea.text(dt_grid[i].content);
-//                                                ddContentDiv.append(ddIdTextArea);
                                             }else{
                                                 var ddIdTextArea = $('<pre id="'+tableInitData.programId+'Content_'+dtGridRef+'_'+dtGridPRef+'" class="col-xs-w100" />');
-                                                ddIdTextArea.text(dt_grid[i].content);
-//                                                ddContentDiv.append(ddIdTextArea);
                                             }
-										}
-                                        ddIdDiv.append(ddIdSpanName).append(ddIdInputName).append(ddIdSpanDt).append(ddIdInputDt);
-                                        ddContentDiv.append(ddIdTextArea);
+                                            if(dt_grid[i].delYn == 'Y') {
+                                                ddIdTextArea.text('삭제된 댓글 입니다.');
+                                            }else{
+                                                ddIdTextArea.text(dt_grid[i].content);
+                                            }
+                                        }
 
-                                        /*******************************************
-                                        * 버튼그룹
-                                        ********************************************/
-										var ddBtnDiv = $('<div class="col-xs-w100" style:"min-height:30px;" />');
+                                    ddIdDiv.append(ddIdSpanName).append(ddIdInputName).append(ddIdSpanDt).append(ddIdInputDt);
+                                    ddContentDiv.append(ddIdTextArea);
+
+                                    /*******************************************
+                                    * 버튼그룹
+                                    ********************************************/
+                                    var ddBtnDiv = $('<div class="col-xs-w100" style:"min-height:30px;" />');
 //										ddBtnDiv.click(function(){
 //											fnSaveReIdx(ddBtnDiv);
 //										})
 
-										//댓글달기
-										var ddBtnNew = $('<a class="btn" id="'+tableInitData.programId+'ReAddBtn_'+dtGridRef+'_'+dtGridPRef+'" />');
-										ddBtnNew.text('댓글달기');
+                                    //댓글달기
+                                    var ddBtnReAdd = $('<a class="btn" id="'+tableInitData.programId+'ReAddBtn_'+dtGridRef+'_'+dtGridPRef+'" />');
+                                    ddBtnReAdd.text('댓글달기');
+                                    ddBtnReAdd.click(function(){
+                                        var el = $(this);
+                                        var split = el.attr("id").split("_");
 
-										ddBtnNew.click(function(){
+                                        getViewReContent('READD', 0, parseInt(split[1]));
+                                    });
 
-											var el = $(this);
-											var split = el.attr("id").split("_");
-											var deleteRef = split[1];
-											var deleteReStep = split[2];
-											var deleteReLevel = Number(split[3])+1;
+                                    //수정 전환
+                                    var ddBtnUpdate = $('<a class="btn" id="'+tableInitData.programId+'ReContentPlace_'+dtGridRef+'_'+dtGridPRef+'" />');
+                                    ddBtnUpdate.text('수정');
+                                    ddBtnUpdate.click(function(){
 
-											getViewReContent('READD', deleteRef, deleteReStep, deleteReLevel);
-										})
+                                        var el = $(this);
+                                        var split = el.attr("id").split("_");
+                                        console.log(split);
 
-										//수정 전환
-										var ddBtnUpdate = $('<a class="btn" id="'+tableInitData.programId+'ReContentPlace_'+dtGridRef+'_'+dtGridPRef+'" />');
-										ddBtnUpdate.text('수정');
+                                        getViewReContent('UPDATE', split[1], split[2]);
+                                    })
 
-										ddBtnUpdate.click(function(){
+                                    //신규 저장
+                                    var ddBtnSave = $('<a class="btn" id="'+tableInitData.programId+'ReSaveBtn_'+dtGridRef+'_'+dtGridPRef+'" />');
+                                    ddBtnSave.text('저장');
+                                    ddBtnSave.click(function(){
 
-											var el = $(this);
-											var split = el.attr("id").split("_");
-											console.log(split);
+                                        var el = $(this);
+                                        var split = el.attr("id").split("_");
 
-											getViewReContent('UPDATE', split[1], split[2]);
-										})
+                                        var idx = parseInt($('.td_row_s_'+rowId+'_idx').text());
+                                        var content = $('#'+tableInitData.programId+'Content_'+split[1]+'_'+split[2]).val();
+                                        if(content == ''){
+                                            alert('내용을 입력해주세요');
+                                            return false;
+                                        }
 
-										//신규 저장
-										var ddBtnSave = $('<a class="btn" id="'+tableInitData.programId+'ReSaveBtn_'+dtGridRef+'_'+dtGridPRef+'" />');
-										ddBtnSave.text('저장');
+                                        var data = {
+                                             idx	    : idx,
+                                             ref	    : parseInt(split[1]),
+                                             pRef       : parseInt(split[2]),
+                                             name       : app.userName,
+                                             email      : app.userEmail,
+                                             content	: content,
+                                             flag	    : 'INSERT'
+                                        }
 
-										ddBtnSave.click(function(){
+                                        $.ajax({
+                                            url		: tableInitData.programId + "/saveRe",
+                                            type	: "POST",
+                                            data	: JSON.stringify(data),
+                                            contentType : "application/json; charset=utf-8",
+                                            success : function(){
+                                                alert("저장 되었습니다.");
+                                                getViewReContent('VIEW');
+                                            },
+                                            error : function(){
+                                                console.log(data);
+                                            }
+                                        });
+                                    })
 
-											var el = $(this);
-											var split = el.attr("id").split("_");
+                                    //수정 저장
+                                    var ddBtnUpdateSave = $('<a class="btn" id="'+tableInitData.programId+'ReUpdateBtn_'+dtGridRef+'_'+dtGridPRef+'" />');
+                                    ddBtnUpdateSave.text('저장');
+                                    ddBtnUpdateSave.click(function(){
 
-                                            var idx = parseInt($('.td_row_s_'+rowId+'_idx').text());
-                                            var writer = $('#'+tableInitData.programId+'Writer_'+split[1]+'_'+split[2]).val();
-											var content = $('#'+tableInitData.programId+'Content_'+split[1]+'_'+split[2]).val();
-											if(content == ''){
-												alert('내용을 입력해주세요');
-												return false;
-											}
+                                        var el = $(this);
+                                        var split = el.attr("id").split("_");
 
-											var data = {
-                                                 idx	    : idx,
-                                                 ref	    : parseInt(split[1]),
-                                                 pRef       : parseInt(split[2]),
-                                                 writer     : writer,
-                                                 content	: content,
-                                                 flag	    : 'INSERT'
+                                        var idx = parseInt($('.td_row_s_'+rowId+'_idx').text());
+                                        var content = $('#'+tableInitData.programId+'Content_'+split[1]+'_'+split[2]).val();
+                                        if(content == ''){
+                                            alert('내용을 입력해주세요');
+                                            return false;
+                                        }
+
+                                        var data = {
+                                             idx	    : idx,
+                                             ref	    : parseInt(split[1]),
+                                             pRef       : parseInt(split[2]),
+                                             content	: content,
+                                             flag	    : 'UPDATE'
+                                        }
+
+                                        $.ajax({
+                                            url		: tableInitData.programId + "/saveRe",
+                                            type	: "POST",
+                                            data	: JSON.stringify(data),
+                                            contentType : "application/json; charset=utf-8",
+                                            success : function(){
+                                                alert("저장 되었습니다.");
+                                                getViewReContent('VIEW');
+                                            },
+                                            error : function(){
+                                                console.log(data);
+                                            }
+                                        });
+                                    })
+
+                                    //level1 댓글 저장
+                                    var ddBtnReSave = $('<a class="btn" id="'+tableInitData.programId+'ReReSaveBtn_'+dtGridRef+'_'+dtGridPRef+'" />');
+                                    ddBtnReSave.text('저장');
+                                    ddBtnReSave.click(function(){
+
+                                        var el = $(this);
+                                        var split = el.attr("id").split("_");
+
+                                        var idx = parseInt($('.td_row_s_'+rowId+'_idx').text());
+                                        var content = $('#'+tableInitData.programId+'Content_'+split[1]+'_'+split[2]).val();
+                                        if(content == ''){
+                                            alert('내용을 입력해주세요');
+                                            return false;
+                                        }
+
+                                        var data = {
+                                             idx	    : idx,
+                                             ref	    : parseInt(split[1]),
+                                             pRef       : parseInt(split[2]),
+                                             name       : app.userName,
+                                             email      : app.userEmail,
+                                             content	: content,
+                                             flag	    : 'INSERT_RE'
+                                        }
+
+                                        $.ajax({
+                                            url		: tableInitData.programId + "/saveRe",
+                                            type	: "POST",
+                                            data	: JSON.stringify(data),
+                                            contentType : "application/json; charset=utf-8",
+                                            success : function(){
+                                                alert("저장 되었습니다.");
+                                                getViewReContent('VIEW');
+                                            },
+                                            error : function(){
+                                                console.log(data);
+                                            }
+                                        });
+                                    })
+
+                                    //삭제
+                                    var ddBtnDelete = $('<a class="btn" id="'+tableInitData.programId+'ReDelBtn_'+dtGridRef+'_'+dtGridPRef+'" />');
+                                    ddBtnDelete.text('삭제');
+                                    ddBtnDelete.click(function(){
+
+                                        var el = $(this);
+                                        var split = el.attr("id").split("_");
+
+                                        var idx = parseInt($('.td_row_s_'+rowId+'_idx').text());
+                                        var content = $('#'+tableInitData.programId+'Content_'+split[1]+'_'+split[2]).val();
+
+                                        var data = {
+                                             idx	    : idx,
+                                             ref	    : parseInt(split[1])
+                                        }
+
+                                        $.ajax({
+                                            url		: tableInitData.programId + "/deleteRe",
+                                            type	: "DELETE",
+                                            data	: JSON.stringify(data),
+                                            contentType : "application/json; charset=utf-8",
+                                            success : function(){
+                                                alert("삭제 되었습니다.");
+                                                getViewReContent('VIEW');
+                                            },
+                                            error : function(){
+                                                console.log(data);
+                                            }
+                                        });
+                                    })
+
+                                    /*******************************************
+                                    * 버튼 유효성
+                                    ********************************************/
+                                    if(app.userEmail != "") {
+                                        //신규 댓글 저장
+                                        //세션이있어야만 존재.
+                                        if(i == -1){
+                                            ddBtnDiv.append(ddBtnSave);
+                                        //댓글 리스트
+                                        }else{
+
+                                            //일반
+                                            if(flag == 'VIEW'){
+                                                if(dtGridPRef == 0) ddBtnDiv.append(ddBtnReAdd);
+                                            }
+                                            //사용자확인
+                                            if(app.userEmail == dt_grid[i].inUserId);
+                                            if(flag == 'VIEW'){
+                                                ddBtnDiv.append(ddBtnUpdate);
+                                                ddBtnDiv.append(ddBtnDelete);
+                                            }
+                                            if(flag == "UPDATE" && ref == dtGridRef && reStep == dtGridPRef){
+                                                //저장
+                                                ddBtnDiv.append(ddBtnUpdateSave);
                                             }
 
-                                            $.ajax({
-                                                url		: tableInitData.programId + "/saveRe",
-                                                type	: "POST",
-                                                data	: JSON.stringify(data),
-                                                contentType : "application/json; charset=utf-8",
-                                                success : function(){
-                                                    alert("저장 되었습니다.");
-                                                    getViewReContent('VIEW');
-                                                },
-                                                error : function(){
-                                                    console.log(data);
-                                                }
-                                            });
-										})
-
-
-										//수정 저장
-										var ddBtnUpdateSave = $('<a class="btn" id="'+tableInitData.programId+'ReUpdateBtn_'+dtGridRef+'_'+dtGridPRef+'" />');
-										ddBtnUpdateSave.text('저장');
-
-										ddBtnUpdateSave.click(function(){
-
-											var el = $(this);
-											var split = el.attr("id").split("_");
-
-                                            var idx = parseInt($('.td_row_s_'+rowId+'_idx').text());
-                                            var writer = $('#'+tableInitData.programId+'Writer_'+split[1]+'_'+split[2]).val();
-											var content = $('#'+tableInitData.programId+'Content_'+split[1]+'_'+split[2]).val();
-											if(content == ''){
-												alert('내용을 입력해주세요');
-												return false;
-											}
-
-											var data = {
-                                                 idx	    : idx,
-                                                 ref	    : parseInt(split[1]),
-                                                 pRef       : parseInt(split[2]),
-                                                 content	: content,
-                                                 flag	    : 'UPDATE'
+                                            if(dtGridRef == 0 && dtGridPRef == reStep){
+                                                ddBtnDiv.append(ddBtnReSave)
                                             }
+                                        }
+                                    }
 
-                                            $.ajax({
-                                                url		: tableInitData.programId + "/saveRe",
-                                                type	: "POST",
-                                                data	: JSON.stringify(data),
-                                                contentType : "application/json; charset=utf-8",
-                                                success : function(){
-                                                    alert("저장 되었습니다.");
-                                                    getViewReContent('VIEW');
-                                                },
-                                                error : function(){
-                                                    console.log(data);
-                                                }
-                                            });
-										})
+                                    /*******************************************
+                                    * 사용자그룹, 버튼그룹 합치기
+                                    ********************************************/
+                                    ddDiv.append(ddIdDiv).append(ddContentDiv).append(ddBtnDiv);
 
-										//댓댓글 신규 저장
-										var ddBtnReSave = $('<a class="btn" id="'+tableInitData.programId+'ReReSaveBtn_'+dtGridRef+'_'+dtGridPRef+'" />');
-										ddBtnReSave.text('대댓글 저장');
-
-										ddBtnReSave.click(function(){
-
-											var el = $(this);
-											var split = el.attr("id").split("_");
-											var deleteRef = split[1];
-											var deleteReStep = split[2];
-											var deleteReLevel = split[3];
-
-											var content  = $('#'+tableInitData.programId+'Content_'+deleteRef+'_'+deleteReStep).val()
-											if(content == ''){
-												alert('내용을 입력해주세요');
-												return false;
-											}
-
-//								    		SeonhoblogUtil.ajax(
-//													JSON.stringify({
-//														idx	: programInitData.idx,
-//														ref	: deleteRef,
-//														reStep	: deleteReStep,
-//														reLevel	: deleteReLevel,
-//														writer	: $('#'+tableInitData.programId+'Writer_'+deleteRef+'_'+deleteReStep+'_'+deleteReLevel).val(),
-//														content	: $('#'+tableInitData.programId+'Content_'+deleteRef+'_'+deleteReStep+'_'+deleteReLevel).val(),
-//														flag	: 'INSERT'
-//													}),
-//													tableInitData.url + "saveRe" + tableInitData.uProgramId,
-//													false,
-//													function callbackFunc(result){
-//														getViewReContent('VIEW');
-//													}
-//												);
-										})
-
-										//삭제
-										var ddBtnDelete = $('<a class="btn" id="'+tableInitData.programId+'ReDelBtn_'+dtGridRef+'_'+dtGridPRef+'" />');
-										ddBtnDelete.text('삭제');
-
-										ddBtnDelete.click(function(){
-
-											var el = $(this);
-											var split = el.attr("id").split("_");
-
-                                            var idx = parseInt($('.td_row_s_'+rowId+'_idx').text());
-                                            var writer = $('#'+tableInitData.programId+'Writer_'+split[1]+'_'+split[2]).val();
-											var content = $('#'+tableInitData.programId+'Content_'+split[1]+'_'+split[2]).val();
-
-											var data = {
-                                                 idx	    : idx,
-                                                 ref	    : parseInt(split[1])
-                                            }
-
-                                            $.ajax({
-                                                url		: tableInitData.programId + "/deleteRe",
-                                                type	: "DELETE",
-                                                data	: JSON.stringify(data),
-                                                contentType : "application/json; charset=utf-8",
-                                                success : function(){
-                                                    alert("삭제 되었습니다.");
-                                                    getViewReContent('VIEW');
-                                                },
-                                                error : function(){
-                                                    console.log(data);
-                                                }
-                                            });
-										})
+                                /*******************************************
+                                * 댓글쓰기 시 필요함수
+                                ********************************************/
+								if(ref == 0 && reStep == dtGridRef && flag == "READD"){
+								    i--;
+								    flag = "VIEW";
+								}else if(dtGridPRef != 0 && flag == "VIEW"){
+								    dd.append(ddTextRe);
+								}
 
 
-										//버튼 그룹
-//										if(dtGridPRef == 0 && flag != 'UPDATE' && flag != 'RESAVE'){
-										if(dtGridPRef == 0 && flag == 'VIEW' && dtGridLevel == 1) ddBtnDiv.append(ddBtnNew);
-
-										//신규 댓글 저장
-										if(i == -1){
-											ddBtnDiv.append(ddBtnSave);
-
-										//댓글 리스트
-										}else{
-
-											//수정, 삭제
-//											if(reLevel == 1){
-												if(flag == 'VIEW'){
-//													if(app.userName == dt_grid[i].IN_USER_ID){
-														ddBtnDiv.append(ddBtnUpdate);
-														ddBtnDiv.append(ddBtnDelete);
-//													}
-												}
-//											}else{
-
-//											}
-
-											if(ref == dtGridRef && reStep == dtGridPRef){
-												//저장
-												if(flag == "UPDATE"){
-													ddBtnDiv.append(ddBtnUpdateSave);
-												}else if(flag == "RESAVE"){
-													ddBtnDiv.append(ddBtnReSave);
-												}
-											}
-										}
-
-
-										//댓글 컨텐츠 그룹
-										ddDiv.append(ddIdDiv);
-										ddDiv.append(ddContentDiv);
-										ddDiv.append(ddBtnDiv);
-
-								//댓글 이미지와 컨텐츠그룹
-//								if(i != -1 && ref == dtGridRef && dtGridLevel == 2){ dd.append(ddTextRe); }
-//								if(i != -1 && dtGridLevel == 2){ dd.append(ddTextRe); }
 								dd.append(ddDiv);
-
-								//댓글영역 추가
 								reBody.append(dd);
-
-//								if(i != -1 && flag == "READD" && ref == dtGridRef && reLevel == 2){
-//									--i;
-//									flag = "RESAVE";
-//									continue;
-//								}
-//								//대댓글 영역 추가 완료 시 플래그
-//								if(flag == "RESAVE"){
-//									reLevel = 1;
-//								}
 							}
-//						}
 					}
 				});
 
