@@ -441,6 +441,10 @@ function fnSaveReIdx(el){
 
 
                         if(tableInitData.viewContentsRe){
+
+                            var reBody = $('#'+tableInitData.programId+'Re')
+                            reBody.empty();
+                            reBody.css("display","block");
                             getViewReContent('VIEW');
                         }
 				}
@@ -724,13 +728,11 @@ function fnSaveReIdx(el){
     *******************************************************/
     function getViewReContent(flag, ref, reStep){
         var reBody = $('#'+tableInitData.programId+'Re')
-    	$('#'+tableInitData.programId+'Re').empty();
-    	$('#'+tableInitData.programId+'Re').css("display","block");
 
         var idx = parseInt($('.td_row_s_'+rowId+'_idx').text());
     	//그리드 컬럼 만드는 로직
     	$.ajax({
-    	    type        :"GET",
+    	    type        : "GET",
     		url         : tableInitData.programId + "/listRe",
             data        : {"idx" : idx},
     		dataType    : "json",
@@ -743,7 +745,6 @@ function fnSaveReIdx(el){
 						var imgWidth = 10
 
 						var dt_grid = result;
-//						if(dt_grid.length > 0){
 
                             //-1 : 댓글 신규 작성 폼.
 							for(var i = -1; i < dt_grid.length; i++){
@@ -757,16 +758,10 @@ function fnSaveReIdx(el){
                                     dtGridPRef = reStep;
                                 }
 
-//								if(flag == "READD" || dtGridLevel == 2){
-//									reContent = 5;
-//									contentWidth = 85;
-//									imgWidth = 10;
-//								}
-
                                 /*******************************************
                                 * ref -1 : 댓글쓰기 폼.
                                 ********************************************/
-								var dd = $('<div class="col-xs-w100"  />');
+								var dd = $('<div class="col-xs-w100" style="border-bottom:solid gray 0.5px;" />');
 								if(i == -1) dd.css({"border-bottom" : "0.5px solid gray","margin": "5px 0px"});
 
                                 /*******************************************
@@ -834,9 +829,6 @@ function fnSaveReIdx(el){
                                     * 버튼그룹
                                     ********************************************/
                                     var ddBtnDiv = $('<div class="col-xs-w100" style:"min-height:30px;" />');
-//										ddBtnDiv.click(function(){
-//											fnSaveReIdx(ddBtnDiv);
-//										})
 
                                     //댓글달기
                                     var ddBtnReAdd = $('<a class="btn" id="'+tableInitData.programId+'ReAddBtn_'+dtGridRef+'_'+dtGridPRef+'" />');
@@ -1020,24 +1012,27 @@ function fnSaveReIdx(el){
                                         //댓글 리스트
                                         }else{
 
-                                            //일반
-                                            if(flag == 'VIEW'){
-                                                if(dtGridPRef == 0) ddBtnDiv.append(ddBtnReAdd);
-                                            }
-                                            //사용자확인
-                                            if(app.userEmail == dt_grid[i].inUserId);
-                                            if(flag == 'VIEW'){
-                                                ddBtnDiv.append(ddBtnUpdate);
-                                                ddBtnDiv.append(ddBtnDelete);
-                                            }
-                                            if(flag == "UPDATE" && ref == dtGridRef && reStep == dtGridPRef){
-                                                //저장
-                                                ddBtnDiv.append(ddBtnUpdateSave);
+                                            if(dt_grid[i].delYn == 'N'){
+                                                //일반
+                                                if(flag == 'VIEW'){
+                                                    if(dtGridPRef == 0) ddBtnDiv.append(ddBtnReAdd);
+                                                }
+                                                //사용자확인
+                                                if(app.userEmail == dt_grid[i].inUserId);
+                                                if(flag == 'VIEW'){
+                                                    ddBtnDiv.append(ddBtnUpdate);
+                                                    ddBtnDiv.append(ddBtnDelete);
+                                                }
+                                                if(flag == "UPDATE" && ref == dtGridRef && reStep == dtGridPRef){
+                                                    //저장
+                                                    ddBtnDiv.append(ddBtnUpdateSave);
+                                                }
+
+                                                if(dtGridRef == 0 && dtGridPRef == reStep){
+                                                    ddBtnDiv.append(ddBtnReSave)
+                                                }
                                             }
 
-                                            if(dtGridRef == 0 && dtGridPRef == reStep){
-                                                ddBtnDiv.append(ddBtnReSave)
-                                            }
                                         }
                                     }
 
@@ -1062,8 +1057,6 @@ function fnSaveReIdx(el){
 							}
 					}
 				});
-
-    		//$('#'+tableInitData.programId+'ViewArea').after(reBody);
     }
 
 }(window, jQuery));
