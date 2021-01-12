@@ -18,7 +18,7 @@ public class BlogRestController {
     /***************************************
      * 블로그 리스트 조회
      ***************************************/
-    @GetMapping("/blog/list")
+    @GetMapping("/i/blog/list")
     public List<BlogListResponseDto> list(){
         return blogService.findAlldesc();
     }
@@ -26,7 +26,7 @@ public class BlogRestController {
     /***************************************
      * 글 저장
      ***************************************/
-    @PostMapping("/blog/save")
+    @PostMapping("/i/blog/save")
     public void save(@RequestBody Map map){
         blogService.save((List<Map<String, Object>>)map.get("list"));
     }
@@ -34,7 +34,7 @@ public class BlogRestController {
     /***************************************
      * 글삭제
      ***************************************/
-    @DeleteMapping("/blog/delete")
+    @DeleteMapping("/i/blog/delete")
     public void deleteMaster(@RequestParam int idx){
         blogService.deleteMaster(idx);
     }
@@ -42,7 +42,7 @@ public class BlogRestController {
     /***************************************
      * 글 상세보기
      ***************************************/
-    @GetMapping("/blog/view")
+    @GetMapping("/i/blog/view")
     public List<BlogDetailListResponseDto> findById(@RequestParam int idx){
         return blogService.findById(idx);
     }
@@ -50,7 +50,7 @@ public class BlogRestController {
     /***************************************
      * 댓글 리스트 조회
      ***************************************/
-    @GetMapping("/blog/listRe")
+    @GetMapping("/i/blog/listRe")
     public List<BlogReListResponseDto> listRe(@RequestParam int idx){
         return blogService.findDesc(idx);
     }
@@ -58,13 +58,13 @@ public class BlogRestController {
     /***************************************
      * 댓글 저장
      ***************************************/
-    @PostMapping("/blog/saveRe")
+    @PostMapping("/i/blog/saveRe")
     public void saveRe(@RequestBody Map data){ blogService.saveRe(data); }
 
     /***************************************
      * 댓글 삭제
      ***************************************/
-    @DeleteMapping("/blog/deleteRe")
+    @DeleteMapping("/i/blog/deleteRe")
     public void deleteRe(@RequestBody Map data){ blogService.deleteRe(data); }
 
 }

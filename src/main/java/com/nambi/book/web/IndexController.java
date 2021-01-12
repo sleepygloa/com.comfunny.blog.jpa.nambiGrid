@@ -34,15 +34,19 @@ public class IndexController {
     /************************************************************
      * 이력서
      *************************************************************/
-    @GetMapping("/resume")
-    public String resume(){
-        return "resume";
+    @GetMapping("/resume/ko")
+    public String resume_ko(){
+        return "resume_ko";
+    }
+    @GetMapping("/resume/en")
+    public String resume_en(){
+        return "resume_en";
     }
 
     /************************************************************
      * 로그인 페이지로 이동
      *************************************************************/
-    @GetMapping("/login")
+    @GetMapping("/i/login")
     public String login(){
         return "/login";
     }
@@ -52,7 +56,7 @@ public class IndexController {
     /************************************************************
      * 메뉴 페이지로 이동
      *************************************************************/
-    @GetMapping("/menu")
+    @GetMapping("/i/menu")
     public String menu(Model model){
         return "menu";
     }
@@ -60,7 +64,7 @@ public class IndexController {
     /************************************************************
      * 블로그 페이지로 이동
      *************************************************************/
-    @GetMapping("/blog")
+    @GetMapping("/i/blog")
     public String blog(Model model){
         model.addAttribute("ADMIN_YN" , "Y");
 

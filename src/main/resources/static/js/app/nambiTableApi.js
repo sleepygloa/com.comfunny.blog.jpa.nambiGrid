@@ -206,7 +206,7 @@ function fnSaveReIdx(el){
     	//그리드 컬럼 만드는 로직
     	$.ajax({
     	    type:"GET",
-    		url : "/"+tableInitData.programId + "/list",
+    		url : "/i/"+tableInitData.programId + "/list",
     		dataType : "json",
     		contentType:"application/json",
     		success : function(result){
@@ -354,9 +354,9 @@ function fnSaveReIdx(el){
 			//컨텐츠 개수 초기화
 	    	contentLength = 0;
 	    	$.ajax({
-				url	 	: tableInitData.programId + '/view',
+				url	 	: "/i/"+tableInitData.programId + '/view',
 				data    : {
-				"idx" : rowId
+				    "idx" : rowId
 				},
 				type 	: "GET",
 				async	: false,
@@ -395,11 +395,12 @@ function fnSaveReIdx(el){
                     }
 
                     var div = $('<div class="col-xs-w100" />');
-                        var div3 = $('<div class="col-xs-w100" />');
-                        var categoryLabel = $('<span >카테고리</span>')
-                        var categoryBox = $('<input id="'+tableInitData.programId+'Title" />');
+                        var div3 = $('<div class="col-xs-w100" style="margin-bottom:10px;" />');
                         var subjectLabel = $('<span >제목</span>')
-                        var subjectBox = $('<input id="'+tableInitData.programId+'Subject" />');
+                        var subjectBox = $('<input class="col-xs-w100" id="'+tableInitData.programId+'Subject" style="border:0px; height:60px; font-size:30px;text-align:center;" />');
+                        var div4 = $('<div class="col-xs-w100" />');
+                        var categoryLabel = $('<span >카테고리</span>')
+                        var categoryBox = $('<input  id="'+tableInitData.programId+'Title" />');
 
                         //flag 검사
                             if(flag == 'UPDATE' || flag == 'VIEW'){
@@ -414,8 +415,10 @@ function fnSaveReIdx(el){
                             }
 
 
-                        div3.append(categoryLabel).append(categoryBox).append(subjectLabel).append(subjectBox);
+                        div3.append(subjectLabel).append(subjectBox);
+                        div4.append(categoryLabel).append(categoryBox);
                     div.append(div3);
+                    div.append(div4);
 
                     $('#'+tableInitData.programId+'View').append(div);
 
@@ -503,7 +506,7 @@ function fnSaveReIdx(el){
         }
 
         $.ajax({
-            url      : tableInitData.programId + "/save",
+            url      : "/i/"+tableInitData.programId + "/save",
             data     : JSON.stringify({"list":list}),
             type     : 'POST',
             contentType : 'application/json; charset=utf-8',
@@ -519,7 +522,7 @@ function fnSaveReIdx(el){
     *******************************************************/
     function blogDelete(rowId){
         $.ajax({
-            url      : tableInitData.programId + "/delete",
+            url      : "/i/"+tableInitData.programId + "/delete",
             data     : {
             "idx": rowId
             },
@@ -733,7 +736,7 @@ function fnSaveReIdx(el){
     	//그리드 컬럼 만드는 로직
     	$.ajax({
     	    type        : "GET",
-    		url         : tableInitData.programId + "/listRe",
+    		url         : "/i/"+tableInitData.programId + "/listRe",
             data        : {"idx" : idx},
     		dataType    : "json",
     		contentType : "application/json; charset=utf-8",
@@ -878,7 +881,7 @@ function fnSaveReIdx(el){
                                         }
 
                                         $.ajax({
-                                            url		: tableInitData.programId + "/saveRe",
+                                            url		: "/i/"+tableInitData.programId + "/saveRe",
                                             type	: "POST",
                                             data	: JSON.stringify(data),
                                             contentType : "application/json; charset=utf-8",
@@ -916,7 +919,7 @@ function fnSaveReIdx(el){
                                         }
 
                                         $.ajax({
-                                            url		: tableInitData.programId + "/saveRe",
+                                            url		: "/i/"+tableInitData.programId + "/saveRe",
                                             type	: "POST",
                                             data	: JSON.stringify(data),
                                             contentType : "application/json; charset=utf-8",
@@ -956,7 +959,7 @@ function fnSaveReIdx(el){
                                         }
 
                                         $.ajax({
-                                            url		: tableInitData.programId + "/saveRe",
+                                            url		: "/i/"+tableInitData.programId + "/saveRe",
                                             type	: "POST",
                                             data	: JSON.stringify(data),
                                             contentType : "application/json; charset=utf-8",
@@ -987,7 +990,7 @@ function fnSaveReIdx(el){
                                         }
 
                                         $.ajax({
-                                            url		: tableInitData.programId + "/deleteRe",
+                                            url		: "/i/"+tableInitData.programId + "/deleteRe",
                                             type	: "DELETE",
                                             data	: JSON.stringify(data),
                                             contentType : "application/json; charset=utf-8",
