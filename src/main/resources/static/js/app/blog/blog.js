@@ -41,8 +41,9 @@ var blogJs = function(){
 					{id:'hashIndex', 	title:'분류',width:"100px"},
 					{id:'subject',   	title:'제목',width:"500px"}
 				],
-				viewContents : true,
+				viewContents : false,
 				viewContentsRe : true,
+				markdown : true,
 				btn			: ['insert', 'update', 'save', 'delete']
 			});
 

@@ -68,8 +68,28 @@ function fnSaveReIdx(el){
     var tableInitData = {}
     //그리드 초기화
     $.fn.fnList = function(data){
+
         data["uProgramId"] = data["programId"].charAt(0).toUpperCase() + data["programId"].slice(1);
         tableInitData = data;
+
+        /**********************
+        * 기본 div 세팅
+        ***********************/
+        var container = $('#'+tableInitData.programId+'Container');
+        if(tableInitData.viewContents){
+            if($('#'+tableInitData.programId+'View').length == 0) container.append($('<div id="blogView" class="viewContainer col-xs-w100" style="margin-bottom:20px;" />'));
+            if($('#'+tableInitData.programId+'ViewHidden').length == 0) container.append($('<div id="blogView" style="width:0px;height:0px; z-index=0;" />'));
+        }
+
+        if(tableInitData.markdown){
+            if($('#'+tableInitData.programId+'Md').length == 0) container.append($('<div id="'+tableInitData.programId+'Md" />'));
+
+            getViewMarkdownForm();
+        }
+        if(tableInitData.viewContentsRe){
+            if($('#'+tableInitData.programId+'Re').length == 0) container.append($('<div id="blogRe" class="col-xs-w100"  />'));
+        }
+
 
         //그리드 스트링.
     	var grid = '';
@@ -135,7 +155,11 @@ function fnSaveReIdx(el){
 	        		    var save = $('<a href="#" id="'+data.programId+'SaveBtn" class="btn btn-save btn-sm pull-right" >글 저장</a>');
                         save.on('click', function(){
                             if(confirm("저장 하시겠습니까?")){
-                                blogSave(parseInt($('.td_row_s_'+rowId+'_idx').text()));
+                                if(tableInitData.viewContents){
+                                    blogSave(parseInt($('.td_row_s_'+rowId+'_idx').text()));
+                                }else if(tableInitData.markdown){
+                                    blogSaveMd(parseInt($('.td_row_s_'+rowId+'_idx').text()));
+                                }
                             }
                         })
 
@@ -197,6 +221,9 @@ function fnSaveReIdx(el){
 
         getDataList();
 
+
+
+
     	//첫행 블러오기
 //    	if(tableInitData.data1.length > 0) getView('VIEW', 0);
     }
@@ -209,6 +236,7 @@ function fnSaveReIdx(el){
     		url : "/i/"+tableInitData.programId + "/list",
     		dataType : "json",
     		contentType:"application/json",
+    		async : false,
     		success : function(result){
                 tableInitData.dtData1 = result;
                 tableInitData.dtInitData1 = result;
@@ -236,7 +264,6 @@ function fnSaveReIdx(el){
 
                     tbtr.append(tbthData);
 
-
                     var rowData = result[i];
                     var keyName = Object.keys(rowData);
 
@@ -255,7 +282,7 @@ function fnSaveReIdx(el){
                                 if(tdHidden) tdHiddenCss = 'none';
 
                                 var tbth = $('<td />');
-                                tbth.addClass('td_row_'+i);
+                                tbth.addClass('td_row_'+i+'_'+k);
                                 tbth.css('width', tdWidth);
                                 tbth.css('display', tdHiddenCss);
                                 var tbthspan = $('<span class="td_row_s_'+i+'_'+k+'" style="display:show"></span>');
@@ -266,12 +293,18 @@ function fnSaveReIdx(el){
 
                                 tbtr.append(tbth);
 
-                                if(tableInitData.viewContents){
-                                    tbth.on('click', function(){
-                                        rowId = parseInt(tbth.attr('class').split('td_row_')[1]); //rowId 세팅
-                                        getView('VIEW', parseInt($('.td_row_s_'+rowId+'_idx').text()));
-                                    });
-                                }
+
+                                tbth.on('click', function(){
+                                    rowId = parseInt(tbth.attr('class').split('td_row_')[1]); //rowId 세팅
+                                    if(tableInitData.viewContents) getView('VIEW', parseInt($('.td_row_s_'+rowId+'_idx').text()));
+                                    if(tableInitData.viewContentsRe) {
+                                        var reBody = $('#'+tableInitData.programId+'Re')
+                                        reBody.empty();
+                                        getViewReContent('VIEW');
+                                    }
+
+                                });
+
                                 return false;
                             }
                         });
@@ -442,14 +475,6 @@ function fnSaveReIdx(el){
 //							$('.'+programInitData.programId+'UpdateFlag').css('display', 'block');
 //						}
 
-
-                        if(tableInitData.viewContentsRe){
-
-                            var reBody = $('#'+tableInitData.programId+'Re')
-                            reBody.empty();
-                            reBody.css("display","block");
-                            getViewReContent('VIEW');
-                        }
 				}
 			})
 
@@ -512,6 +537,29 @@ function fnSaveReIdx(el){
             contentType : 'application/json; charset=utf-8',
             success  : function(data) {
 
+                alert("저장되었습니다.");
+                getDataList();
+            }
+        });
+    }
+
+    /******************************************************
+    * 글 저장 (md)
+    *******************************************************/
+    function blogSaveMd(idx){
+        var title = $('#'+tableInitData.programId+'Title').val();
+        var content = $('#'+tableInitData.programId+'Content').val();
+
+        $.ajax({
+            url      : "/i/"+tableInitData.programId + "/mdSave",
+            data     : {
+                idx : idx,
+                title : title,
+                content : content
+            },
+            type     : 'POST',
+            contentType : 'application/json; charset=utf-8',
+            success  : function(data) {
                 alert("저장되었습니다.");
                 getDataList();
             }
@@ -1062,5 +1110,37 @@ function fnSaveReIdx(el){
 				});
     }
 
+
+
+    /***************************************
+    * Markdown 폼
+    ****************************************/
+    function getViewMarkdownForm(){
+        $.ajax({
+            type        : "GET",
+            url         : "/i/blog/md",
+            contentType : "application/html",
+            async       : false,
+            success     : function(result){
+                console.log(result);
+                $('#'+tableInitData.programId+'Md').append(result);
+            }
+        });
+    }
+    /***************************************
+    * Markdown 미리보기
+    ****************************************/
+    function getViewMarkdownView(){
+        $.ajax({
+            type        : "GET",
+            url         : "/i/blog/mdView",
+            contentType : "application/html",
+            async       : false,
+            success     : function(result){
+                console.log(result);
+                $('#'+tableInitData.programId+'Md').append(result);
+            }
+        });
+    }
 }(window, jQuery));
 
