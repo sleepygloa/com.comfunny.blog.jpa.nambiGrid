@@ -50,6 +50,7 @@ function fnMakeCombo(targetStr, data){
 }
 var clickCnt = -1; //클릭시 행번호
 var rowId = -1;
+var rowColNm = "";
 var contentLength = 0;
 var focusIdx = -1;
 function fnSaveIdx(i){
@@ -108,7 +109,7 @@ function fnSaveReIdx(el){
 
     	var editable = false;
     	if(data.editable) editable = data.editable;
-    	var editableFlag = false;
+    	tableInitData.editableFlag = false;
 
     	//그리드 상단 그룹 버튼
     	var gridDivContainer = $('<div class="col-xs-w100" style="margin-bottom:50px;"/>');
@@ -165,11 +166,23 @@ function fnSaveReIdx(el){
 
 	        		    gridBtnGrpList.append(save);
 	        		}else if(btnName == 'addRow'){
-	        		    gridBtnGrpList.append($('<a href="#" id="'+data.programId+'AddRowBtn" class="btn btn-add btn-sm pull-right" >행추가</a>'));
+	        		    var addRow = $('<a href="#" id="'+data.programId+'AddRowBtn" class="btn btn-add btn-sm pull-right" >행 추가</a>');
+                        addRow.on('click', function(){
+                            blogAddRow();
+                        })
+
+	        		    gridBtnGrpList.append(addRow);
 	        		}else if(btnName == 'delRow'){
 	        		    gridBtnGrpList.append($('<a href="#" id="'+data.programId+'DelRowBtn" class="btn btn-delete btn-sm pull-right" >행삭제</a>'));
 	        		}else if(btnName == 'saveRow'){
-	        		    gridBtnGrpList.append($('<a href="#" id="'+data.programId+'SaveRowBtn" class="btn btn-save btn-sm pull-right" >행저장</a>'));
+	        		    var save = $('<a href="#" id="'+data.programId+'SaveRowBtn" class="btn btn-save btn-sm pull-right" >행 저장</a>');
+                        save.on('click', function(){
+                            if(confirm("저장 하시겠습니까?")){
+                                blogSaveRow(parseInt($('.td_row_s_'+rowId+'_idx').text()));
+                            }
+                        })
+
+	        		    gridBtnGrpList.append(save);
 	        		}
 	        	}
 	    	}
@@ -188,9 +201,12 @@ function fnSaveReIdx(el){
 //    		thtr.addClass('text-primary');
 
     	var ththData = '';
-    	//FLAG
-		ththData += '<th>'+'FLAG'+'</th>';
-		//FLAG End
+    	//flag
+
+		//flag End
+        if(tableInitData.editable){
+            ththData += '<th style="width:50px;">'+' '+'</th>';
+        }
 
     	for(var i = 0; i < data.colOption.length; i++){
 			var tdTitle = '', tdWidth = '100px', tdHidden = false, tdHiddenCss = 'show';
@@ -239,7 +255,9 @@ function fnSaveReIdx(el){
     		async : false,
     		success : function(result){
                 tableInitData.dtData1 = result;
-                tableInitData.dtInitData1 = result;
+                tableInitData.dtInitData1 = JSON.parse(JSON.stringify(result));
+                tableInitData.dtInitDataLength = tableInitData.dtInitData1.length;
+
                 /**
                  * Grid Option
                  * Row 에 대한 IDX 값 세팅
@@ -251,98 +269,8 @@ function fnSaveReIdx(el){
                 var tbody = $('#'+tableInitData.programId+'Tbody');
                 tbody.empty();
 
-                for(var i = 0; i < result.length; i++){
-                    trCnt++;
-                    var tbtr = $('<tr id="tr_row_'+i+'" class="tr_row_'+i+'" />');
-
-                    //글 상세 보기 속성 있을때 클래스 추가
-                    if(tableInitData.viewContents){
-                        tbtr.addClass('viewContents_'+result[i].menuSeq);
-                    }
-
-                    var tbthData = $('<td class="td_row_flag" ><i class="fa" ></i><input class="td_row_flag_input" type="hidden" value="" /></td>');
-
-                    tbtr.append(tbthData);
-
-                    var rowData = result[i];
-                    var keyName = Object.keys(rowData);
-
-                    for(var j = 0; j < tableInitData.colOption.length; j++){
-                        $.each(rowData, function(k, v){
-                            var tdTitle = '';
-                            var tdWidth = '100px';
-                            var tdHidden = false;
-                            var tdHiddenCss = 'show';
-
-
-                            if(tableInitData.colOption[j].id == k){
-                                (tableInitData.colOption[j].title != '' ? tdTitle = tableInitData.colOption[j].title : tdTitle = tableInitData.colOption[j].id);
-                                (tableInitData.colOption[j].width != '' ? tdWidth = tableInitData.colOption[j].width : tdWidth = tdWidth);
-                                (tableInitData.colOption[j].hidden != '' ? tdHidden = tableInitData.colOption[j].hidden : tdHidden = false);
-                                if(tdHidden) tdHiddenCss = 'none';
-
-                                var tbth = $('<td />');
-                                tbth.addClass('td_row_'+i+'_'+k);
-                                tbth.css('width', tdWidth);
-                                tbth.css('display', tdHiddenCss);
-                                var tbthspan = $('<span class="td_row_s_'+i+'_'+k+'" style="display:show"></span>');
-                                var tbthinput = $('<input type="text" class="td_row_i_'+i+'_'+k+'"  style="display:none;width:100%" />');
-
-                                tbth.append(tbthspan);
-                                tbth.append(tbthinput);
-
-                                tbtr.append(tbth);
-
-
-                                tbth.on('click', function(){
-                                    rowId = parseInt(tbth.attr('class').split('td_row_')[1]); //rowId 세팅
-                                    if(tableInitData.viewContents) getView('VIEW', parseInt($('.td_row_s_'+rowId+'_idx').text()));
-                                    if(tableInitData.viewContentsRe) {
-                                        var reBody = $('#'+tableInitData.programId+'Re')
-                                        reBody.empty();
-                                        getViewReContent('VIEW');
-                                    }
-
-                                });
-
-                                return false;
-                            }
-                        });
-                    }
-
-                    if(tableInitData.editable){
-                        tbtr.dblclick(function(e){
-                            rowId = $(this).attr('class').split('tr_row_')[1];
-                            clickCnt = rowId;
-
-                            $('input[class="td_row_i_'+rowId+'"').on('change blur', function(){
-                                $($(this).siblings()[0]).text($(this).val());
-
-                                $('input[class^="td_row_i_'+rowId+'"').css('display', 'none');
-                                $('span[class^="td_row_s_'+rowId+'"').css('display', 'block');
-
-                                rowId = -1;
-                                editableFlag = false;
-                            });
-
-                            if(!editableFlag){
-                                $('input[class^="td_row_i_'+rowId+'"').css('display', 'block');
-                                $('span[class^="td_row_s_'+rowId+'"').css('display', 'none');
-
-                                editableFlag = true;
-                            }else{
-                                $('input[class^="td_row_i_'+rowId+'"').css('display', 'none');
-                                $('span[class^="td_row_s_'+rowId+'"').css('display', 'block');
-
-                                rowId = -1;
-                                editableFlag = false;
-                            }
-                        });
-
-                    }else{
-                        tbody.append(tbtr);
-                    }
-
+                for(var i = 0; i < tableInitData.dtData1.length; i++){
+                    blogAddRow();
                 }
 
 
@@ -354,15 +282,25 @@ function fnSaveReIdx(el){
 
     //데이터 넣기
     function getList(){
-        var result = tableInitData.dtInitData1;
+        var result = tableInitData.dtData1;
 
         for(var i = 0; i < result.length; i++){
-            trCnt++;
             var tbtr = $('<tr id="tr_row_'+i+'" class="tr_row_'+i+'" />');
-
 
             var rowData = result[i];
             var keyName = Object.keys(rowData);
+
+            if(tableInitData.editable){
+                for(var j = 0; j < keyName.length; j++){
+                    if(keyName[j] == "flag"){
+                        $('.td_row_s_'+i+'_flag').text(result[i].flag);
+                        $('.td_row_i_'+i+'_flag').val(result[i].flag);
+
+                        break;
+                    }
+                }
+            }
+
 
             for(var j = 0; j < tableInitData.colOption.length; j++){
                 $.each(rowData, function(k, v){
@@ -378,6 +316,42 @@ function fnSaveReIdx(el){
             }
 
         }
+    }
+
+    /******************************************************
+    * dataSet flag 변경
+    *******************************************************/
+    function setDateSetFlag (idx){
+
+        var flag = false;
+        var initKey = Object.keys(tableInitData.dtInitData1[idx]);
+        var curKey = Object.keys(tableInitData.dtData1[idx]);
+
+        for(var i = 0; i < initKey.length; i++){
+            if(initKey[i] == "flag") continue;
+            for(var j = 0; j < curKey.length; j++){
+
+                if(initKey[i] == curKey[j]){
+                    if(tableInitData.dtInitData1[idx][initKey[i]] != tableInitData.dtData1[idx][curKey[i]]){
+                        flag = true;
+                    }
+                    break;
+                }
+            }
+        }
+        if(flag) {
+            if(trCnt >= tableInitData.dtInitDataLength){
+                (tableInitData.dtData1[idx])["flag"] = "I";
+            }else{
+                (tableInitData.dtData1[idx])["flag"] = "U";
+            }
+
+        }else{
+            (tableInitData.dtData1[idx])["flag"] = "";
+        }
+            getList();
+
+
     }
 
     /******************************************************
@@ -429,26 +403,30 @@ function fnSaveReIdx(el){
 
                     var div = $('<div class="col-xs-w100" />');
                         var div3 = $('<div class="col-xs-w100" style="margin-bottom:10px;" />');
-                        var subjectLabel = $('<span >제목</span>')
-                        var subjectBox = $('<input class="col-xs-w100" id="'+tableInitData.programId+'Subject" style="border:0px; height:60px; font-size:30px;text-align:center;" />');
+                        var titleLabel = $('<span >제목</span>')
+                        var titleBox = $('<input class="col-xs-w100" id="'+tableInitData.programId+'Title" style="border:0px; height:60px; font-size:30px;text-align:center;" />');
                         var div4 = $('<div class="col-xs-w100" />');
                         var categoryLabel = $('<span >카테고리</span>')
-                        var categoryBox = $('<input  id="'+tableInitData.programId+'Title" />');
+                        var categoryBox = $('<input  id="'+tableInitData.programId+'CategoryA" />');
+                        //선택된 글 입력
+
+
+
 
                         //flag 검사
                             if(flag == 'UPDATE' || flag == 'VIEW'){
                                 categoryBox.val(dt_grid[0].catagoryA);
-                                subjectBox.val(dt_grid[0].subject);
+                                titleBox.val(dt_grid[0].title);
                             }
 
                             //글 보기
                             if(flag == 'VIEW'){
                                 categoryBox.attr('readonly', true);
-                                subjectBox.attr('readonly', true);
+                                titleBox.attr('readonly', true);
                             }
 
 
-                        div3.append(subjectLabel).append(subjectBox);
+                        div3.append(titleLabel).append(titleBox);
                         div4.append(categoryLabel).append(categoryBox);
                     div.append(div3);
                     div.append(div4);
@@ -479,6 +457,175 @@ function fnSaveReIdx(el){
 			})
 
 
+    }
+
+    /******************************************************
+    * 그리드 행 추가
+    *******************************************************/
+    function blogAddRow(){
+        trCnt++;
+        rowId = trCnt;
+        var tbody = $('#'+tableInitData.programId+'Tbody');
+        var tbtr = $('<tr id="tr_row_'+trCnt+'" class="tr_row_'+trCnt+'" />');
+
+        //글 상세 보기 속성 있을때 클래스 추가
+        if(tableInitData.viewContents){
+            tbtr.addClass('viewContents_'+tableInitData.dtData1[i].menuSeq);
+        }
+
+        var rowData = tableInitData.dtData1[0];
+        var keyName = Object.keys(rowData);
+        console.log(tableInitData.dtInitData1.length, trCnt);
+        if(tableInitData.dtInitData1.length <= trCnt){
+            var addRow = {}
+            for(var j = 0; j < tableInitData.colOption.length; j++){
+                $.each(rowData, function(k, v){
+
+                    addRow[k] = ""
+
+                });
+            }
+            tableInitData.dtInitData1[trCnt] = JSON.parse(JSON.stringify(addRow));
+            tableInitData.dtData1[trCnt] = addRow
+
+        }
+
+
+        //플래그처리
+        if(tableInitData.editable){
+
+            tableInitData.dtData1[trCnt].flag = "";
+            tableInitData.dtInitData1[trCnt].flag = "";
+            var tbth = $('<td />');
+            tbth.addClass('td_row_'+trCnt+'_flag');
+            tbth.css('width', '50px');
+            var tbthspan = $('<span class="td_row_s_'+trCnt+'_flag" style="display:show"></span>');
+            var tbthinput = $('<input type="text" class="td_row_i_'+trCnt+'_flag"  style="display:none;width:100%" />');
+
+            tbth.append(tbthspan);
+            tbth.append(tbthinput);
+
+            tbtr.append(tbth);
+        }
+
+
+        for(var j = 0; j < tableInitData.colOption.length; j++){
+            $.each(rowData, function(k, v){
+                var tdTitle = '';
+                var tdWidth = '100px';
+                var tdHidden = false;
+                var tdHiddenCss = 'show';
+
+
+                if(tableInitData.colOption[j].id == k){
+                    (tableInitData.colOption[j].title != '' ? tdTitle = tableInitData.colOption[j].title : tdTitle = tableInitData.colOption[j].id);
+                    (tableInitData.colOption[j].width != '' ? tdWidth = tableInitData.colOption[j].width : tdWidth = tdWidth);
+                    (tableInitData.colOption[j].hidden != '' ? tdHidden = tableInitData.colOption[j].hidden : tdHidden = false);
+                    if(tdHidden) tdHiddenCss = 'none';
+
+                    var tbth = $('<td />');
+                    tbth.addClass('td_row_'+trCnt+'_'+k);
+                    tbth.css('width', tdWidth);
+                    tbth.css('display', tdHiddenCss);
+                    var tbthspan = $('<span class="td_row_s_'+trCnt+'_'+k+'" style="display:show"></span>');
+                    var tbthinput = $('<input type="text" class="td_row_i_'+trCnt+'_'+k+'"  style="display:none;width:100%" />');
+
+                    tbth.append(tbthspan);
+                    tbth.append(tbthinput);
+
+                    tbtr.append(tbth);
+
+
+                    tbth.on('click', function(){
+                        rowId = parseInt(tbth.attr('class').split('td_row_')[1]); //rowId 세팅
+                        if(tableInitData.viewContents) getView('VIEW', parseInt($('.td_row_s_'+rowId+'_idx').text()));
+                        if(tableInitData.viewContentsRe) {
+                            var reBody = $('#'+tableInitData.programId+'Re')
+                            reBody.empty();
+                            getViewReContent('VIEW');
+                        }
+
+                    });
+
+                    return false;
+                }
+            });
+        }
+
+        if(tableInitData.editable){
+            tbtr.dblclick(function(e){
+                rowId = $(this).attr('class').split('tr_row_')[1];
+                clickCnt = rowId;
+
+                $('input[class^="td_row_i_'+rowId+'"').on('change', function(e){
+
+                    rowColNm = $(this).attr('class').split('td_row_i_'+rowId+'_')[1];
+                    if(rowColNm == "flag" || rowColNm == undefined) return;;
+
+                    $($(this).siblings()[0]).text($(this).val());
+
+                    //데이터셋 변경
+                    (tableInitData.dtData1[rowId])[rowColNm] = ($(this).val() == "" ? null : $(this).val());
+
+                    setDateSetFlag(rowId);
+
+                    $('input[class^="td_row_i_'+rowId+'"').css('display', 'none');
+                    $('span[class^="td_row_s_'+rowId+'"').css('display', 'block');
+
+                    rowId = -1;
+                    tableInitData.editableFlag = false;
+                });
+
+                if(!tableInitData.editableFlag){
+                    $('input[class^="td_row_i_'+rowId+'"').css('display', 'block');
+                    $('span[class^="td_row_s_'+rowId+'"').css('display', 'none');
+
+                    tableInitData.editableFlag = true;
+                }else{
+                    $('input[class^="td_row_i_'+rowId+'"').css('display', 'none');
+                    $('span[class^="td_row_s_'+rowId+'"').css('display', 'block');
+
+                    rowId = -1;
+                    tableInitData.editableFlag = false;
+                }
+            });
+
+        }
+
+
+        tbody.append(tbtr);
+
+    }
+    /******************************************************
+    * 그리드 저장
+    *******************************************************/
+    function blogSaveRow(idx){
+
+        var list = [];
+
+
+        for(var i = 0; i < tableInitData.dtData1.length; i++){
+            var data = tableInitData.dtData1[i];
+            if(data.flag == "I" || data.flag == "D" || data.flag == "U"){
+                list.push(data);
+            }
+        }
+
+
+        $.ajax({
+            url      : "/i/"+tableInitData.programId + "/saveRow",
+            data     : JSON.stringify({"list":list}),
+            type     : 'POST',
+            contentType : 'application/json; charset=utf-8',
+            success  : function() {
+
+                alert("저장되었습니다.");
+                getDataList();
+            }
+            ,error : function(){
+                alert("error");
+            }
+        });
     }
 
     /******************************************************
@@ -522,8 +669,7 @@ function fnSaveReIdx(el){
                         type 			: initData.type,
                         content 		: initData.text,
                         imgWidthScale 	: initData.imgWidthScale,
-                        title : $('#'+tableInitData.programId+'Title').val(),
-                        subject : $('#'+tableInitData.programId+'Subject').val()
+                        title : $('#'+tableInitData.programId+'Title').val()
 
                 }
                 list.push(dataList);
@@ -549,13 +695,15 @@ function fnSaveReIdx(el){
     function blogSaveMd(idx){
         var title = $('#'+tableInitData.programId+'Title').val();
         var content = $('#'+tableInitData.programId+'Content').val();
+        var url = $('#'+tableInitData.programId+'Url').val();
 
         $.ajax({
-            url      : "/i/"+tableInitData.programId + "/mdSave",
+            url      : "/i/"+tableInitData.programId + "/saveMd",
             data     : {
                 idx : idx,
                 title : title,
-                content : content
+                content : content,
+                url     : url
             },
             type     : 'POST',
             contentType : 'application/json; charset=utf-8',
@@ -789,7 +937,6 @@ function fnSaveReIdx(el){
     		dataType    : "json",
     		contentType : "application/json; charset=utf-8",
     		success     : function(result){
-                console.log(result);
 						//CSS
 						var reContent = 0;
 						var contentWidth = 90;
@@ -898,8 +1045,6 @@ function fnSaveReIdx(el){
 
                                         var el = $(this);
                                         var split = el.attr("id").split("_");
-                                        console.log(split);
-
                                         getViewReContent('UPDATE', split[1], split[2]);
                                     })
 

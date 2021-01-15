@@ -35,11 +35,8 @@ var blogJs = function(){
 			    editable 	: false,
 				colOption	: [
 					{id:'idx', 		    title:'순번', width:"50px"},
-					{id:'categoryA', 	title:'분류',width:"100px"},
-					{id:'categoryB', 	title:'분류',width:"100px"},
-					{id:'categoryC', 	title:'분류',width:"100px"},
-					{id:'hashIndex', 	title:'분류',width:"100px"},
-					{id:'subject',   	title:'제목',width:"500px"}
+					{id:'title',   	    title:'제목',width:"500px"},
+					{id:'url',   	    title:'Github',width:"500px"}
 				],
 				viewContents : false,
 				viewContentsRe : true,

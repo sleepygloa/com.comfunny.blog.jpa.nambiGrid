@@ -2,23 +2,26 @@
 
     <div class="row mt-5">
         <div class="col">
-            <form method="POST" th:object="${post}">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="blogTitle" placeholder="Title" autocomplete="off" class="form-control"
+                       th:field="*{title}" value=""/>
+            </div>
 
+            <div class="form-group">
+                <label for="title">Url:</label>
+                <input type="text" id="blogUrl" placeholder="Url" autocomplete="off" class="form-control"
+                       th:field="*{url}" value=""/>
+            </div>
 
-                <div class="form-group">
-                    <label for="title">Title:</label>
-                    <input type="text" id="blogTitle" placeholder="Title" autocomplete="off" class="form-control"
-                           th:field="*{title}" value=""/>
-                </div>
+            <div class="form-group">
+                <label for="content">Content:</label>
+                <textarea type="text" rows="4"  id="blogContent" placeholder="Content" class="form-control"
+                          th:field="*{content}" autocomplete="off"></textarea>
+            </div>
 
-                <div class="form-group">
-                    <label for="content">Content:</label>
-                    <textarea type="text" rows="4"  id="blogContent" placeholder="Content" class="form-control"
-                              th:field="*{content}" autocomplete="off"></textarea>
-                </div>
+            <button class="btn btn-primary" type="submit">Submit form</button>
 
-                <button class="btn btn-primary" type="submit">Submit form</button>
-            </form>
         </div>
     </div>
 
