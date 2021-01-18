@@ -20,6 +20,7 @@ public class MenuListResponseDto {
     private String delYn;
     private String inUserId;
     private String upUserId;
+    private Long childCnt;
 
     public MenuListResponseDto(Menu entity) {
         this.menuSeq = entity.getMenuSeq();
@@ -36,6 +37,7 @@ public class MenuListResponseDto {
         this.delYn = entity.getDelYn();
         this.inUserId = entity.getInUserId();
         this.upUserId = entity.getUpUserId();
+        this.childCnt = entity.getChildCnt();
 
     }
 }

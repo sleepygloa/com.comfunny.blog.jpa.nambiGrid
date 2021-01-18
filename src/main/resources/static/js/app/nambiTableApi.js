@@ -254,6 +254,7 @@ function fnSaveReIdx(el){
     		contentType:"application/json",
     		async : false,
     		success : function(result){
+    		    trCnt = -1;
                 tableInitData.dtData1 = result;
                 tableInitData.dtInitData1 = JSON.parse(JSON.stringify(result));
                 tableInitData.dtInitDataLength = tableInitData.dtInitData1.length;
@@ -276,7 +277,12 @@ function fnSaveReIdx(el){
 
                 //데이터 입력
                 getList();
-    		}
+
+                return;
+    		},
+    		error : function(){
+    		},
+    		fail : function(){}
     	});
     }
 
@@ -475,7 +481,7 @@ function fnSaveReIdx(el){
 
         var rowData = tableInitData.dtData1[0];
         var keyName = Object.keys(rowData);
-        console.log(tableInitData.dtInitData1.length, trCnt);
+
         if(tableInitData.dtInitData1.length <= trCnt){
             var addRow = {}
             for(var j = 0; j < tableInitData.colOption.length; j++){
@@ -553,7 +559,7 @@ function fnSaveReIdx(el){
         }
 
         if(tableInitData.editable){
-            tbtr.dblclick(function(e){
+            tbtr.on('dblclick', function(e){
                 rowId = $(this).attr('class').split('tr_row_')[1];
                 clickCnt = rowId;
 
@@ -569,12 +575,8 @@ function fnSaveReIdx(el){
 
                     setDateSetFlag(rowId);
 
-                    $('input[class^="td_row_i_'+rowId+'"').css('display', 'none');
-                    $('span[class^="td_row_s_'+rowId+'"').css('display', 'block');
 
-                    rowId = -1;
-                    tableInitData.editableFlag = false;
-                });
+                })
 
                 if(!tableInitData.editableFlag){
                     $('input[class^="td_row_i_'+rowId+'"').css('display', 'block');
@@ -588,7 +590,7 @@ function fnSaveReIdx(el){
                     rowId = -1;
                     tableInitData.editableFlag = false;
                 }
-            });
+            })
 
         }
 

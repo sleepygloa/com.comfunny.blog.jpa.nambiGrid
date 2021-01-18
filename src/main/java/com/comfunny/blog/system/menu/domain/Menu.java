@@ -43,10 +43,12 @@ public class Menu extends BaseTimeEntity {
     @Column(nullable = false)
     String upUserId;
 
+    Long childCnt;
+
     @Builder
     public Menu(Long menuSeq, Long menuParentSeq, Long menuLev,
-                String menuCd, String menuNm, String menuIcon, String menuUrl, String menuOrder, String deviceFlag, String blogYn, String useYn,
-                String delYn, String inUserId, String upUserId
+                 String menuCd, String menuNm, String menuIcon, String menuUrl, String menuOrder, String deviceFlag, String blogYn, String useYn,
+                 String delYn, String inUserId, String upUserId, Long childCnt
     ){
         this.menuSeq = menuSeq;
         this.menuParentSeq = menuParentSeq;
@@ -62,6 +64,7 @@ public class Menu extends BaseTimeEntity {
         this.delYn = delYn;
         this.inUserId = inUserId;
         this.upUserId = upUserId;
+        this.childCnt = childCnt;
     }
 
 

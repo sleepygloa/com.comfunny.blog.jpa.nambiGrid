@@ -1,7 +1,5 @@
 package com.comfunny.blog.system.menu.controller;
 
-import com.comfunny.blog.posts.dto.PostsSaveRequestDto;
-import com.comfunny.blog.posts.dto.PostsUpdateRequestDto;
 import com.comfunny.blog.system.menu.dto.MenuSaveRequestDto;
 import com.comfunny.blog.system.menu.service.MenuService;
 import com.comfunny.blog.system.menu.dto.MenuListResponseDto;
@@ -20,7 +18,7 @@ public class MenuRestController {
     private final MenuService menuService;
 
     @GetMapping("/i/menu/list")
-    public List<MenuListResponseDto> menuList(){
+    public List<MenuListResponseDto> list(){
         return menuService.findAlldesc();
     }
 
@@ -32,5 +30,6 @@ public class MenuRestController {
 
         menuService.save(list);
     }
+
 
 }
