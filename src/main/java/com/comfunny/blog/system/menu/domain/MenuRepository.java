@@ -19,8 +19,21 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
             " INNER JOIN cte C" +
             "         ON A.MENU_PARENT_SEQ = C.MENU_SEQ" +
             "     )" +
-            "SELECT * FROM cte ", nativeQuery = true)
+            "SELECT * FROM cte ORDER BY cast(MENU_ORDER as unsigned) ", nativeQuery = true)
     List<Menu> findAllDesc();
+
+    @Query(value = "SELECT max(menuSeq)+1 as max FROM Menu " )
+    Long findMaxMaster();
+
+    @Query(value = "INSERT INTO menu (MENU_SEQ, MENU_PARENT_SEQ, MENU_CD, MENU_NM, MENU_ICON, MENU_URL, MENU_ORDER, DEVICE_FLAG, BLOG_YN, USE_YN) " +
+            " VALUES (:menuSeq, :menuParentSeq, :menuCd, :menuNm, :menuIcon, :menuUrl, :menuOrder, :deviceFlag, :blogYn, :useYn)", nativeQuery = true)
+    void insertMaster(@Param("menuSeq") Long menuSeq, @Param("menuParentSeq") Long menuParentSeq, @Param("menuCd") String menuCd, @Param("menuNm") String menuNm,
+                 @Param("menuIcon") String menuIcon,
+                 @Param("menuUrl") String menuUrl,
+                 @Param("menuOrder") String menuOrder,
+                 @Param("deviceFlag") String deviceFlag,
+                 @Param("blogYn") String blogYn,
+                 @Param("useYn") String useYn);
 
     @Query(value = "SELECT count(*) as cnt FROM menu WHERE MENU_SEQ = :menuSeq ", nativeQuery = true)
     int findRow(@Param("menuSeq") Long menuSeq);

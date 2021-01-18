@@ -30,7 +30,8 @@ public class MenuService {
         for(MenuSaveRequestDto dto : list){
             String flag = (String)dto.getFlag();
             if(flag.equals("I")){
-                menuRepository.save(dto.toEntity()).getMenuSeq();
+                Long menuSeq = menuRepository.findMaxMaster();
+                menuRepository.insertMaster(menuSeq, dto.getMenuParentSeq(), dto.getMenuCd(), dto.getMenuNm(), dto.getMenuIcon(), dto.getMenuUrl(), dto.getMenuOrder(), dto.getDeviceFlag(), dto.getBlogYn(), dto.getUseYn());
             }else if(flag.equals("U") || flag.equals("D")){
                 int cnt = menuRepository.findRow(dto.getMenuSeq());
                 if(cnt == 0 ) new IllegalArgumentException("해당 게시글이 없습니다. id = " + dto.getMenuSeq());

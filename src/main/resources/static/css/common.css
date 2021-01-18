@@ -132,6 +132,7 @@ display: block;
   z-index:3;
   transition: left 1s;
 }
+
 .side-menu-bar .side-menu-box ul > li {
   position: relative;
   background-color: #dfdfdf;

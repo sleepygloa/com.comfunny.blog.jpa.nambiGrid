@@ -14,7 +14,9 @@ var main = {
         $('#side-menu-button').on('click', function(){
             $('.side-menu-bar').css('left', '0px');
         });
-        //닫기
+          $('#leftMenuClose').on('click', function(){
+              $('.side-menu-bar').css('left', '-300px');
+          });
 
 
         $('#btn-save').on('click', function(){
@@ -125,6 +127,8 @@ var main = {
                 var beforeList;
                 for(var i = 0; i < data.length; i++){
                     var rowData = data[i];
+
+                    if(rowData.useYn == 'N') continue;
 
                     if(rowData.menuLev ==  1){
                         if(i != 0){

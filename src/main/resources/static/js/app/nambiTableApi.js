@@ -472,7 +472,7 @@ function fnSaveReIdx(el){
         trCnt++;
         rowId = trCnt;
         var tbody = $('#'+tableInitData.programId+'Tbody');
-        var tbtr = $('<tr id="tr_row_'+trCnt+'" class="tr_row_'+trCnt+'" />');
+        var tbtr = $('<tr id="tr_row_'+trCnt+'" class="tr_row_'+trCnt+'" style="height:40px;"/>');
 
         //글 상세 보기 속성 있을때 클래스 추가
         if(tableInitData.viewContents){

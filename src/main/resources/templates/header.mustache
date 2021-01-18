@@ -29,6 +29,15 @@
         </div>
         <div class="side-menu-bar">
             <nav class="side-menu-box">
+                <ul >
+                    <li><a href="#" id="leftMenuClose">닫기</a></li>
+                    {{#userName}}
+                        <li><a href="/logout">로그아웃</a></li>
+                    {{/userName}}
+                    {{^userName}}
+                        <li><a href="/i/login">로그인</a></li>
+                    {{/userName}}
+                </ul>
                 <ul id="menuUl">
 
                 </ul>
