@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @RequiredArgsConstructor
 @Controller
@@ -29,11 +30,20 @@ public class BlogController {
         return "blog/blogMd";
     }
 
-    @GetMapping("/i/blog/mdView/")
+    /***************************************
+     * 글 폼 불러오기
+     ***************************************/
+    @GetMapping("/i/blog/mdView")
     public String mdView(Model model){
-//        post.setHtml(markdownToHTML(post.getContent()));
-//        model.addAttribute("post", post);
         return "blog/blogMdView";
+    }
+
+    /***************************************
+     * 글 폼 불러오기
+     ***************************************/
+    @GetMapping("/i/blog/mdUpdate")
+    public String mdUpdate(Model model){
+        return "blog/blogMd";
     }
 
     @PostMapping("")

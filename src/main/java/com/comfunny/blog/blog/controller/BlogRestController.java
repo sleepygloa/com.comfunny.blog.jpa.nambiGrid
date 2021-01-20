@@ -6,7 +6,13 @@ import com.comfunny.blog.blog.dto.BlogListResponseDto;
 import com.comfunny.blog.blog.dto.BlogReListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +73,7 @@ public class BlogRestController {
      ***************************************/
     @DeleteMapping("/i/blog/deleteRe")
     public void deleteRe(@RequestBody Map data){ blogService.deleteRe(data); }
+
 
 
     /***************************************

@@ -85,7 +85,7 @@ function fnSaveReIdx(el){
         if(tableInitData.markdown){
             if($('#'+tableInitData.programId+'Md').length == 0) container.append($('<div id="'+tableInitData.programId+'Md" />'));
 
-            getViewMarkdownForm();
+            //getViewMarkdownForm();
         }
         if(tableInitData.viewContentsRe){
             if($('#'+tableInitData.programId+'Re').length == 0) container.append($('<div id="blogRe" class="col-xs-w100"  />'));
@@ -134,7 +134,8 @@ function fnSaveReIdx(el){
 	        		    rowId = 0;
 	        		    var insert = $('<a href="#"  class="btn btn-save btn-sm pull-right" >글 추가</a>');
 	        		    insert.on('click', function(){
-                            getView('INSERT', 0);
+	        		        rowId = -1;
+                            getView('INSERT', -1);
 	        		    })
                         gridBtnGrpList.append(insert);
 	        		}else if(btnName == 'update'){
@@ -157,9 +158,17 @@ function fnSaveReIdx(el){
                         save.on('click', function(){
                             if(confirm("저장 하시겠습니까?")){
                                 if(tableInitData.viewContents){
-                                    blogSave(parseInt($('.td_row_s_'+rowId+'_idx').text()));
-                                }else if(tableInitData.markdown){
-                                    blogSaveMd(parseInt($('.td_row_s_'+rowId+'_idx').text()));
+                                    if(tableInitData.markdown){
+                                        if(rowId == -1){
+                                            blogSaveMd(-1);
+                                        }else{
+                                            blogSaveMd(parseInt($('.td_row_s_'+rowId+'_idx').text()));
+                                        }
+
+                                    }else{
+                                        blogSave(parseInt($('.td_row_s_'+rowId+'_idx').text()));
+                                    }
+
                                 }
                             }
                         })
@@ -184,6 +193,7 @@ function fnSaveReIdx(el){
 
 	        		    gridBtnGrpList.append(save);
 	        		}
+
 	        	}
 	    	}
     	divBtnGroup.append(gridBtnGrpList);
@@ -364,6 +374,42 @@ function fnSaveReIdx(el){
     * 글상세보기
     *******************************************************/
     function getView(flag, rowId){
+            if(tableInitData.markdown){
+                if(flag == "UPDATE" || flag =="INSERT"){
+                    $('#'+tableInitData.programId+'Md').empty();
+                    getViewMarkdownViewUpdate();
+
+                    if(flag == "UPDATE"){
+                        for(var i = 0; i < tableInitData.dtInitData1.length; i++){
+                            if(tableInitData.dtInitData1[i].idx == rowId){
+
+                                $('#'+tableInitData.programId + "Title").val(tableInitData.dtInitData1[i].title);
+                                $('#'+tableInitData.programId + "Url").val(tableInitData.dtInitData1[i].githubUrl);
+                                $('#'+tableInitData.programId + "Content").val(tableInitData.dtInitData1[i].markdownContent);
+                                simplemde.value(tableInitData.dtInitData1[i].markdownContent);
+                                return;
+                            }
+                        }
+                    }
+
+                    return;
+                }else if(flag == "VIEW"){
+                    $('#'+tableInitData.programId+'Md').empty();
+                    getViewMarkdownView();
+
+                    for(var i = 0; i < tableInitData.dtInitData1.length; i++){
+                        if(tableInitData.dtInitData1[i].idx == rowId){
+
+                            $('#markdown').text(tableInitData.dtInitData1[i].markdownContent);
+                            document.getElementById('output-html')["innerHTML"] = parseMd(tableInitData.dtInitData1[i].markdownContent);
+                            return;
+                        }
+                    }
+                    return;
+                }
+
+            }
+
 			//컨텐츠 개수 초기화
 	    	contentLength = 0;
 	    	$.ajax({
@@ -388,10 +434,15 @@ function fnSaveReIdx(el){
 					$('#'+tableInitData.programId+'View').empty();
 					$('#'+tableInitData.programId+'ViewHidden').empty();
 
-                    //flag 검사
-                    if(flag == 'INSERT' || flag == 'UPDATE'){
+                    //MD 와 구분짓는다.
+                    if(tableInitData.markdown){
 
-                        var div = $('<div class="col-xs-w100" />');
+                    }else{
+
+                        //flag 검사
+                        if(flag == 'INSERT' || flag == 'UPDATE'){
+
+                            var div = $('<div class="col-xs-w100" />');
                             var div2 = $('<div class="col-xs-w100" />');
                                 var textBox = $('<a type="button" style="float:left" >글상자</a>');
                                 textBox.on('click', function(){ fnAddTextBox('INSERT',  {}, 'TEXT'); });
@@ -459,10 +510,12 @@ function fnSaveReIdx(el){
 //							$('.'+programInitData.programId+'UpdateFlag').css('display', 'block');
 //						}
 
+                    }
+
+
+
 				}
 			})
-
-
     }
 
     /******************************************************
@@ -476,7 +529,7 @@ function fnSaveReIdx(el){
 
         //글 상세 보기 속성 있을때 클래스 추가
         if(tableInitData.viewContents){
-            tbtr.addClass('viewContents_'+tableInitData.dtData1[i].menuSeq);
+            tbtr.addClass('viewContents_'+tableInitData.dtData1[rowId].menuSeq);
         }
 
         var rowData = tableInitData.dtData1[0];
@@ -550,6 +603,7 @@ function fnSaveReIdx(el){
                             reBody.empty();
                             getViewReContent('VIEW');
                         }
+                        console.log(rowId);
 
                     });
 
@@ -636,6 +690,8 @@ function fnSaveReIdx(el){
     function blogSave(idx){
         var list = [];
         var count = 0;
+
+
         for(var i = 0; i < contentLength; i++){
 
             //글(컨텐츠) 가 작성된 개수, 있을 때.
@@ -696,7 +752,7 @@ function fnSaveReIdx(el){
     *******************************************************/
     function blogSaveMd(idx){
         var title = $('#'+tableInitData.programId+'Title').val();
-        var content = $('#'+tableInitData.programId+'Content').val();
+        var content = simplemde.value();
         var url = $('#'+tableInitData.programId+'Url').val();
 
         $.ajax({
@@ -708,7 +764,7 @@ function fnSaveReIdx(el){
                 url     : url
             },
             type     : 'POST',
-            contentType : 'application/json; charset=utf-8',
+            //contentType : 'application/json; charset=utf-8',
             success  : function(data) {
                 alert("저장되었습니다.");
                 getDataList();
@@ -1269,7 +1325,6 @@ function fnSaveReIdx(el){
             contentType : "application/html",
             async       : false,
             success     : function(result){
-                console.log(result);
                 $('#'+tableInitData.programId+'Md').append(result);
             }
         });
@@ -1284,10 +1339,33 @@ function fnSaveReIdx(el){
             contentType : "application/html",
             async       : false,
             success     : function(result){
-                console.log(result);
                 $('#'+tableInitData.programId+'Md').append(result);
             }
         });
     }
+    /***************************************
+    * Markdown 미리보기
+    ****************************************/
+    function getViewMarkdownViewUpdate(){
+        $.ajax({
+            type        : "GET",
+            url         : "/i/blog/mdUpdate",
+            contentType : "application/html",
+            async       : false,
+            success     : function(result){
+                $('#'+tableInitData.programId+'Md').append(result);
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
 }(window, jQuery));
+
 

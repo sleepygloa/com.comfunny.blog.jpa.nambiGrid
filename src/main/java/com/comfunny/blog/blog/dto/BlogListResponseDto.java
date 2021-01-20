@@ -23,6 +23,9 @@ public class BlogListResponseDto {
     private LocalDateTime inDt;
     private LocalDateTime upDt;
 
+    private String githubUrl;
+    private String markdownContent;
+
     public BlogListResponseDto(Blog entity){
         this.idx = entity.getIdx();
         this.pIdx = entity.getPIdx();
@@ -36,6 +39,8 @@ public class BlogListResponseDto {
         this.upUserId = entity.getUpUserId();
         this.inDt = entity.getInDt();
         this.upDt = entity.getUpDt();
+        this.githubUrl = entity.getGithubUrl();
+        this.markdownContent = entity.getMarkdownContent();
     }
 
 }

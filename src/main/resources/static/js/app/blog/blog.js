@@ -38,10 +38,10 @@ var blogJs = function(){
 					{id:'title',   	    title:'제목',width:"500px"},
 					{id:'url',   	    title:'Github',width:"500px"}
 				],
-				viewContents : false,
+				viewContents : true,
 				viewContentsRe : true,
 				markdown : true,
-				btn			: ['insert', 'update', 'save', 'delete']
+				btn			: ['insert', 'update', 'save', 'delete', 'github']
 			});
 
 	  }

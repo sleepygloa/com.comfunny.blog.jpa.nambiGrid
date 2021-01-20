@@ -31,13 +31,13 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     @Query(value = "UPDATE blog SET DEL_YN = 'Y' WHERE IDX = :idx", nativeQuery = true)
     void deleteMaster(@Param("idx") int idx);
 
-    @Query(value = "INSERT INTO blog (IDX, P_IDX, CATEGORYA, CATEGORYB, CATEGORYC, TITLE, MARKDOWN_YN, GIRHUB_URL, MARKDOWN_CONTENT) VALUES " +
+    @Query(value = "INSERT INTO blog (IDX, P_IDX, CATEGORYA, CATEGORYB, CATEGORYC, TITLE, MARKDOWN_YN, GITHUB_URL, MARKDOWN_CONTENT) VALUES " +
             "(:idx, :pIdx, :categoryA, :categoryB, :categoryC, :title, 'Y', :url, :content)", nativeQuery = true)
     void insertMd(@Param("idx") int idx, @Param("pIdx") int pIdx, @Param("categoryA") String categoryA, @Param("categoryB") String categoryB, @Param("categoryC") String categoryC
-            , @Param("title") String title, @Param("url") String url, @Param("content") String content);
+            , @Param("title") String title, @Param("content") String content, @Param("url") String url);
 
     @Query(value = "UPDATE blog SET CATEGORYA = :categoryA, CATEGORYB = :categoryB, CATEGORYC = :categoryC, TITLE = :title, GITHUB_URL = :url, MARKDOWN_CONTENT = :content " +
             " WHERE IDX = :idx", nativeQuery = true)
     void updateMd(@Param("idx") int idx,  @Param("categoryA") String categoryA, @Param("categoryB") String categoryB, @Param("categoryC") String categoryC
-            , @Param("title") String title, @Param("url") String url, @Param("content") String content);
+            , @Param("title") String title, @Param("content") String content, @Param("url") String url);
 }

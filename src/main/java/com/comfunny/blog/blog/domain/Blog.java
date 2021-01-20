@@ -45,6 +45,12 @@ public class Blog extends BaseTimeEntity2 {
     @Column(nullable = false)
     private String upUserId;
 
+    @Column(nullable = false)
+    private String githubUrl;
+
+    @Column(nullable = false)
+    private String markdownContent;
+
     @Builder
     public Blog(Long idx, Long pIdx, String categoryA, String categoryB, String categoryC, String title, String useYn, String delYn, String inUserId, String upUserId) {
         this.idx = idx;

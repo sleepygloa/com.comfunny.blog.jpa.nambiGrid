@@ -6,17 +6,16 @@ var app = {
 
 var main = {
 
-
-
     init : function(){
         var _this = this;
 
         $('#side-menu-button').on('click', function(){
             $('.side-menu-bar').css('left', '0px');
         });
-          $('#leftMenuClose').on('click', function(){
-              $('.side-menu-bar').css('left', '-300px');
-          });
+
+        $('#leftMenuClose').on('click', function(){
+            $('.side-menu-bar').css('left', '-300px');
+        });
 
 
         $('#btn-save').on('click', function(){
@@ -181,8 +180,6 @@ var main = {
                 alert(JSON.stringify(error));
             });
     }
-
-
 };
 
 main.init();
