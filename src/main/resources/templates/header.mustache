@@ -1,48 +1,79 @@
 <!DOCTYPE HTML>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>스프링 부트 웹서비스</title>
+
+    <title>N A M B I ' S  V L O G</title>
+
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="SeonhoKim">
+
+
+    <link rel="stylesheet" href="/css/w3.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet"> <!--CDN 링크 -->
-    <link href="/css/custom.css" rel="stylesheet" >
-    <link href="/css/common.css" rel="stylesheet" >
+<!--    <link href="/css/custom.css" rel="stylesheet" >
+    <link href="/css/common.css" rel="stylesheet" >-->
     <link href="/plugin/github-markdown.css" rel="stylesheet" >
+    <link href="/css/dashboard.css" rel="stylesheet">
 
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
 
-    <!-- 쇼핑몰 css -->
-    <!--<link href="/css/shoppingmall1.css" rel="stylesheet" >-->
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
 </head>
 <body>
 
-    <div class="logo-bar">
-        <div class="logo-img">
-            <a href="#">
-                VBLog
-            </a>
-        </div>
-    </div>
 
-    <!-- 사이드메뉴 -->
-    <div class="side-menu-button" >
-        <div class="img-box" id="side-menu-button">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hamburger_icon.svg/220px-Hamburger_icon.svg.png" alt="">
-        </div>
-        <div class="side-menu-bar">
-            <nav class="side-menu-box">
-                <ul >
-                    <li><a href="#" id="leftMenuClose">닫기</a></li>
-                    {{#userName}}
-                        <li><a href="/logout">로그아웃</a></li>
-                    {{/userName}}
-                    {{^userName}}
-                        <li><a href="/i/login">로그인</a></li>
-                    {{/userName}}
-                </ul>
-                <ul id="menuUl">
+    {{#userName}}
+        <input id="lgSes" value="{{userName}}" style="display:none;"/>
+    {{/userName}}
 
-                </ul>
+    {{^userName}}
+        <input id="lgSes" value="none" style="display:none;"/>
+    {{/userName}}
+
+
+
+
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/">Nambi's Vlog</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!--<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">-->
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                {{#userName}}
+                    <a class="nav-link" href="/logout">Logout</a>
+                {{/userName}}
+
+                {{^userName}}
+                    <a class="nav-link" href="/i/login">Login</a>
+                {{/userName}}
+            </li>
+        </ul>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul id="menuUl" class="nav flex-column">
+
+                    </ul>
+                </div>
             </nav>
-        </div>
-    </div>

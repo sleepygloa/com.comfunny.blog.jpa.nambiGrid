@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface BlogRepository extends JpaRepository<Blog, Long> {
 
+
     @Query(value = "SELECT * FROM blog p WHERE DEL_YN = 'N' ORDER BY p.IDX ASC", nativeQuery = true)
     List<Blog> findAllDesc();
 

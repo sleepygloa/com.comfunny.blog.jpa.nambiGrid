@@ -1,8 +1,4 @@
-var lgSeS = "none";
-var app = {
-    userName : "",
-    userEmail : ""
-}
+
 
 var main = {
 
@@ -35,9 +31,6 @@ var main = {
             _this.delete();
         });
 
-        _this.session();
-
-        _this.initMenu();
 
     },
 
@@ -97,90 +90,53 @@ var main = {
             alert(JSON.stringify(error));
         });
     },
-    session : function(){
 
-        $.ajax({
-            type : 'GET',
-            url : '/session',
-            dataType : 'json',
-            contentType : 'application/json; charset=utf-8'
-            }).done(function(data){
-                app.userName = data.userName;
-                app.userEmail = data.userEmail;
-            }).fail(function(error){
-                alert(JSON.stringify(error));
-            });
-    },
-    initMenu : function(){
-        $('#menuUl').empty();
-        $.ajax({
-            type : 'GET',
-            url : '/i/menu/list',
-            dataType : 'json',
-            contentType : 'application/json; charset=utf-8'
-            }).done(function(data){
-                console.log(data);
-                var beforeMenuLev = 1;
-                var beforeChildCnt = 0;
-                var childUl = $('<ul />');
-                var beforeList;
-                for(var i = 0; i < data.length; i++){
-                    var rowData = data[i];
-
-                    if(rowData.useYn == 'N') continue;
-
-                    if(rowData.menuLev ==  1){
-                        if(i != 0){
-                            if(beforeMenuLev == 1){
-                                $('#menuUl').append(beforeList);
-                            }else{
-                                beforeList.append(childUl);
-                                $('#menuUl').append(beforeList);
-                            }
-                        }
-                        beforeMenuLev = 1;
-
-                        var li = $('<li />');
-                        var a = $('<a >'+rowData.menuNm+'</a>');
-                        if(rowData.menuUrl != "") {
-                            a.attr('href', rowData.menuUrl)
-                        }else{
-                            a.attr('href', '#');
-                        };
-                        li.append(a);
-                        beforeList = li;
-
-                    }else{
-                        if(beforeMenuLev == 1){
-                            childUl.empty();
-                            childUl = $('<ul />');
-                        }
-                        beforeMenuLev = 2;
-
-
-                        var childLi = $('<li />');
-                        var childA = $('<a >'+rowData.menuNm+'</a>');
-                        if(rowData.menuUrl != "") {
-                            childA.attr('href', rowData.menuUrl)
-                        }else{
-                            childA.attr('href', '#');
-                        };
-                        childLi.append(childA);
-                        childUl.append(childLi);
-                    }
-
-                }
-                if(beforeMenuLev == 1){
-                    $('#menuUl').append(beforeList);
-                }else{
-                    beforeList.append(childUl);
-                    $('#menuUl').append(beforeList);
-                }
-            }).fail(function(error){
-                alert(JSON.stringify(error));
-            });
-    }
 };
 
 main.init();
 
+  // Graphs
+  var ctx = document.getElementById('myChart')
+  // eslint-disable-next-line no-unused-vars
+  var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+      ],
+      datasets: [{
+        data: [
+          15339,
+          21345,
+          18483,
+          24003,
+          23489,
+          24092,
+          12034
+        ],
+        lineTension: 0,
+        backgroundColor: 'transparent',
+        borderColor: '#007bff',
+        borderWidth: 4,
+        pointBackgroundColor: '#007bff'
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: false
+          }
+        }]
+      },
+      legend: {
+        display: false
+      }
+    }
+  })

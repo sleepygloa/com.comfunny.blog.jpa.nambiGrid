@@ -77,15 +77,19 @@ function fnSaveReIdx(el){
         * 기본 div 세팅
         ***********************/
         var container = $('#'+tableInitData.programId+'Container');
-        if(tableInitData.viewContents){
-            if($('#'+tableInitData.programId+'View').length == 0) container.append($('<div id="blogView" class="viewContainer col-xs-w100" style="margin-bottom:20px;" />'));
-            if($('#'+tableInitData.programId+'ViewHidden').length == 0) container.append($('<div id="blogView" style="width:0px;height:0px; z-index=0;" />'));
-        }
 
+        /**********************
+        * 기본 element 세팅
+        ***********************/
         if(tableInitData.markdown){
             if($('#'+tableInitData.programId+'Md').length == 0) container.append($('<div id="'+tableInitData.programId+'Md" />'));
 
             //getViewMarkdownForm();
+        }else{
+            if(tableInitData.viewContents){
+                if($('#'+tableInitData.programId+'View').length == 0) container.append($('<div id="blogView" class="viewContainer col-xs-w100" style="margin-bottom:20px;" />'));
+                if($('#'+tableInitData.programId+'ViewHidden').length == 0) container.append($('<div id="blogView" style="width:0px;height:0px; z-index=0;" />'));
+            }
         }
         if(tableInitData.viewContentsRe){
             if($('#'+tableInitData.programId+'Re').length == 0) container.append($('<div id="blogRe" class="col-xs-w100"  />'));
@@ -111,15 +115,7 @@ function fnSaveReIdx(el){
     	if(data.editable) editable = data.editable;
     	tableInitData.editableFlag = false;
 
-    	//그리드 상단 그룹 버튼
-    	var gridDivContainer = $('<div class="col-xs-w100" style="margin-bottom:50px;"/>');
-    	
-            //페이지 타이틀
-            var divPageTitle = $('<div class="col-xs-w100" />');
-            var divPageTitleH = $('<h5 class="card-title mb-4">'+data.programNm + '관리'+'</h5>');
 
-            divPageTitle.append(divPageTitleH);
-            gridDivContainer.append(divPageTitle);
     	
     	//그리드 버튼 그룹
     	var divBtnGroup = $('<div class="col-xs-w100" />');
@@ -203,19 +199,18 @@ function fnSaveReIdx(el){
         /***************************
         * 테이블
         ****************************/
-    	var table = $('<table id="'+data.programId+'Table" class="table center-aligned-table table-hover tableScrollX" />');
+    	var table = $('<table id="'+data.programId+'Table" class="table table-striped table-sm" />');
 
     	//테이블 헤더
     	var thead = $('<thead />');
     	var thtr = $('<tr />');
-//    		thtr.addClass('text-primary');
 
     	var ththData = '';
     	//flag
 
 		//flag End
         if(tableInitData.editable){
-            ththData += '<th style="width:50px;">'+' '+'</th>';
+            ththData += '<th >'+' '+'</th>';
         }
 
     	for(var i = 0; i < data.colOption.length; i++){
@@ -239,11 +234,13 @@ function fnSaveReIdx(el){
         var tableParentDiv = $('<div class="col-xs-w100"/>');
         tableParentDiv.append(table);
         divBtnGroup.append(tableParentDiv);
-        gridDivContainer.append(divBtnGroup);
+
 
         //타이틀, 테이블 버튼, 테이블 화면에 그림.
 //    	gridDivContainer.append(tableParentDiv);
-        $('#'+data.programId+'Grid').html(gridDivContainer);
+
+        $('#'+data.programId+'Grid').append($('<h2>'+data.programNm + '관리'+'</h2>'));
+        $('#'+data.programId+'Grid').append(divBtnGroup);
 
         getDataList();
 
