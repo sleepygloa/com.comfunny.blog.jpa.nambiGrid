@@ -382,6 +382,11 @@ function fnSaveReIdx(el){
 
                                 $('#'+tableInitData.programId + "Title").val(tableInitData.dtInitData1[i].title);
                                 $('#'+tableInitData.programId + "Url").val(tableInitData.dtInitData1[i].githubUrl);
+
+                                $('#'+tableInitData.programId + "CategoryA").val(tableInitData.dtInitData1[i].categoryA);
+                                $('#'+tableInitData.programId + "CategoryB").val(tableInitData.dtInitData1[i].categoryB);
+                                $('#'+tableInitData.programId + "CategoryC").val(tableInitData.dtInitData1[i].categoryC);
+
                                 $('#'+tableInitData.programId + "Content").val(tableInitData.dtInitData1[i].markdownContent);
                                 simplemde.value(tableInitData.dtInitData1[i].markdownContent);
                                 return;
@@ -396,6 +401,10 @@ function fnSaveReIdx(el){
 
                     for(var i = 0; i < tableInitData.dtInitData1.length; i++){
                         if(tableInitData.dtInitData1[i].idx == rowId){
+
+                            $('#'+tableInitData.programId + "CategoryA").val(tableInitData.dtInitData1[i].categoryA);
+                            $('#'+tableInitData.programId + "CategoryB").val(tableInitData.dtInitData1[i].categoryB);
+                            $('#'+tableInitData.programId + "CategoryC").val(tableInitData.dtInitData1[i].categoryC);
 
                             $('#markdown').text(tableInitData.dtInitData1[i].markdownContent);
                             document.getElementById('output-html')["innerHTML"] = parseMd(tableInitData.dtInitData1[i].markdownContent);
@@ -749,6 +758,11 @@ function fnSaveReIdx(el){
     *******************************************************/
     function blogSaveMd(idx){
         var title = $('#'+tableInitData.programId+'Title').val();
+
+        var categoryA = $('#'+tableInitData.programId+'CategoryA').val();
+        var categoryB = $('#'+tableInitData.programId+'CategoryB').val();
+        var categoryC = $('#'+tableInitData.programId+'CategoryC').val();
+
         var content = simplemde.value();
         var url = $('#'+tableInitData.programId+'Url').val();
 
@@ -757,6 +771,9 @@ function fnSaveReIdx(el){
             data     : {
                 idx : idx,
                 title : title,
+                categoryA : categoryA,
+                categoryB : categoryB,
+                categoryC : categoryC,
                 content : content,
                 url     : url
             },

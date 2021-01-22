@@ -1,18 +1,13 @@
 package com.comfunny.blog.blog.controller;
 
+import com.comfunny.blog.blog.dto.BlogListCategoryResponseDto;
 import com.comfunny.blog.blog.service.BlogService;
 import com.comfunny.blog.blog.dto.BlogDetailListResponseDto;
 import com.comfunny.blog.blog.dto.BlogListResponseDto;
 import com.comfunny.blog.blog.dto.BlogReListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +23,13 @@ public class BlogRestController {
     @GetMapping("/i/blog/list")
     public List<BlogListResponseDto> list(){
         return blogService.findAlldesc();
+    }
+
+    /***************************************
+     * 블로그 카테고리 데이터셋 조회
+     ***************************************/
+    @GetMapping("/i/blog/listCategory")
+    public List<BlogListCategoryResponseDto> findGetegory(){ return blogService.findCategory();
     }
 
     /***************************************
@@ -80,8 +82,8 @@ public class BlogRestController {
      * 글 저장 (md)
      ***************************************/
     @PostMapping("/i/blog/saveMd")
-    public void saveMd(@RequestParam int idx, @RequestParam String title, @RequestParam String content, @RequestParam String url){
-        blogService.saveMd(idx, title, content, url);
+    public void saveMd(@RequestParam int idx, @RequestParam String title, @RequestParam String categoryA, @RequestParam String categoryB, @RequestParam String categoryC, @RequestParam String content, @RequestParam String url){
+        blogService.saveMd(idx, title, categoryA, categoryB, categoryC, content, url);
     }
 
 }

@@ -41,4 +41,9 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
             " WHERE IDX = :idx", nativeQuery = true)
     void updateMd(@Param("idx") int idx,  @Param("categoryA") String categoryA, @Param("categoryB") String categoryB, @Param("categoryC") String categoryC
             , @Param("title") String title, @Param("content") String content, @Param("url") String url);
+
+
+
+    @Query(value = "SELECT CATEGORYA, CATEGORYB, CATEGORYC FROM blog p GROUP BY CATEGORYA, CATEGORYB, CATEGORYC ORDER BY CATEGORYA, CATEGORYB, CATEGORYC", nativeQuery = true)
+    List<Blog> findCategory();
 }

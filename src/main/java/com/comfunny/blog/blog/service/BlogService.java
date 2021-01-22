@@ -1,9 +1,11 @@
 package com.comfunny.blog.blog.service;
 
+import com.comfunny.blog.blog.domain.BlogCategoryRepository;
 import com.comfunny.blog.blog.domain.BlogDetailRepository;
 import com.comfunny.blog.blog.domain.BlogReRepository;
 import com.comfunny.blog.blog.domain.BlogRepository;
 import com.comfunny.blog.blog.dto.BlogDetailListResponseDto;
+import com.comfunny.blog.blog.dto.BlogListCategoryResponseDto;
 import com.comfunny.blog.blog.dto.BlogListResponseDto;
 import com.comfunny.blog.blog.dto.BlogReListResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,9 @@ public class BlogService {
     //글 제목
     private final BlogRepository blogRepository;
 
+    //글 카테고리
+    private final BlogCategoryRepository blogCategoryRepository;
+
     //글 상세
     private final BlogDetailRepository blogDetailRepository;
 
@@ -31,6 +36,12 @@ public class BlogService {
     public List<BlogListResponseDto> findAlldesc(){
         return blogRepository.findAllDesc().stream()
                 .map(BlogListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+    @Transactional(readOnly = true)
+    public List<BlogListCategoryResponseDto> findCategory(){
+        return blogCategoryRepository.findCategory().stream()
+                .map(BlogListCategoryResponseDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -128,15 +139,15 @@ public class BlogService {
 
 
     @Transactional
-    public void saveMd(int idx, String title, String content, String url){
+    public void saveMd(int idx, String title, String categoryA, String categoryB, String categoryC, String content, String url){
 
 
         int cnt = blogRepository.findMaster(idx);
         if(cnt == 0){
             idx = blogRepository.findMaxMaster();
-            blogRepository.insertMd(idx, 0,"","","",title, content, url);
+            blogRepository.insertMd(idx, 0,categoryA,categoryB,categoryC, title, content, url);
         }else{
-            blogRepository.updateMd(idx, "","","",title, content, url);
+            blogRepository.updateMd(idx, categoryA,categoryB,categoryC, title, content, url);
         }
 
     }
