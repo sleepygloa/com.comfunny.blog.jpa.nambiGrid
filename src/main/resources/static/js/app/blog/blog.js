@@ -14,7 +14,7 @@ var blogJs = function(){
 
 			fnList();
 
-			fnCategoryA();
+			//fnCategoryA();
 
 
 		}
