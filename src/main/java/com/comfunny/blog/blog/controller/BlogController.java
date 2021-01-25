@@ -18,14 +18,14 @@ public class BlogController {
     /************************************************************
      * 블로그 페이지로 이동
      *************************************************************/
-    @GetMapping("/i/blog")
+    @GetMapping("/b/blog")
     public String blog(Model model){
         model.addAttribute("ADMIN_YN" , "Y");
 
         return "blog/blog";
     }
 
-    @GetMapping("/i/blog/md")
+    @GetMapping("/b/blog/md")
     public String md(Model model){
         return "blog/blogMd";
     }
@@ -33,7 +33,7 @@ public class BlogController {
     /***************************************
      * 글 폼 불러오기
      ***************************************/
-    @GetMapping("/i/blog/mdView")
+    @GetMapping("/b/blog/mdView")
     public String mdView(Model model){
         return "blog/blogMdView";
     }
@@ -41,7 +41,7 @@ public class BlogController {
     /***************************************
      * 글 폼 불러오기
      ***************************************/
-    @GetMapping("/i/blog/mdUpdate")
+    @GetMapping("/b/blog/mdUpdate")
     public String mdUpdate(Model model){
         return "blog/blogMd";
     }

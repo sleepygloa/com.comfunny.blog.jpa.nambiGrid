@@ -24,6 +24,11 @@ public class MenuRestController {
         return menuService.findAlldesc();
     }
 
+    @GetMapping("/i/menu/listLeftMenu")
+    public List<MenuListResponseDto> listLeftMenu(){
+        return menuService.findLeftMenu();
+    }
+
     @PostMapping("/i/menu/saveRow")
     public void save(@RequestBody Map map){
 

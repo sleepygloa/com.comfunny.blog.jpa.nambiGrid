@@ -20,7 +20,7 @@ public class BlogRestController {
     /***************************************
      * 블로그 리스트 조회
      ***************************************/
-    @GetMapping("/i/blog/list")
+    @GetMapping("/b/blog/list")
     public List<BlogListResponseDto> list(){
         return blogService.findAlldesc();
     }
@@ -28,14 +28,14 @@ public class BlogRestController {
     /***************************************
      * 블로그 카테고리 데이터셋 조회
      ***************************************/
-    @GetMapping("/i/blog/listCategory")
+    @GetMapping("/b/blog/listCategory")
     public List<BlogListCategoryResponseDto> findGetegory(){ return blogService.findCategory();
     }
 
     /***************************************
      * 글 저장
      ***************************************/
-    @PostMapping("/i/blog/save")
+    @PostMapping("/b/blog/save")
     public void save(@RequestBody Map map){
         blogService.save((List<Map<String, Object>>)map.get("list"));
     }
@@ -43,7 +43,7 @@ public class BlogRestController {
     /***************************************
      * 글삭제
      ***************************************/
-    @DeleteMapping("/i/blog/delete")
+    @DeleteMapping("/b/blog/delete")
     public void deleteMaster(@RequestParam int idx){
         blogService.deleteMaster(idx);
     }
@@ -51,7 +51,7 @@ public class BlogRestController {
     /***************************************
      * 글 상세보기
      ***************************************/
-    @GetMapping("/i/blog/view")
+    @GetMapping("/b/blog/view")
     public List<BlogDetailListResponseDto> findById(@RequestParam int idx){
         return blogService.findById(idx);
     }
@@ -59,7 +59,7 @@ public class BlogRestController {
     /***************************************
      * 댓글 리스트 조회
      ***************************************/
-    @GetMapping("/i/blog/listRe")
+    @GetMapping("/b/blog/listRe")
     public List<BlogReListResponseDto> listRe(@RequestParam int idx){
         return blogService.findDesc(idx);
     }
@@ -67,13 +67,13 @@ public class BlogRestController {
     /***************************************
      * 댓글 저장
      ***************************************/
-    @PostMapping("/i/blog/saveRe")
+    @PostMapping("/b/blog/saveRe")
     public void saveRe(@RequestBody Map data){ blogService.saveRe(data); }
 
     /***************************************
      * 댓글 삭제
      ***************************************/
-    @DeleteMapping("/i/blog/deleteRe")
+    @DeleteMapping("/b/blog/deleteRe")
     public void deleteRe(@RequestBody Map data){ blogService.deleteRe(data); }
 
 
@@ -81,7 +81,7 @@ public class BlogRestController {
     /***************************************
      * 글 저장 (md)
      ***************************************/
-    @PostMapping("/i/blog/saveMd")
+    @PostMapping("/b/blog/saveMd")
     public void saveMd(@RequestParam int idx, @RequestParam String title, @RequestParam String categoryA, @RequestParam String categoryB, @RequestParam String categoryC, @RequestParam String content, @RequestParam String url){
         blogService.saveMd(idx, title, categoryA, categoryB, categoryC, content, url);
     }

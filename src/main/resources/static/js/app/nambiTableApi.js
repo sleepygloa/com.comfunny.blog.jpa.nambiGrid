@@ -67,6 +67,13 @@ function fnSaveReIdx(el){
 
 
     var tableInitData = {}
+    //카테고리A
+    var categoryA = new Array();
+    //카테고리C
+    var categoryB = new Array();
+    //카테고리C
+    var categoryC = new Array();
+
     //그리드 초기화
     $.fn.fnList = function(data){
 
@@ -138,6 +145,7 @@ function fnSaveReIdx(el){
 	        		    var update = $('<a href="#"  class="btn btn-update btn-sm pull-right" >글 수정</a>');
 	        		    update.on('click', function(){
                             getView('UPDATE', parseInt($('.td_row_s_'+rowId+'_idx').text()));
+                            getCategorys();
 	        		    })
                         gridBtnGrpList.append(update);
 	        		}else if(btnName == 'delete'){
@@ -245,8 +253,6 @@ function fnSaveReIdx(el){
         getDataList();
 
 
-
-
     	//첫행 블러오기
 //    	if(tableInitData.data1.length > 0) getView('VIEW', 0);
     }
@@ -256,7 +262,7 @@ function fnSaveReIdx(el){
     	//그리드 컬럼 만드는 로직
     	$.ajax({
     	    type:"GET",
-    		url : "/i/"+tableInitData.programId + "/list",
+    		url : "/b/"+tableInitData.programId + "/list",
     		dataType : "json",
     		contentType:"application/json",
     		async : false,
@@ -383,9 +389,9 @@ function fnSaveReIdx(el){
                                 $('#'+tableInitData.programId + "Title").val(tableInitData.dtInitData1[i].title);
                                 $('#'+tableInitData.programId + "Url").val(tableInitData.dtInitData1[i].githubUrl);
 
-                                $('#'+tableInitData.programId + "CategoryA").val(tableInitData.dtInitData1[i].categoryA);
-                                $('#'+tableInitData.programId + "CategoryB").val(tableInitData.dtInitData1[i].categoryB);
-                                $('#'+tableInitData.programId + "CategoryC").val(tableInitData.dtInitData1[i].categoryC);
+                                $('#'+tableInitData.programId + "CategoryA").attr('readonly', false).val(tableInitData.dtInitData1[i].categoryA);
+                                $('#'+tableInitData.programId + "CategoryB").attr('readonly', false).val(tableInitData.dtInitData1[i].categoryB);
+                                $('#'+tableInitData.programId + "CategoryC").attr('readonly', false).val(tableInitData.dtInitData1[i].categoryC);
 
                                 $('#'+tableInitData.programId + "Content").val(tableInitData.dtInitData1[i].markdownContent);
                                 simplemde.value(tableInitData.dtInitData1[i].markdownContent);
@@ -402,9 +408,9 @@ function fnSaveReIdx(el){
                     for(var i = 0; i < tableInitData.dtInitData1.length; i++){
                         if(tableInitData.dtInitData1[i].idx == rowId){
 
-                            $('#'+tableInitData.programId + "CategoryA").val(tableInitData.dtInitData1[i].categoryA);
-                            $('#'+tableInitData.programId + "CategoryB").val(tableInitData.dtInitData1[i].categoryB);
-                            $('#'+tableInitData.programId + "CategoryC").val(tableInitData.dtInitData1[i].categoryC);
+                            $('#'+tableInitData.programId + "CategoryA").attr('readonly', true).val(tableInitData.dtInitData1[i].categoryA);
+                            $('#'+tableInitData.programId + "CategoryB").attr('readonly', true).val(tableInitData.dtInitData1[i].categoryB);
+                            $('#'+tableInitData.programId + "CategoryC").attr('readonly', true).val(tableInitData.dtInitData1[i].categoryC);
 
                             $('#markdown').text(tableInitData.dtInitData1[i].markdownContent);
                             document.getElementById('output-html')["innerHTML"] = parseMd(tableInitData.dtInitData1[i].markdownContent);
@@ -419,7 +425,7 @@ function fnSaveReIdx(el){
 			//컨텐츠 개수 초기화
 	    	contentLength = 0;
 	    	$.ajax({
-				url	 	: "/i/"+tableInitData.programId + '/view',
+				url	 	: "/b/"+tableInitData.programId + '/view',
 				data    : {
 				    "idx" : rowId
 				},
@@ -675,7 +681,7 @@ function fnSaveReIdx(el){
 
 
         $.ajax({
-            url      : "/i/"+tableInitData.programId + "/saveRow",
+            url      : "/b/"+tableInitData.programId + "/saveRow",
             data     : JSON.stringify({"list":list}),
             type     : 'POST',
             contentType : 'application/json; charset=utf-8',
@@ -741,7 +747,7 @@ function fnSaveReIdx(el){
         }
 
         $.ajax({
-            url      : "/i/"+tableInitData.programId + "/save",
+            url      : "/b/"+tableInitData.programId + "/save",
             data     : JSON.stringify({"list":list}),
             type     : 'POST',
             contentType : 'application/json; charset=utf-8',
@@ -767,7 +773,7 @@ function fnSaveReIdx(el){
         var url = $('#'+tableInitData.programId+'Url').val();
 
         $.ajax({
-            url      : "/i/"+tableInitData.programId + "/saveMd",
+            url      : "/b/"+tableInitData.programId + "/saveMd",
             data     : {
                 idx : idx,
                 title : title,
@@ -790,7 +796,7 @@ function fnSaveReIdx(el){
     *******************************************************/
     function blogDelete(rowId){
         $.ajax({
-            url      : "/i/"+tableInitData.programId + "/delete",
+            url      : "/b/"+tableInitData.programId + "/delete",
             data     : {
             "idx": rowId
             },
@@ -1004,7 +1010,7 @@ function fnSaveReIdx(el){
     	//그리드 컬럼 만드는 로직
     	$.ajax({
     	    type        : "GET",
-    		url         : "/i/"+tableInitData.programId + "/listRe",
+    		url         : "/b/"+tableInitData.programId + "/listRe",
             data        : {"idx" : idx},
     		dataType    : "json",
     		contentType : "application/json; charset=utf-8",
@@ -1146,7 +1152,7 @@ function fnSaveReIdx(el){
                                         }
 
                                         $.ajax({
-                                            url		: "/i/"+tableInitData.programId + "/saveRe",
+                                            url		: "/b/"+tableInitData.programId + "/saveRe",
                                             type	: "POST",
                                             data	: JSON.stringify(data),
                                             contentType : "application/json; charset=utf-8",
@@ -1184,7 +1190,7 @@ function fnSaveReIdx(el){
                                         }
 
                                         $.ajax({
-                                            url		: "/i/"+tableInitData.programId + "/saveRe",
+                                            url		: "/b/"+tableInitData.programId + "/saveRe",
                                             type	: "POST",
                                             data	: JSON.stringify(data),
                                             contentType : "application/json; charset=utf-8",
@@ -1224,7 +1230,7 @@ function fnSaveReIdx(el){
                                         }
 
                                         $.ajax({
-                                            url		: "/i/"+tableInitData.programId + "/saveRe",
+                                            url		: "/b/"+tableInitData.programId + "/saveRe",
                                             type	: "POST",
                                             data	: JSON.stringify(data),
                                             contentType : "application/json; charset=utf-8",
@@ -1255,7 +1261,7 @@ function fnSaveReIdx(el){
                                         }
 
                                         $.ajax({
-                                            url		: "/i/"+tableInitData.programId + "/deleteRe",
+                                            url		: "/b/"+tableInitData.programId + "/deleteRe",
                                             type	: "DELETE",
                                             data	: JSON.stringify(data),
                                             contentType : "application/json; charset=utf-8",
@@ -1335,7 +1341,7 @@ function fnSaveReIdx(el){
     function getViewMarkdownForm(){
         $.ajax({
             type        : "GET",
-            url         : "/i/blog/md",
+            url         : "/b/blog/md",
             contentType : "application/html",
             async       : false,
             success     : function(result){
@@ -1349,7 +1355,7 @@ function fnSaveReIdx(el){
     function getViewMarkdownView(){
         $.ajax({
             type        : "GET",
-            url         : "/i/blog/mdView",
+            url         : "/b/blog/mdView",
             contentType : "application/html",
             async       : false,
             success     : function(result){
@@ -1363,7 +1369,7 @@ function fnSaveReIdx(el){
     function getViewMarkdownViewUpdate(){
         $.ajax({
             type        : "GET",
-            url         : "/i/blog/mdUpdate",
+            url         : "/b/blog/mdUpdate",
             contentType : "application/html",
             async       : false,
             success     : function(result){
@@ -1372,13 +1378,43 @@ function fnSaveReIdx(el){
         });
     }
 
+    /***************************************
+    * 카테고리 조회
+    ****************************************/
+	function getCategorys(){
+    	$.ajax({
+    	    type        : "GET",
+    		url         : "/b/blog/listCategory",
+    		dataType    : "json",
+    		contentType : "application/json; charset=utf-8",
+    		async       : false,
+    		success     : function(result){
 
+                for(var i = 0; i < result.length; i++){
+                    categoryA.push(result[i].categoryA);
+                    categoryB.push(result[i].categoryB);
+                    categoryC.push(result[i].categoryC);
+                }
 
+    		    categoryA = categoryA.reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);
+    		    categoryB = categoryB.reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);
+    		    categoryC = categoryC.reduce(function(a,b){if(a.indexOf(b)<0)a.push(b);return a;},[]);
 
-
-
-
-
+    		    //카테고리A
+    		    for(var i = 0; i < categoryA.length; i++){
+    		        $('#'+tableInitData.programId+'CategoryAList').append($('<option value="'+categoryA[i]+'">'));
+    		    }
+    		    //카테고리B
+    		    for(var i = 0; i < categoryB.length; i++){
+    		        $('#'+tableInitData.programId+'CategoryBList').append($('<option value="'+categoryB[i]+'">'));
+    		    }
+    		    //카테고리C
+    		    for(var i = 0; i < categoryC.length; i++){
+    		        $('#'+tableInitData.programId+'CategoryCList').append($('<option value="'+categoryC[i]+'">'));
+    		    }
+    		}
+        })
+	}
 
 }(window, jQuery));
 

@@ -25,7 +25,7 @@
         $('#menuUl').empty();
         $.ajax({
             type : 'GET',
-            url : '/i/menu/list',
+            url : '/i/menu/listLeftMenu',
             dataType : 'json',
             contentType : 'application/json; charset=utf-8'
             }).done(function(data){

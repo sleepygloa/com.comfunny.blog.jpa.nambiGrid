@@ -49,4 +49,10 @@ public class MenuService {
     }
 
 
+    @Transactional(readOnly = true)
+    public List<MenuListResponseDto> findLeftMenu(){
+        return menuRepository.findLeftMenu().stream()
+                .map(MenuListResponseDto::new)
+                .collect(Collectors.toList());
+    }
 }
