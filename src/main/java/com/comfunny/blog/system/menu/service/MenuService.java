@@ -25,6 +25,13 @@ public class MenuService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<MenuListResponseDto> findAlldesc(int menuSeq){
+        return menuRepository.findAllDesc(menuSeq).stream()
+                .map(MenuListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public void save(List<MenuSaveRequestDto> list){
         for(MenuSaveRequestDto dto : list){
@@ -49,10 +56,4 @@ public class MenuService {
     }
 
 
-    @Transactional(readOnly = true)
-    public List<MenuListResponseDto> findLeftMenu(){
-        return menuRepository.findLeftMenu().stream()
-                .map(MenuListResponseDto::new)
-                .collect(Collectors.toList());
-    }
 }

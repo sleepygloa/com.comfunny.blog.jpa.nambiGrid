@@ -1,9 +1,4 @@
-/* globals Chart:false, feather:false */
 
-(function () {
-  'use strict'
-
-//  feather.replace()
 
     function getSession(){
 
@@ -21,15 +16,25 @@
     };
     getSession();
 
-    function leftMenu(){
+    function leftMenu(menuSeq){
         $('#menuUl').empty();
+
+        var url = '/b/menu/list';
+//        if(menuSeq == 2) = '/resume/ko';
+        if(menuSeq == 3) url = '/a/'; //관리자
+        if(menuSeq == undefined) menuSeq = -1;
+
         $.ajax({
             type : 'GET',
-            url : '/i/menu/listLeftMenu',
+            url : url,
+            data : {
+                "menuSeq" : menuSeq
+            },
             dataType : 'json',
             contentType : 'application/json; charset=utf-8'
             }).done(function(data){
                 console.log(data);
+
                 var beforeMenuLev = 1;
                 var beforeChildCnt = 0;
                 var childUl = $('<ul />');
@@ -91,5 +96,3 @@
             });
     }
     leftMenu();
-
-})()

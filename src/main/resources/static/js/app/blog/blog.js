@@ -10,12 +10,21 @@ var blogJs = function(){
 	return {
 		init : function(){
 
+            leftMenu(7);
+
 			fnEvents();
 
 			fnList();
 
 
+//			var form = $('mainBlogUpdateForm')[0];
+//			var formData = new FormData(form);
 
+//			var formData = new FormData();
+//
+//			if($('#'+programId+'FileUploadText').val() != ''){
+//				formData.append('file_0', $('#'+ tableInitData.programId+'FileUpload')[0].files[0]);
+//			}
 		}
 	}
 

@@ -17,13 +17,9 @@ public class MenuController {
     /************************************************************
      * 메뉴 페이지로 이동
      *************************************************************/
-    @GetMapping("/i/menu")
+    @GetMapping("/b/menu")
     public String menu(Model model){
         return "system/menu/menu";
     }
-
-
-
-
 
 }

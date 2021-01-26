@@ -11,4 +11,6 @@ public interface BlogCategoryRepository extends JpaRepository<BlogCategory, Long
 
     @Query(value = "SELECT max(idx) as IDX, CATEGORYA, CATEGORYB, CATEGORYC FROM blog  GROUP BY CATEGORYA, CATEGORYB, CATEGORYC ORDER BY CATEGORYA, CATEGORYB, CATEGORYC", nativeQuery = true)
     List<BlogCategory> findCategory();
+
+
 }

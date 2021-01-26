@@ -6,6 +6,8 @@ import com.comfunny.blog.system.menu.dto.MenuListResponseDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,17 +21,18 @@ public class MenuRestController {
 
     private final MenuService menuService;
 
-    @GetMapping("/i/menu/list")
-    public List<MenuListResponseDto> list(){
-        return menuService.findAlldesc();
+    @GetMapping("/b/menu/list")
+    public List<MenuListResponseDto> list(@RequestParam(value="menuSeq", defaultValue = "-1") int menuSeq){
+
+        if(menuSeq == -1){
+            return menuService.findAlldesc();
+        }else{
+            return menuService.findAlldesc(menuSeq);
+        }
     }
 
-    @GetMapping("/i/menu/listLeftMenu")
-    public List<MenuListResponseDto> listLeftMenu(){
-        return menuService.findLeftMenu();
-    }
 
-    @PostMapping("/i/menu/saveRow")
+    @PostMapping("/b/menu/saveRow")
     public void save(@RequestBody Map map){
 
         ObjectMapper mapper = new ObjectMapper();

@@ -18,7 +18,7 @@ public class BlogController {
     /************************************************************
      * 블로그 페이지로 이동
      *************************************************************/
-    @GetMapping("/b/blog")
+    @GetMapping("/b")
     public String blog(Model model){
         model.addAttribute("ADMIN_YN" , "Y");
 

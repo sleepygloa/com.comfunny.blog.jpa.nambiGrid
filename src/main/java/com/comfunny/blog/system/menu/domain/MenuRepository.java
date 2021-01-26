@@ -18,9 +18,23 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
             "       FROM menu A" +
             " INNER JOIN cte C" +
             "         ON A.MENU_PARENT_SEQ = C.MENU_SEQ" +
-            "     )" +
+            "     ) " +
             "SELECT * FROM cte ORDER BY cast(MENU_ORDER as unsigned) ", nativeQuery = true)
     List<Menu> findAllDesc();
+
+    @Query(value = "WITH recursive cte AS " +
+            "     (" +
+            "     SELECT  A.*, 0 AS MENU_LEV,(SELECT COUNT(*) FROM menu c WHERE c.MENU_PARENT_SEQ = A.MENU_SEQ) AS CHILD_CNT " +
+            "       FROM menu A " +
+            "      WHERE A.MENU_PARENT_SEQ = 0" +
+            "      UNION ALL" +
+            "     SELECT A.*, MENU_LEV + 1 AS MENU_LEV, 0 AS CHILD_CNT " +
+            "       FROM menu A" +
+            " INNER JOIN cte C" +
+            "         ON A.MENU_PARENT_SEQ = C.MENU_SEQ" +
+            "     ) " +
+            "SELECT * FROM cte WHERE MENU_PARENT_SEQ = :menuSeq  ORDER BY cast(MENU_ORDER as unsigned) ", nativeQuery = true)
+    List<Menu> findAllDesc(@Param("menuSeq") int menuSeq);
 
     @Query(value = "SELECT max(menuSeq)+1 as max FROM Menu " )
     Long findMaxMaster();
@@ -48,18 +62,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
                  @Param("useYn") String useYn);
 
 
-    @Query(value = "WITH recursive cte AS " +
-            "     (" +
-            "     SELECT  A.*, 1 AS MENU_LEV,(SELECT COUNT(*) FROM menu c WHERE c.MENU_PARENT_SEQ = A.MENU_SEQ) AS CHILD_CNT " +
-            "       FROM menu A " +
-            "      WHERE A.MENU_PARENT_SEQ = 0" +
-            "      UNION ALL" +
-            "     SELECT A.*, MENU_LEV + 1 AS MENU_LEV, 0 AS CHILD_CNT " +
-            "       FROM menu A" +
-            " INNER JOIN cte C" +
-            "         ON A.MENU_PARENT_SEQ = C.MENU_SEQ" +
-            "     )" +
-            "SELECT * FROM cte ORDER BY cast(MENU_ORDER as unsigned) ", nativeQuery = true)
-    List<Menu> findLeftMenu();
+
 
 }

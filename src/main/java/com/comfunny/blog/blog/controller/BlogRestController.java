@@ -1,10 +1,7 @@
 package com.comfunny.blog.blog.controller;
 
-import com.comfunny.blog.blog.dto.BlogListCategoryResponseDto;
+import com.comfunny.blog.blog.dto.*;
 import com.comfunny.blog.blog.service.BlogService;
-import com.comfunny.blog.blog.dto.BlogDetailListResponseDto;
-import com.comfunny.blog.blog.dto.BlogListResponseDto;
-import com.comfunny.blog.blog.dto.BlogReListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,5 +82,21 @@ public class BlogRestController {
     public void saveMd(@RequestParam int idx, @RequestParam String title, @RequestParam String categoryA, @RequestParam String categoryB, @RequestParam String categoryC, @RequestParam String content, @RequestParam String url){
         blogService.saveMd(idx, title, categoryA, categoryB, categoryC, content, url);
     }
+
+
+    //	//블로그 글 수정완료 후 파일 업로드
+//	@RequestMapping("/b/blogFileUpload")
+//	public ModelAndView saveBlogFileUpload(MultipartHttpServletRequest req) {
+//		System.out.println("/saveBlogFileUpload inParams : "+inParams);
+//		ModelAndView mv = new ModelAndView("jsonView");
+//		try {
+//			blogService.saveBlogFileUpload(inParams, req);
+//		}catch(Exception e) {
+//			System.out.println("ERROR" + e);
+//			e.printStackTrace();
+//		}
+//		mv.addObject("SUCCESS", "글이 수정되었습니다.");
+//		return mv;
+//	}
 
 }

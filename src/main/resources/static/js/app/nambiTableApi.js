@@ -133,6 +133,23 @@ function fnSaveReIdx(el){
 	        		var btnName = data.btn[i];
 	        		if(btnName == 'search'){
                         gridBtnGrpList.append($('<a href="#" id="'+data.programId+'SearchBtn" class="btn btn-save btn-sm pull-right" >검색</a>'));
+	        		}else if(btnName == 'imgUpload'){
+	        		    //rowId = 0;
+	        		    var imgUpload = $('<a href="#"  class="btn btn-save btn-sm pull-right" >이미지 변환(base64)</a>');
+	        		    imgUpload.on('click', function(){
+
+	        		        var fileUpload = $('<input type="file" class="form-control" id="blogFileUpload" aria-describedby="blogFileUploadAddon" aria-label="Upload" >');
+	        		        fileUpload.on('click', function(){
+	        		            alert('dd');
+	        		        })
+
+//	        		        var reader = new FileReader(file);
+//                            reader.onload = function() {
+//                              result = reader.result;
+//                            }
+
+	        		    })
+                        gridBtnGrpList.append(imgUpload);
 	        		}else if(btnName == 'insert'){
 	        		    rowId = 0;
 	        		    var insert = $('<a href="#"  class="btn btn-save btn-sm pull-right" >글 추가</a>');

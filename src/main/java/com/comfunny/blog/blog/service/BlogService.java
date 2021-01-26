@@ -1,13 +1,7 @@
 package com.comfunny.blog.blog.service;
 
-import com.comfunny.blog.blog.domain.BlogCategoryRepository;
-import com.comfunny.blog.blog.domain.BlogDetailRepository;
-import com.comfunny.blog.blog.domain.BlogReRepository;
-import com.comfunny.blog.blog.domain.BlogRepository;
-import com.comfunny.blog.blog.dto.BlogDetailListResponseDto;
-import com.comfunny.blog.blog.dto.BlogListCategoryResponseDto;
-import com.comfunny.blog.blog.dto.BlogListResponseDto;
-import com.comfunny.blog.blog.dto.BlogReListResponseDto;
+import com.comfunny.blog.blog.domain.*;
+import com.comfunny.blog.blog.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +13,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class BlogService {
+
 
     //글 제목
     private final BlogRepository blogRepository;
@@ -38,6 +33,9 @@ public class BlogService {
                 .map(BlogListResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+
+
     @Transactional(readOnly = true)
     public List<BlogListCategoryResponseDto> findCategory(){
         return blogCategoryRepository.findCategory().stream()
@@ -151,6 +149,102 @@ public class BlogService {
         }
 
     }
+//	@Override
+//	public void saveBlogFileUpload(Params inParams, MultipartHttpServletRequest req) throws Exception{
+//
+//		blogDao.deleteMainBlogFileList(inParams);
+//		List<Map<String,Object>> list = fileUtils.parseUpdateFileInfo(inParams, req);
+//		Map<String,Object> tempMap = null;
+//		for(int i=0, size=list.size(); i<size; i++){
+//			tempMap = list.get(i);
+//			if(tempMap.get("IS_NEW").equals("Y")){
+//				blogDao.insertMainBlogFile(tempMap);
+//			}else{
+//				blogDao.updateMainBlogFile(tempMap);
+//			}
+//		}
+//	}
 
+
+    //	public void insertMainBlogFile(Map<String, Object> map) throws Exception{
+//		insert("blogService.insertMainBlogFile", map);
+//	}
+//
+//	@SuppressWarnings("unchecked")
+//	public List<Map<String, Object>> selectFileList(Map<String, Object> map) throws Exception{
+//		return (List<Map<String, Object>>)selectList("blogService.getMainBlogSelectFileList", map);
+//	}
+//
+//	public void deleteMainBlogFileList(Map<String, Object> map) throws Exception{
+//		update("blogService.deleteMainBlogFileList", map);
+//	}
+//
+//	public void updateMainBlogFile(Map<String, Object> map) throws Exception{
+//		update("blogService.updateMainBlogFile", map);
+//	}
+//
+
+
+
+
+
+
+//<!-- 파일 업로드 -->
+//	<insert id="insertMainBlogFile" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+// 	 	<selectKey keyProperty="IDX" resultType="int" order="BEFORE">
+//    SELECT IFNULL(MAX(IDX) + 1, 1) AS IDX FROM TB_BLOG_D_FILE
+//		</selectKey>
+//    INSERT INTO TB_BLOG_D_FILE
+//            (
+//                    IDX,
+//                    BOARD_IDX,
+//                    ORIGINAL_FILE_NAME,
+//                    STORED_FILE_NAME,
+//                    FILE_SIZE,
+//                    IN_DT,
+//                    S_USERID
+//                    )
+//    VALUES
+//            (
+//				#{IDX},
+//            #{boardIdx},
+//            #{originalFileName},
+//            #{storedFileName},
+//            #{fileSize},
+//    now(),
+//				#{s_userId}
+//			)
+//	</insert>
+//
+//	<select id="getMainBlogSelectFileList" parameterType="hashmap" resultType="hashmap">
+//    SELECT
+//            IDX
+//            ,	BOARD_IDX
+//            ,	ORIGINAL_FILE_NAME
+//		,   ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+//    FROM
+//            TB_BLOG_D_FILE
+//    WHERE
+//    BOARD_IDX = #{idx}
+//    AND DEL_YN = 'N'
+//            </select>
+//
+//	<update id="deleteMainBlogFileList" parameterType="hashmap">
+//    UPDATE
+//            TB_BLOG_D_FILE
+//    SET
+//            DEL_YN = 'Y'
+//    WHERE
+//    BOARD_IDX = #{idx}
+//	</update>
+//
+//	<update id="updateMainBlogFile" parameterType="hashmap">
+//    UPDATE
+//            TB_BLOG_D_FILE
+//    SET
+//            DEL_YN = 'N'
+//    WHERE
+//    IDX = #{file_idx}
+//	</update>
 
 }
