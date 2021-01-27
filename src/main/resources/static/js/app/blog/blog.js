@@ -39,7 +39,7 @@ var blogJs = function(){
                  viewContents : true,
                  viewContentsRe : true,
                  markdown : true,
-                 btn			: ['insert', 'update', 'save', 'delete', 'github']
+                 btn			: ['insert', 'update', 'save', 'delete', 'github', 'imgUpload']
              });
         }
 	}

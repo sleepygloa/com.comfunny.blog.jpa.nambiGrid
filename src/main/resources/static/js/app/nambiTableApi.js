@@ -145,10 +145,15 @@ function fnSaveReIdx(el){
 	        		    var imgUpload = $('<a href="#"  class="btn btn-save btn-sm pull-right" >이미지 변환(base64)</a>');
 	        		    imgUpload.on('click', function(){
 
-	        		        var fileUpload = $('<input type="file" class="form-control" id="blogFileUpload" aria-describedby="blogFileUploadAddon" aria-label="Upload" >');
-	        		        fileUpload.on('click', function(){
-	        		            alert('dd');
-	        		        })
+	        		        var fileUpload = $('<input type="file" class="form-control" id="'+tableInitData.programId+'FileUpload" aria-describedby="blogFileUploadAddon" aria-label="Upload" >');
+	        		        fileUpload.trigger('click', function(){
+
+	        		        });
+	        		        fileUpload.on('change', function(){
+	        		            getBase64($(this)[0].files[0]);
+	        		            //alert(fileUploadBase64Text);
+	        		        });
+
 
 //	        		        var reader = new FileReader(file);
 //                            reader.onload = function() {
