@@ -1,5 +1,9 @@
 
-
+var app = function () {
+    var userName = "";
+    var userEmail = "";
+    var userRole = "G";
+}
 function getSession(){
 
     $.ajax({
