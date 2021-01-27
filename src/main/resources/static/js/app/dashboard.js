@@ -1,4 +1,6 @@
-
+var app = function() {
+    var menuSearch = ""
+}
 
     function getSession(){
 
@@ -59,8 +61,12 @@
                         var li = $('<li class="nav-item" />');
                         var a = $('<a class="nav-link" href="#"  aria-expanded="false" data-bs-target="#menu_'+rowData.menuSeq+'" aria-controls="menu_'+rowData.menuSeq+'" >'+rowData.menuNm+'</a>');
                         var span = $('<span class=""/>');
-                        if(rowData.menuUrl != "") a.attr('href', rowData.menuUrl);
-                        if(!(rowData.menuIcon == "null" ||rowData.menuIcon == ""))  span.addClass('fa fa-2x '+rowData.menuIcon) ;
+                        if(menuSeq == 7){
+                            a.attr("onclick", "blogJs.fnList('"+rowData.menuUrl+"')");
+                        }else{
+                            if(rowData.menuUrl != "") a.attr('href', rowData.menuUrl);
+                            if(!(rowData.menuIcon == "null" ||rowData.menuIcon == ""))  span.addClass('fa fa-2x '+rowData.menuIcon) ;
+                        }
                         li.append(span);
                         li.append(a);
                         beforeList = li;
@@ -69,15 +75,21 @@
                         if(beforeMenuLev == 1){
                             childUl.empty();
                             childUl = $('<ul class="list-unstyled ps-3 collapse" id="menu_'+rowData.menuParentSeq+'" />');
+                            if(menuSeq == 7) childUl.removeClass('collapse');
                         }
                         beforeMenuLev = 2;
 
 
                         var childLi = $('<li class="nav-link" />');
                         var childA = $('<a href="#">'+rowData.menuNm+'</a>');
-                        if(rowData.menuUrl != "") childA.attr('href', rowData.menuUrl);
                         var childSpan = $('<span />');
-                        if(!(rowData.menuIcon == "null" ||rowData.menuIcon == "")) childSpan.addClass('fa fa-2x '+rowData.menuIcon);
+
+                        if(menuSeq == 7){
+                            childA.attr("onclick", "blogJs.fnList('"+rowData.menuUrl+"')");
+                        }else{
+                            if(rowData.menuUrl != "") childA.attr('href', rowData.menuUrl);
+                            if(!(rowData.menuIcon == "null" ||rowData.menuIcon == ""))  childSpan.addClass('fa fa-2x '+rowData.menuIcon) ;
+                        }
 
                         childLi.append(childSpan);
                         childLi.append(childA);
@@ -85,6 +97,7 @@
                     }
 
                 }
+
                 if(beforeMenuLev == 1){
                     $('#menuUl').append(beforeList);
                 }else{
@@ -95,4 +108,4 @@
                 alert(JSON.stringify(error));
             });
     }
-    leftMenu();
+

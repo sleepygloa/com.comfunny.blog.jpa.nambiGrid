@@ -13,6 +13,12 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     @Query(value = "SELECT * FROM blog p WHERE DEL_YN = 'N' ORDER BY p.IDX ASC", nativeQuery = true)
     List<Blog> findAllDesc();
 
+    @Query(value = "SELECT * FROM blog p WHERE DEL_YN = 'N' AND CATEGORYA = :searchA ORDER BY p.IDX ASC", nativeQuery = true)
+    List<Blog> findAllDesc(@Param("searchA") String searchA);
+
+    @Query(value = "SELECT * FROM blog p WHERE DEL_YN = 'N' AND CATEGORYA = :searchA AND CATEGORYB = :searchB ORDER BY p.IDX ASC", nativeQuery = true)
+    List<Blog> findAllDesc(@Param("searchA") String searchA, @Param("searchB") String searchB);
+
     @Query(value = "SELECT count(*) as cnt FROM Blog WHERE IDX = :idx")
     int findMaster(@Param("idx") int idx);
 

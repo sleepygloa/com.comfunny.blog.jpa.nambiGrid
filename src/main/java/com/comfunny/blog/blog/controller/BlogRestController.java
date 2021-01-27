@@ -5,6 +5,9 @@ import com.comfunny.blog.blog.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -18,9 +21,33 @@ public class BlogRestController {
      * 블로그 리스트 조회
      ***************************************/
     @GetMapping("/b/blog/list")
-    public List<BlogListResponseDto> list(){
-        return blogService.findAlldesc();
+    public List<BlogListResponseDto> list(@RequestParam(value="searchA", defaultValue = "") String searchA, @RequestParam(value="searchB", defaultValue = "") String searchB){
+        if(searchA.equals("")){
+            return blogService.findAlldesc();
+        }else{
+            if(searchB.equals("")){
+                try {
+                    searchA  = URLDecoder.decode(searchA, StandardCharsets.UTF_8.toString());
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                return blogService.findAlldesc(searchA);
+
+            }else{
+                try {
+                    searchA  = URLDecoder.decode(searchA, StandardCharsets.UTF_8.toString());
+                    searchB  = URLDecoder.decode(searchB, StandardCharsets.UTF_8.toString());
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                return blogService.findAlldesc(searchA, searchB);
+            }
+
+        }
+
     }
+
+
 
     /***************************************
      * 블로그 카테고리 데이터셋 조회

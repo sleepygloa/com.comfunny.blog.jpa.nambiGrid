@@ -34,7 +34,19 @@ public class BlogService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<BlogListResponseDto> findAlldesc(String searchA){
+        return blogRepository.findAllDesc(searchA).stream()
+                .map(BlogListResponseDto::new)
+                .collect(Collectors.toList());
+    }
 
+    @Transactional(readOnly = true)
+    public List<BlogListResponseDto> findAlldesc(String searchA, String searchB){
+        return blogRepository.findAllDesc(searchA, searchB).stream()
+                .map(BlogListResponseDto::new)
+                .collect(Collectors.toList());
+    }
 
     @Transactional(readOnly = true)
     public List<BlogListCategoryResponseDto> findCategory(){

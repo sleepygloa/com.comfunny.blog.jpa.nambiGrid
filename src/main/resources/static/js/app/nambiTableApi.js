@@ -74,8 +74,14 @@ function fnSaveReIdx(el){
     //카테고리C
     var categoryC = new Array();
 
+    //그리드 재조회
+    $.fn.fnListReload = function(){
+
+    }
+
     //그리드 초기화
     $.fn.fnList = function(data){
+
 
         data["uProgramId"] = data["programId"].charAt(0).toUpperCase() + data["programId"].slice(1);
         tableInitData = data;
@@ -84,6 +90,7 @@ function fnSaveReIdx(el){
         * 기본 div 세팅
         ***********************/
         var container = $('#'+tableInitData.programId+'Container');
+        $('#'+tableInitData.programId+'Grid').empty();
 
         /**********************
         * 기본 element 세팅
@@ -220,7 +227,6 @@ function fnSaveReIdx(el){
     	divBtnGroup.append(gridBtnGrpList);
 //    	gridDivContainer.append(divBtnGroup);
 
-
         /***************************
         * 테이블
         ****************************/
@@ -276,12 +282,20 @@ function fnSaveReIdx(el){
 
     //데이터셋만 재조회
     function getDataList(){
+    console.log(tableInitData.url);
+        //url 체크
+        if(tableInitData.url == undefined){
+            tableInitData.url = "/b/"+tableInitData.programId + "/list";
+        }else{
+
+        }
+
     	//그리드 컬럼 만드는 로직
     	$.ajax({
     	    type:"GET",
-    		url : "/b/"+tableInitData.programId + "/list",
+    		url : tableInitData.url,
     		dataType : "json",
-    		contentType:"application/json",
+    		contentType:"application/json;",
     		async : false,
     		success : function(result){
     		    trCnt = -1;
