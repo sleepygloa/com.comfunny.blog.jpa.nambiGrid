@@ -46,7 +46,7 @@ public class IndexController {
      *************************************************************/
     @GetMapping("/i/login")
     public String login(){
-        return "/login";
+        return "login";
     }
 
 
