@@ -132,7 +132,7 @@ function fnSaveReIdx(el){
     	var divBtnGroup = $('<div class="col-xs-w100" />');
 
     	var gridBtnGrpList = $('<div class="col-xs-w100" />');
-    	console.log(app);
+
     	if(app.userRole == "A"){
 	    	if(data.btn != undefined){
 	    		for(var i = data.btn.length - 1; i >= 0; i--){

@@ -61,10 +61,10 @@ function leftMenu(menuSeq){
                     var a = $('<a class="nav-link" href="#"  aria-expanded="false" data-bs-target="#menu_'+rowData.menuSeq+'" aria-controls="menu_'+rowData.menuSeq+'" >'+rowData.menuNm+'</a>');
                     var span = $('<span class=""/>');
                     if(menuSeq == 7){
-                        a.attr("onclick", "blogJs.fnList('"+rowData.menuUrl+"'); $('#sideMenuToggler').trigger('click');");
+                        a.attr("onclick", "blogJs.fnList('"+rowData.menuUrl+"'); if($('#sidebarMenu').hasClass('show') == true){ $('#sidebarMenu').removeClass('show');};");
                     }else{
                         if(rowData.menuUrl != "") {
-                            a.attr('onclick', "lodingPage('"+rowData.menuUrl+"'); $('#sideMenuToggler').trigger('click');");
+                            a.attr('onclick', "lodingPage('"+rowData.menuUrl+"'); if($('#sidebarMenu').hasClass('show') == true){ $('#sidebarMenu').removeClass('show');};");
 
                         }
                         //a.attr('href', rowData.menuUrl);
@@ -88,11 +88,11 @@ function leftMenu(menuSeq){
                     var childSpan = $('<span />');
 
                     if(menuSeq == 7){
-                        childA.attr("onclick", "blogJs.fnList('"+rowData.menuUrl+"'); $('#sideMenuToggler').trigger('click');");
+                        childA.attr("onclick", "blogJs.fnList('"+rowData.menuUrl+"'); if($('#sidebarMenu').hasClass('show') == true){ $('#sidebarMenu').removeClass('show');};");
                     }else{
 //                        if(rowData.menuUrl != "") childA.attr('href', rowData.menuUrl);
                         if(rowData.menuUrl != "") {
-                            childA.attr('onclick', "lodingPage('"+rowData.menuUrl+"'); $('#sideMenuToggler').trigger('click');");
+                            childA.attr('onclick', "lodingPage('"+rowData.menuUrl+"'); if($('#sidebarMenu').hasClass('show') == true){ $('#sidebarMenu').removeClass('show');};");
                         }
                         if(!(rowData.menuIcon == "null" ||rowData.menuIcon == ""))  childSpan.addClass('fa fa-2x '+rowData.menuIcon) ;
                     }
