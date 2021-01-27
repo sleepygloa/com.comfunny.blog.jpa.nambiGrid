@@ -1,10 +1,7 @@
 
-var trCnt = -1;
 
 
-var initData = '';
-var blogData = '';
-var s_userId = null;
+
 
 function dataURItoBlob(dataURI) {
     // convert base64/URLEncoded data component to raw binary data held in a string
@@ -48,6 +45,7 @@ function fnMakeCombo(targetStr, data){
         }
     });
 }
+var trCnt = -1;
 var clickCnt = -1; //클릭시 행번호
 var rowId = -1;
 var rowColNm = "";
@@ -130,7 +128,6 @@ function fnSaveReIdx(el){
     	tableInitData.editableFlag = false;
 
 
-    	
     	//그리드 버튼 그룹
     	var divBtnGroup = $('<div class="col-xs-w100" />');
 
@@ -151,15 +148,7 @@ function fnSaveReIdx(el){
 	        		        });
 	        		        fileUpload.on('change', function(){
 	        		            getBase64($(this)[0].files[0]);
-	        		            //alert(fileUploadBase64Text);
 	        		        });
-
-
-//	        		        var reader = new FileReader(file);
-//                            reader.onload = function() {
-//                              result = reader.result;
-//                            }
-
 	        		    })
                         gridBtnGrpList.append(imgUpload);
 	        		}else if(btnName == 'insert'){

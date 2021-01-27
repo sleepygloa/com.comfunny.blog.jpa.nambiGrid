@@ -41,13 +41,7 @@
 <body>
 
 
-    {{#userName}}
-        <input id="lgSes" value="{{userName}}" style="display:none;"/>
-    {{/userName}}
 
-    {{^userName}}
-        <input id="lgSes" value="none" style="display:none;"/>
-    {{/userName}}
 
 
 
@@ -58,17 +52,15 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <!--<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">-->
-        <ul class="navbar-nav px-3">
-            <li class="nav-item text-nowrap">
-                {{#userName}}
-                    <a class="nav-link" href="/logout">Logout</a>
-                {{/userName}}
 
-                {{^userName}}
-                    <a class="nav-link" href="/i/login">Login</a>
-                {{/userName}}
-            </li>
-        </ul>
+        {{#userName}}
+            <a class="nav-link col-md-3 col-lg-2 login" href="/logout">로그아웃</a>
+        {{/userName}}
+
+        {{^userName}}
+            <a class="nav-link col-md-3 col-lg-2 login" href="/i/login">로그인</a>
+        {{/userName}}
+
     </header>
     <div class="container-fluid">
         <div class="row">

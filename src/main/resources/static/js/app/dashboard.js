@@ -1,6 +1,4 @@
-var app = function() {
-    var menuSearch = ""
-}
+
 
 function getSession(){
 
@@ -12,6 +10,8 @@ function getSession(){
         }).done(function(data){
             app.userName = data.userName;
             app.userEmail = data.userEmail;
+            app.userRole = data.userRole;
+            console.log(app);
         }).fail(function(error){
             alert(JSON.stringify(error));
         });
