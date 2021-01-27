@@ -132,6 +132,8 @@ function fnSaveReIdx(el){
     	var divBtnGroup = $('<div class="col-xs-w100" />');
 
     	var gridBtnGrpList = $('<div class="col-xs-w100" />');
+    	console.log(app);
+    	if(app.userRole == "A"){
 	    	if(data.btn != undefined){
 	    		for(var i = data.btn.length - 1; i >= 0; i--){
 	        		var btnName = data.btn[i];
@@ -218,6 +220,8 @@ function fnSaveReIdx(el){
 
 	        	}
 	    	}
+    	}
+
     	divBtnGroup.append(gridBtnGrpList);
 //    	gridDivContainer.append(divBtnGroup);
 
@@ -276,7 +280,7 @@ function fnSaveReIdx(el){
 
     //데이터셋만 재조회
     function getDataList(){
-    console.log(tableInitData.url);
+
         //url 체크
         if(tableInitData.url == undefined){
             tableInitData.url = "/b/"+tableInitData.programId + "/list";

@@ -1,4 +1,3 @@
-leftMenu();
 
 //var main = function() {
 //

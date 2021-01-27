@@ -11,12 +11,11 @@ function getSession(){
             app.userName = data.userName;
             app.userEmail = data.userEmail;
             app.userRole = data.userRole;
-            console.log(app);
         }).fail(function(error){
             alert(JSON.stringify(error));
         });
 };
-getSession();
+
 
 function leftMenu(menuSeq){
     $('#menuUl').empty();
@@ -62,9 +61,13 @@ function leftMenu(menuSeq){
                     var a = $('<a class="nav-link" href="#"  aria-expanded="false" data-bs-target="#menu_'+rowData.menuSeq+'" aria-controls="menu_'+rowData.menuSeq+'" >'+rowData.menuNm+'</a>');
                     var span = $('<span class=""/>');
                     if(menuSeq == 7){
-                        a.attr("onclick", "blogJs.fnList('"+rowData.menuUrl+"')");
+                        a.attr("onclick", "blogJs.fnList('"+rowData.menuUrl+"'); $('#sideMenuToggler').trigger('click');");
                     }else{
-                        if(rowData.menuUrl != "") a.attr('href', rowData.menuUrl);
+                        if(rowData.menuUrl != "") {
+                            a.attr('onclick', "lodingPage('"+rowData.menuUrl+"'); $('#sideMenuToggler').trigger('click');");
+
+                        }
+                        //a.attr('href', rowData.menuUrl);
                         if(!(rowData.menuIcon == "null" ||rowData.menuIcon == ""))  span.addClass('fa fa-2x '+rowData.menuIcon) ;
                     }
                     li.append(span);
@@ -85,9 +88,12 @@ function leftMenu(menuSeq){
                     var childSpan = $('<span />');
 
                     if(menuSeq == 7){
-                        childA.attr("onclick", "blogJs.fnList('"+rowData.menuUrl+"')");
+                        childA.attr("onclick", "blogJs.fnList('"+rowData.menuUrl+"'); $('#sideMenuToggler').trigger('click');");
                     }else{
-                        if(rowData.menuUrl != "") childA.attr('href', rowData.menuUrl);
+//                        if(rowData.menuUrl != "") childA.attr('href', rowData.menuUrl);
+                        if(rowData.menuUrl != "") {
+                            childA.attr('onclick', "lodingPage('"+rowData.menuUrl+"'); $('#sideMenuToggler').trigger('click');");
+                        }
                         if(!(rowData.menuIcon == "null" ||rowData.menuIcon == ""))  childSpan.addClass('fa fa-2x '+rowData.menuIcon) ;
                     }
 
@@ -108,6 +114,24 @@ function leftMenu(menuSeq){
             alert(JSON.stringify(error));
         });
 }
+leftMenu();
+getSession();
+
+//글 컨텐츠 불러오기.
+function lodingPage(url){
+
+    $.ajax({
+        url		: url,
+        type	: "GET",
+        async	: false,
+        contentType : 'application/html; charset=utf-8',
+        success	: function(result){
+            $('#main').empty();
+            $('#main').html(result);
+        }
+    });
+}
+
 
 function getBase64(file, callback) {
    var reader = new FileReader();
