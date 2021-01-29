@@ -18,13 +18,18 @@ public class SessionRestController {
         String userName = "";
         String userEmail = "";
         String userRole = "";
+        String userPicture = "";
 
         if(user != null){
             userName = user.getName();
             userEmail = user.getEmail();
-            userRole = sessionRestService.findByEmail(userEmail).getRole();
+
+            SessionDto dto  = sessionRestService.findByEmail(userEmail);
+            userRole = dto.getRole();
+            userPicture = dto.getPicture();
+
         }
 
-        return new SessionResponseDto(userName, userEmail, userRole);
+        return new SessionResponseDto(userName, userEmail, userRole, userPicture);
     }
 }

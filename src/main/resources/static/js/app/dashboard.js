@@ -3,6 +3,7 @@ var app = function () {
     var userName = "";
     var userEmail = "";
     var userRole = "G";
+    var userPicture = "";
 }
 function getSession(){
 
@@ -15,6 +16,7 @@ function getSession(){
             app.userName = data.userName;
             app.userEmail = data.userEmail;
             app.userRole = data.userRole;
+            app.userPicture = data.userPicture;
         }).fail(function(error){
             alert(JSON.stringify(error));
         });

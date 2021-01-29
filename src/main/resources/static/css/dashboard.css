@@ -104,3 +104,40 @@ body {
 .login, .login:hover {
   color:white;
 }
+
+
+.reContLabel{
+    background: #F4F4F4;
+    border: 0px;
+    padding:0px 10px;
+}
+
+
+.reContInput, .reContInput:hover, .reContInput:focus{
+    background: #F4F4F4;
+    border: 0px;
+    outline:0px;
+    padding:0px;
+    margin:0px;
+}
+
+.reContText{
+    border: 0px;
+    outline:0px;
+    font-size:9px;
+    height:10px;
+    width:80px;
+}
+.reContContent{
+    border-radius: 10px;
+    background:#F4F4F4;
+    border: 0px;
+    outline:0px;
+    padding:0px 10px;
+    margin:0px 0px 5px 0px;
+}
+
+.reContBtn{
+    float:right;
+    font-size:7px;
+}
