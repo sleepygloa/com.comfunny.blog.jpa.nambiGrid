@@ -124,7 +124,7 @@ body {
 .reContText{
     border: 0px;
     outline:0px;
-    font-size:9px;
+    font-size:7px;
     height:10px;
     width:80px;
 }
@@ -139,5 +139,5 @@ body {
 
 .reContBtn{
     float:right;
-    font-size:7px;
+    font-size:5px;
 }

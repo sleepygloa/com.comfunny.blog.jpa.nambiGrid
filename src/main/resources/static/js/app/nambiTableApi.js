@@ -641,7 +641,7 @@ function fnSaveReIdx(el){
                         if(tableInitData.viewContents) getView('VIEW', parseInt($('.td_row_s_'+rowId+'_idx').text()));
                         if(tableInitData.viewContentsRe) {
                             var reBody = $('#'+tableInitData.programId+'Re')
-                            reBody.empty();
+
                             getViewReContent('VIEW');
                         }
                         console.log(rowId);
@@ -1033,8 +1033,8 @@ function fnSaveReIdx(el){
     * 댓글 리스트 조회
     *******************************************************/
     function getViewReContent(flag, ref, reStep){
-        var reBody = $('#'+tableInitData.programId+'Re')
-
+        var reBody = $('#'+tableInitData.programId+'Re');
+        reBody.empty();
         var idx = parseInt($('.td_row_s_'+rowId+'_idx').text());
     	//그리드 컬럼 만드는 로직
     	$.ajax({
@@ -1071,7 +1071,7 @@ function fnSaveReIdx(el){
                                 /*******************************************
                                 * 들여쓰기 ㄴ
                                 ********************************************/
-                                var ddTextRe = $('<div class="col-xs-w90" style="height:50px; text-align:center;" />');
+                                var ddTextRe = $('<div class="col-xs-w15" style="height:50px; text-align:center;" />');
                                 ddTextRe.text('ㄴ');
 
 
@@ -1163,6 +1163,8 @@ function fnSaveReIdx(el){
 								    flag = "VIEW";
 								}else if(dtGridPRef != 0 && flag == "VIEW"){
 								    dd.append(ddTextRe);
+								    ddDiv.removeClass('col-xs-w90');
+								    ddDiv.addClass('col-xs-w85');
 								}
 
 
@@ -1178,12 +1180,6 @@ function fnSaveReIdx(el){
                         ********************************************/
                         var dd = $('<div class="col-xs-w100 m-t-20"  style="min-height:155px;"  />');
                         //if(i == -1) dd.css({"border-bottom" : "0.5px solid gray","margin": "5px 0px"});
-
-                        /*******************************************
-                        * 들여쓰기 ㄴ
-                        ********************************************/
-                        var ddTextRe = $('<div class="col-xs-w90" style="height:50px; text-align:center;" />');
-                        ddTextRe.text('ㄴ');
 
 
                         var ddDiv = $('<div class="col-xs-w90" style="float:right;" />');
