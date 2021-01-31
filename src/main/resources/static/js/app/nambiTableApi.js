@@ -1089,7 +1089,7 @@ function fnSaveReIdx(el){
                                 var ddTimeInput = $('<input class="reContText" type="type" value="" readonly />');
 
                             //컨텐츠영역
-                            var ddContentDiv = $('<div class="col-xs-w100 reContText" />');
+                            var ddContentDiv = $('<div class="col-xs-w100 reContText" style="overflow-y:auto;height:auto;" />');
 
                             //글 리스트
                             ddIdInput.val(dt_grid[i].inUserId);
@@ -1098,12 +1098,15 @@ function fnSaveReIdx(el){
 
                             if(ref == dtGridRef && reStep == dtGridPRef && (flag == "RESAVE" || flag == "UPDATE" || flag == "VIEW")
                             ){
-                                var ddIdTextArea = $('<textarea id="'+tableInitData.programId+'Content_'+dtGridRef+'_'+dtGridPRef+'" class="reContInput col-xs-w100" />');
+                                var ddIdTextArea = $('<textarea id="'+tableInitData.programId+'Content_'+dtGridRef+'_'+dtGridPRef+'" class="reContInput col-xs-w100" style="display:block; height:100%;" />');
                                 ddIdTextArea.keydown(function(el){
-                                    resize(el);
+                                    if(el.keyCode == 13){
+                                        ddContentDiv.css('height', (12+el.target.scrollHeight)+"px");
+                                    }
+
                                 });
                             }else{
-                                var ddIdTextArea = $('<pre id="'+tableInitData.programId+'Content_'+dtGridRef+'_'+dtGridPRef+'" class="reContContent col-xs-w100" />');
+                                var ddIdTextArea = $('<pre id="'+tableInitData.programId+'Content_'+dtGridRef+'_'+dtGridPRef+'" class="reContContent col-xs-w100" style="height:auto;"/>');
                             }
                             if(dt_grid[i].delYn == 'Y') {
                                 ddIdTextArea.text('삭제된 댓글 입니다.');
@@ -1119,8 +1122,6 @@ function fnSaveReIdx(el){
                             * 버튼그룹
                             ********************************************/
                             var ddBtnDiv = $('<div class="col-xs-w100" style="height:5px;" />');
-
-                            //getViewReContentBtnSave(ddBtnDtv); //신규 저장
 
                             /*******************************************
                             * 버튼 유효성
@@ -1153,7 +1154,7 @@ function fnSaveReIdx(el){
                             /*******************************************
                             * 사용자그룹, 버튼그룹 합치기
                             ********************************************/
-                            ddDiv.append(ddContentDiv).append(ddImgDiv).append(ddIdDiv).append(ddTimeDiv).append(ddBtnDiv);
+                            ddDiv.append(ddContentDiv).append(ddImgDiv).append(ddIdDiv).append(ddBtnDiv);
 
                         /*******************************************
                         * 댓글쓰기 시 필요함수
@@ -1161,7 +1162,7 @@ function fnSaveReIdx(el){
                         if(ref == 0 && reStep == dtGridRef && flag == "READD"){
                             i--;
                             flag = "VIEW";
-                        }else if(dtGridPRef != 0 && flag == "VIEW"){
+                        }else if(dtGridPRef != 0){
                             dd.append(ddTextRe);
                             ddDiv.removeClass('col-xs-w90');
                             ddDiv.addClass('col-xs-w85');
@@ -1315,7 +1316,8 @@ function fnSaveReIdx(el){
     function getViewReContentBtnUpdateSave(el, dtGridRef, dtGridPRef){
 
         var ddBtnUpdateSave = $('<a class="btn reContBtn" id="'+tableInitData.programId+'ReUpdateBtn_'+dtGridRef+'_'+dtGridPRef+' " />');
-        ddBtnUpdateSave.text('저장');
+        var ddBtnSaveI = $('<i class="fa fa-2x fa-arrow-up"></i>');
+        ddBtnUpdateSave.append(ddBtnSaveI);
         ddBtnUpdateSave.click(function(){
 
             var el = $(this);
@@ -1357,7 +1359,8 @@ function fnSaveReIdx(el){
     function getViewReContentBtnReSave(el, dtGridRef, dtGridPRef){
 
         var ddBtnReSave = $('<a class="btn reContBtn" id="'+tableInitData.programId+'ReReSaveBtn_'+dtGridRef+'_'+dtGridPRef+' " />');
-        ddBtnReSave.text('저장');
+        var ddBtnSaveI = $('<i class="fa fa-2x fa-arrow-up"></i>');
+        ddBtnReSave.append(ddBtnSaveI);
         ddBtnReSave.click(function(){
 
             var el = $(this);
