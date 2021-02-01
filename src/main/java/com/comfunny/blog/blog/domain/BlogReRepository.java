@@ -9,9 +9,10 @@ import java.util.List;
 
 public interface BlogReRepository extends JpaRepository<BlogRe, Long> {
 
-    @Query(value = "SELECT a.REF, a.P_REF, a.IDX, a.CONTENT, a.DEL_YN, a.IN_USER_ID, a.UP_USER_ID, a.IN_USER_EMAIL, a.IN_DT, a.UP_DT, CASE WHEN b.p_ref IS NULL THEN a.ref ELSE b.ref END LEVEL" +
+    @Query(value = "SELECT a.REF, a.P_REF, a.IDX, a.CONTENT, a.DEL_YN, a.IN_USER_ID, a.UP_USER_ID, a.IN_USER_EMAIL, a.UP_USER_EMAIL, a.IN_DT, a.UP_DT, CASE WHEN b.p_ref IS NULL THEN a.ref ELSE b.ref END LEVEL, c.picture AS PICTURE" +
                    "  FROM blog_re a" +
         "  LEFT OUTER JOIN blog_re b ON a.P_REF = b.REF" +
+        "  LEFT OUTER JOIN user c ON a.UP_USER_EMAIL = c.email" +
                    " WHERE a.IDX = :idx  " +
                 " ORDER BY LEVEL, a.REF", nativeQuery = true)
     List<BlogRe> listRe(@Param("idx") int idx);

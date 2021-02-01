@@ -1044,9 +1044,9 @@ function fnMakeCombo(targetStr, data){
 
                 var dt_grid = result;
 
-                    //-1 : 댓글 신규 작성 폼.
-                    for(var i = 0; i < dt_grid.length; i++){
-
+                //-1 : 댓글 신규 작성 폼.
+                for(var i = 0; i < dt_grid.length; i++){
+console.log(dt_grid[i]);
                         var dtGridRef = (i == -1? 0 : parseInt(dt_grid[i].ref)); //순번
                         var dtGridPRef = (i == -1? 0 : parseInt(dt_grid[i].pref));
                         var dtGridLevel = (i == -1? 0 : parseInt(dt_grid[i].level));
@@ -1074,7 +1074,7 @@ function fnMakeCombo(targetStr, data){
                             * 사용자 그룹
                             ********************************************/
                             var ddImgDiv = $('<div style="position: absolute; width:25px; height:25px; left:-30px; bottom:0px;"></div>');
-                                var ddImgInput = $('<img src="'+app.userPicture+'" style="width:25px; height: 25px; border-radius:50%; ">');
+                                var ddImgInput = $('<img src="'+dt_grid[i].picture+'" style="width:25px; height: 25px; border-radius:50%; ">');
 
                             //이름영역
                             var ddIdDiv = $('<div class="col-xs-w100 " style="min-height:25px;"/>');
@@ -1126,19 +1126,19 @@ function fnMakeCombo(targetStr, data){
                                         if(dtGridPRef == 0) getViewReContentBtnReAdd(ddIdDiv, dtGridRef, dtGridPRef); //댓글달기
                                     }
                                     //사용자확인
-                                    if(app.userEmail == dt_grid[i].inUserId);
-                                    console.log(app.userEmail, dt_grid[i].inUserId);
-                                    if(flag == 'VIEW'){
-                                        getViewReContentBtnUpdate(ddIdDiv, dtGridRef, dtGridPRef); //수정 전환
-                                        getViewReContentBtnDelete(ddIdDiv, dtGridRef, dtGridPRef); //삭제
-                                    }
-                                    if(flag == "UPDATE" && ref == dtGridRef && reStep == dtGridPRef){
-                                        //저장
-                                        getViewReContentBtnUpdateSave(ddIdDiv, dtGridRef, dtGridPRef); //수정 저장
-                                    }
+                                    if(app.userEmail == dt_grid[i].upUserEmail){
+                                        if(flag == 'VIEW'){
+                                            getViewReContentBtnUpdate(ddIdDiv, dtGridRef, dtGridPRef); //수정 전환
+                                            getViewReContentBtnDelete(ddIdDiv, dtGridRef, dtGridPRef); //삭제
+                                        }
+                                        if(flag == "UPDATE" && ref == dtGridRef && reStep == dtGridPRef){
+                                            //저장
+                                            getViewReContentBtnUpdateSave(ddIdDiv, dtGridRef, dtGridPRef); //수정 저장
+                                        }
 
-                                    if(dtGridRef == 0 && dtGridPRef == reStep){
-                                        getViewReContentBtnReSave(ddIdDiv, dtGridRef, dtGridPRef); //level1 댓글 저장
+                                        if(dtGridRef == 0 && dtGridPRef == reStep){
+                                            getViewReContentBtnReSave(ddIdDiv, dtGridRef, dtGridPRef); //level1 댓글 저장
+                                        }
                                     }
                                 }
 
@@ -1168,6 +1168,7 @@ function fnMakeCombo(targetStr, data){
 
 
                     }
+
                 getViewInsert(reBody);
             }
 
@@ -1175,9 +1176,8 @@ function fnMakeCombo(targetStr, data){
         });
     }
 
-    //그리드 ROW 생성 내부함수.
+    //댓글 - 글쓰기
     function getViewInsert(el, dtGridRef, dtGridPRef){
-
         /*******************************************
         * ref -1 : 댓글쓰기 폼.
         ********************************************/
@@ -1222,7 +1222,7 @@ function fnMakeCombo(targetStr, data){
         * 버튼그룹
         ********************************************/
         var ddBtnDiv = $('<div class="col-xs-w100" style="height:33px;" />');
-        getViewReContentBtnSave(ddBtnDiv, 0, 0); //댓글달기
+        if(app.userEmail != "") getViewReContentBtnSave(ddBtnDiv, 0, 0); //댓글달기
 
         /*******************************************
         * 사용자그룹, 버튼그룹 합치기

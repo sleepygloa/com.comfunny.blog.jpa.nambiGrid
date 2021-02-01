@@ -18,6 +18,8 @@ public class BlogReListResponseDto {
     private String inUserId;
     private String upUserId;
     private String inUserEmail;
+    private String upUserEmail;
+    private String picture;
 
     private LocalDateTime inDt;
     private LocalDateTime upDt;
@@ -32,6 +34,8 @@ public class BlogReListResponseDto {
         this.inUserId = entity.getInUserId();
         this.upUserId = entity.getUpUserId();
         this.inUserEmail = entity.getInUserEmail();
+        this.upUserEmail = entity.getUpUserEmail();
+        this.picture = entity.getPicture();
         this.inDt = entity.getInDt();
         this.upDt = entity.getUpDt();
     }
