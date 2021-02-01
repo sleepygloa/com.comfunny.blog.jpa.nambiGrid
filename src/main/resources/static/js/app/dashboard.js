@@ -1,9 +1,9 @@
 
-var app = function () {
-    var userName = "";
-    var userEmail = "";
-    var userRole = "G";
-    var userPicture = "";
+var app = {
+    userName : "",
+    userEmail : "",
+    userRole : "G",
+    userPicture : ""
 }
 function getSession(){
 
@@ -11,6 +11,7 @@ function getSession(){
         type : 'GET',
         url : '/session',
         dataType : 'json',
+        async : false,
         contentType : 'application/json; charset=utf-8'
         }).done(function(data){
             app.userName = data.userName;

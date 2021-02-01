@@ -14,7 +14,7 @@ public interface BlogReRepository extends JpaRepository<BlogRe, Long> {
         "  LEFT OUTER JOIN blog_re b ON a.P_REF = b.REF" +
                    " WHERE a.IDX = :idx  " +
                 " ORDER BY LEVEL, a.REF", nativeQuery = true)
-    List<BlogRe> findDesc(@Param("idx") int idx);
+    List<BlogRe> listRe(@Param("idx") int idx);
 
     @Query(value = "SELECT count(*) as cnt FROM blog_re WHERE REF = :ref ", nativeQuery = true)
     int findMaster(@Param("ref") int ref);
@@ -22,15 +22,15 @@ public interface BlogReRepository extends JpaRepository<BlogRe, Long> {
     @Query(value = "SELECT CASE WHEN MAX(REF) IS NULL THEN 1 ELSE MAX(REF)+1 END AS MAX FROM blog_re ", nativeQuery = true)
     int findMaxMaster();
 
-    @Query(value = "INSERT INTO blog_re (IDX, REF, P_REF, CONTENT, IN_USER_ID, UP_USER_ID, IN_USER_EMAIL, IN_DT, UP_DT) VALUES " +
-                                    "(:idx, :ref, :pRef, :content, :name, :name, :email, now(), now() )", nativeQuery = true)
-    void insertMaster(@Param("idx") int idx, @Param("ref") int ref, @Param("pRef") int pRef, @Param("name") String name, @Param("email") String email, @Param("content") String content);
+    @Query(value = "INSERT INTO blog_re (IDX, REF, P_REF, CONTENT, IN_USER_ID, UP_USER_ID, IN_USER_EMAIL, UP_USER_EMAIL, IN_DT, UP_DT) VALUES " +
+                                    "(:idx, :ref, :pRef, :content, :name, :name, :email, :email, now(), now() )", nativeQuery = true)
+    void insertRe(@Param("idx") int idx, @Param("ref") int ref, @Param("pRef") int pRef, @Param("name") String name, @Param("email") String email, @Param("content") String content);
 
     @Query(value = "UPDATE blog_re SET DEL_YN = 'Y' WHERE REF = :ref", nativeQuery = true)
     void deleteRe(@Param("ref") int ref);
 
-    @Query(value = "UPDATE blog_re SET CONTENT = :content, UP_DT = now() WHERE REF = :ref AND IDX = :idx ", nativeQuery = true)
-    void updateMaster(@Param("idx") int idx, @Param("ref") int ref, @Param("content") String content);
+    @Query(value = "UPDATE blog_re SET CONTENT = :content, UP_USER_ID = :name, UP_USER_EMAIL = :email, UP_DT = now() WHERE REF = :ref AND IDX = :idx ", nativeQuery = true)
+    void updateRe(@Param("idx") int idx, @Param("ref") int ref, @Param("content") String content, @Param("name") String name, @Param("email") String email);
 
 //    @Query(value = "SELECT count(*) as cnt FROM Blog WHERE IDX = :idx")
 //    int findMaster(@Param("idx") int idx);

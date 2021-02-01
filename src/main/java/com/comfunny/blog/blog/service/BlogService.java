@@ -2,6 +2,8 @@ package com.comfunny.blog.blog.service;
 
 import com.comfunny.blog.blog.domain.*;
 import com.comfunny.blog.blog.dto.*;
+import com.comfunny.blog.config.auth.LoginUser;
+import com.comfunny.blog.config.auth.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,19 +58,21 @@ public class BlogService {
     }
 
     @Transactional
-    public void save(List<Map<String, Object>> list){
+    public void save(List<Map<String, Object>> list, SessionUser user){
 
         Map<String, Object> mMap = list.get(0);
 
         int idx = (int)mMap.get("idx");
         int cnt = blogRepository.findMaster(idx);
+        String name = user.getName();
+        String email = user.getEmail();
         if(cnt == 0){
             idx = blogRepository.findMaxMaster();
             blogRepository.insertMaster(idx, (int)mMap.get("pIdx"), (String)mMap.get("categoryA"), (String)mMap.get("categoryB"), (String)mMap.get("categoryC"),
-                    (String)mMap.get("subject"));
+                    (String)mMap.get("subject"), name, email);
         }else{
             blogRepository.updateMaster(idx, (String)mMap.get("categoryA"), (String)mMap.get("categoryB"), (String)mMap.get("categoryC"),
-                    (String)mMap.get("subject"));
+                    (String)mMap.get("subject"), name, email);
         }
         blogDetailRepository.deleteDetail(idx);
         for(Map<String, Object> map : list){
@@ -84,37 +88,37 @@ public class BlogService {
     }
 
     @Transactional
-    public void deleteMaster (int idx){
+    public void delete (int idx){
         int cnt = blogRepository.findMaster(idx);
         if(cnt == 0) new IllegalArgumentException("해당 게시글이 없습니다. id="+idx);
 
-        blogRepository.deleteMaster(idx);
+        blogRepository.delete(idx);
     }
 
 
     @Transactional(readOnly = true)
-    public List<BlogReListResponseDto> findDesc(int idx){
-        return blogReRepository.findDesc(idx).stream()
+    public List<BlogReListResponseDto> listRe(int idx){
+        return blogReRepository.listRe(idx).stream()
                 .map(BlogReListResponseDto::new)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public void saveRe(Map map){
+    public void saveRe(Map map, SessionUser user){
 
         String flag = (String)map.get("flag");
         if(flag.equals("INSERT")){
             int ref = blogReRepository.findMaxMaster();
-            blogReRepository.insertMaster((int)map.get("idx"), ref, 0, (String)map.get("name"), (String)map.get("writer"), (String)map.get("content"));
+            blogReRepository.insertRe((int)map.get("idx"), ref, 0, user.getName(), user.getEmail(), (String)map.get("content"));
         }else if(flag.equals("UPDATE")){
             int ref = (int)map.get("ref");
             int cnt = blogReRepository.findMaster(ref);
             if(cnt == 0) new IllegalArgumentException("해당 게시글이 없습니다. id="+ref);
 
-            blogReRepository.updateMaster((int)map.get("idx"), ref, (String)map.get("content"));
+            blogReRepository.updateRe((int)map.get("idx"), ref, (String)map.get("content"), user.getName(), user.getEmail());
         }else if(flag.equals("INSERT_RE")){
             int ref = blogReRepository.findMaxMaster();
-            blogReRepository.insertMaster((int)map.get("idx"), ref, (int)map.get("pRef"), (String)map.get("name"), (String)map.get("writer"), (String)map.get("content"));
+            blogReRepository.insertRe((int)map.get("idx"), ref, (int)map.get("pRef"), user.getName(), user.getEmail(), (String)map.get("content"));
         }
 
 
@@ -149,15 +153,15 @@ public class BlogService {
 
 
     @Transactional
-    public void saveMd(int idx, String title, String categoryA, String categoryB, String categoryC, String content, String url){
+    public void saveMd(int idx, String title, String categoryA, String categoryB, String categoryC, String content, String url, SessionUser user){
 
 
         int cnt = blogRepository.findMaster(idx);
         if(cnt == 0){
             idx = blogRepository.findMaxMaster();
-            blogRepository.insertMd(idx, 0,categoryA,categoryB,categoryC, title, content, url);
+            blogRepository.insertMd(idx, 0,categoryA,categoryB,categoryC, title, content, url, user.getName(), user.getEmail());
         }else{
-            blogRepository.updateMd(idx, categoryA,categoryB,categoryC, title, content, url);
+            blogRepository.updateMd(idx, categoryA,categoryB,categoryC, title, content, url, user.getName(), user.getEmail());
         }
 
     }

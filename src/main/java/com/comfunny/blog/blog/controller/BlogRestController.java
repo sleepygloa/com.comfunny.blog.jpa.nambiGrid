@@ -2,6 +2,8 @@ package com.comfunny.blog.blog.controller;
 
 import com.comfunny.blog.blog.dto.*;
 import com.comfunny.blog.blog.service.BlogService;
+import com.comfunny.blog.config.auth.LoginUser;
+import com.comfunny.blog.config.auth.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,29 +49,26 @@ public class BlogRestController {
 
     }
 
-
-
     /***************************************
      * 블로그 카테고리 데이터셋 조회
      ***************************************/
     @GetMapping("/b/blog/listCategory")
-    public List<BlogListCategoryResponseDto> findGetegory(){ return blogService.findCategory();
-    }
+    public List<BlogListCategoryResponseDto> findGetegory(){ return blogService.findCategory(); }
 
     /***************************************
      * 글 저장
      ***************************************/
     @PostMapping("/b/blog/save")
-    public void save(@RequestBody Map map){
-        blogService.save((List<Map<String, Object>>)map.get("list"));
+    public void save(@RequestBody Map map, @LoginUser SessionUser user){
+        blogService.save((List<Map<String, Object>>)map.get("list"), user);
     }
 
     /***************************************
      * 글삭제
      ***************************************/
     @DeleteMapping("/b/blog/delete")
-    public void deleteMaster(@RequestParam int idx){
-        blogService.deleteMaster(idx);
+    public void delete(@RequestParam int idx){
+        blogService.delete(idx);
     }
 
     /***************************************
@@ -85,14 +84,14 @@ public class BlogRestController {
      ***************************************/
     @GetMapping("/b/blog/listRe")
     public List<BlogReListResponseDto> listRe(@RequestParam int idx){
-        return blogService.findDesc(idx);
+        return blogService.listRe(idx);
     }
 
     /***************************************
      * 댓글 저장
      ***************************************/
     @PostMapping("/b/blog/saveRe")
-    public void saveRe(@RequestBody Map data){ blogService.saveRe(data); }
+    public void saveRe(@RequestBody Map data, @LoginUser SessionUser user){ blogService.saveRe(data, user); }
 
     /***************************************
      * 댓글 삭제
@@ -100,14 +99,12 @@ public class BlogRestController {
     @DeleteMapping("/b/blog/deleteRe")
     public void deleteRe(@RequestBody Map data){ blogService.deleteRe(data); }
 
-
-
     /***************************************
      * 글 저장 (md)
      ***************************************/
     @PostMapping("/b/blog/saveMd")
-    public void saveMd(@RequestParam int idx, @RequestParam String title, @RequestParam String categoryA, @RequestParam String categoryB, @RequestParam String categoryC, @RequestParam String content, @RequestParam String url){
-        blogService.saveMd(idx, title, categoryA, categoryB, categoryC, content, url);
+    public void saveMd(@RequestParam int idx, @RequestParam String title, @RequestParam String categoryA, @RequestParam String categoryB, @RequestParam String categoryC, @RequestParam String content, @RequestParam String url, @LoginUser SessionUser user){
+        blogService.saveMd(idx, title, categoryA, categoryB, categoryC, content, url, user);
     }
 
 

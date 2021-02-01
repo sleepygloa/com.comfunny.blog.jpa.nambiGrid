@@ -1,7 +1,18 @@
 
 
 
-
+var trCnt = -1;
+var clickCnt = -1; //클릭시 행번호
+var rowId = -1;
+var rowColNm = "";
+var contentLength = 0;
+var focusIdx = -1;
+function fnSaveIdx(i){
+	focusIdx = i;
+}
+function fnSaveReIdx(el){
+	console.log(el)
+}
 
 function dataURItoBlob(dataURI) {
     // convert base64/URLEncoded data component to raw binary data held in a string
@@ -45,24 +56,8 @@ function fnMakeCombo(targetStr, data){
         }
     });
 }
-var trCnt = -1;
-var clickCnt = -1; //클릭시 행번호
-var rowId = -1;
-var rowColNm = "";
-var contentLength = 0;
-var focusIdx = -1;
-function fnSaveIdx(i){
-	focusIdx = i;
-}
-function fnSaveReIdx(el){
-	console.log(el)
-}
-
-
-
 
 (function(window, $, undefined){
-
 
     var tableInitData = {}
     //카테고리A
@@ -833,10 +828,11 @@ function fnSaveReIdx(el){
             success  : function(data) {
                 alert("삭제 되었습니다.");
                 getDataList();
+
+
             }
         });
     }
-
 
     /******************************************************
     * 글 상자 자동조절 높이
@@ -845,7 +841,6 @@ function fnSaveReIdx(el){
   	  obj.currentTarget.style.height = "50px";
   	  obj.currentTarget.style.height = (12+obj.target.scrollHeight)+"px";
   	}
-
 
     /******************************************************
     * 글 상자
@@ -1028,7 +1023,6 @@ function fnSaveReIdx(el){
     	focusIdx = contentLength;
     }
 
-
     /******************************************************
     * 댓글 리스트 조회
     *******************************************************/
@@ -1073,7 +1067,6 @@ function fnSaveReIdx(el){
                         ********************************************/
                         var ddTextRe = $('<div class="col-xs-w15" style="height:50px; text-align:center;" />');
                         ddTextRe.text('ㄴ');
-
 
                         var ddDiv = $('<div class="col-xs-w90" style="float:right;" />');
 
@@ -1134,7 +1127,7 @@ function fnSaveReIdx(el){
                                     }
                                     //사용자확인
                                     if(app.userEmail == dt_grid[i].inUserId);
-                                    console.log(flag);
+                                    console.log(app.userEmail, dt_grid[i].inUserId);
                                     if(flag == 'VIEW'){
                                         getViewReContentBtnUpdate(ddIdDiv, dtGridRef, dtGridPRef); //수정 전환
                                         getViewReContentBtnDelete(ddIdDiv, dtGridRef, dtGridPRef); //삭제
@@ -1180,9 +1173,9 @@ function fnSaveReIdx(el){
 
 
         });
-
     }
 
+    //그리드 ROW 생성 내부함수.
     function getViewInsert(el, dtGridRef, dtGridPRef){
 
         /*******************************************
@@ -1239,7 +1232,7 @@ function fnSaveReIdx(el){
         el.append(dd);
     }
 
-
+    //댓글 - 댓글달기
     function getViewReContentBtnReAdd(el, dtGridRef, dtGridPRef){
         //대댓글달기
         var ddBtnReAdd = $('<a class="btn reContBtn" id="'+tableInitData.programId+'ReAddBtn_'+dtGridRef+'_'+dtGridPRef+' "  />');
@@ -1255,6 +1248,7 @@ function fnSaveReIdx(el){
         el.append(ddBtnReAdd)
     }
 
+    //댓글 - 수정전환
     function getViewReContentBtnUpdate(el, dtGridRef, dtGridPRef){
         var ddBtnUpdate = $('<a class="btn reContBtn" id="'+tableInitData.programId+'ReContentPlace_'+dtGridRef+'_'+dtGridPRef+' " />');
         var ddBtnUpdateI = $('<i class="fa fa-2x fa-redo"></i>');
@@ -1268,6 +1262,7 @@ function fnSaveReIdx(el){
         el.append(ddBtnUpdate);
     }
 
+    //댓글 - 댓글저장
     function getViewReContentBtnSave(el, dtGridRef, dtGridPRef){
         var ddBtnSave = $('<a class="btn reContBtn" id="'+tableInitData.programId+'ReSaveBtn_'+dtGridRef+'_'+dtGridPRef+' " style="border-radius:50%; background:yellow;" />');
         var ddBtnSaveI = $('<i class="fa fa-2x fa-arrow-up"></i>');
@@ -1289,8 +1284,6 @@ function fnSaveReIdx(el){
                  idx	    : idx,
                  ref	    : parseInt(split[1]),
                  pRef       : parseInt(split[2]),
-                 name       : app.userName,
-                 email      : app.userEmail,
                  content	: content,
                  flag	    : 'INSERT'
             }
@@ -1313,6 +1306,7 @@ function fnSaveReIdx(el){
         el.append(ddBtnSave);
     }
 
+    //댓글 - 수정전환->저장
     function getViewReContentBtnUpdateSave(el, dtGridRef, dtGridPRef){
 
         var ddBtnUpdateSave = $('<a class="btn reContBtn" id="'+tableInitData.programId+'ReUpdateBtn_'+dtGridRef+'_'+dtGridPRef+' " />');
@@ -1356,6 +1350,7 @@ function fnSaveReIdx(el){
         el.append(ddBtnUpdateSave);
     }
 
+    //댓글 - 대댓글 저장
     function getViewReContentBtnReSave(el, dtGridRef, dtGridPRef){
 
         var ddBtnReSave = $('<a class="btn reContBtn" id="'+tableInitData.programId+'ReReSaveBtn_'+dtGridRef+'_'+dtGridPRef+' " />');
@@ -1377,8 +1372,6 @@ function fnSaveReIdx(el){
                  idx	    : idx,
                  ref	    : parseInt(split[1]),
                  pRef       : parseInt(split[2]),
-                 name       : app.userName,
-                 email      : app.userEmail,
                  content	: content,
                  flag	    : 'INSERT_RE'
             }
@@ -1401,6 +1394,7 @@ function fnSaveReIdx(el){
         el.append(ddBtnReSave);
     }
 
+    //댓글 - 삭제
     function getViewReContentBtnDelete(el, dtGridRef, dtGridPRef){
        var ddBtnDelete = $('<a class="btn reContBtn" id="'+tableInitData.programId+'ReDelBtn_'+dtGridRef+'_'+dtGridPRef+' " style="color:red;" />');
        var ddBtnDeleteI = $('<i class="fa fa-2x fa-trash-alt"></i>');
