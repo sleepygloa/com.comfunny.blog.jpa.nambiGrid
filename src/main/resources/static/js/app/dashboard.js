@@ -29,7 +29,7 @@ function leftMenu(menuSeq){
 
     var url = '/b/menu/list';
 //        if(menuSeq == 2) = '/resume/ko';
-    if(menuSeq == 3) url = '/a/'; //관리자
+    //if(menuSeq == 3) url = '/a/'; //관리자
     if(menuSeq == undefined) menuSeq = -1;
 
     $.ajax({
@@ -51,6 +51,12 @@ function leftMenu(menuSeq){
                 var rowData = data[i];
 
                 if(rowData.useYn == 'N') continue;
+
+                if(app.userRole != "A"){
+                    if(rowData.menuSeq == 3) continue;
+                }
+
+
 
                 if(rowData.menuLev ==  1){
                     if(i != 0){

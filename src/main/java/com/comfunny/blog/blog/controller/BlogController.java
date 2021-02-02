@@ -20,7 +20,7 @@ public class BlogController {
     /************************************************************
      * 블로그 페이지로 이동
      *************************************************************/
-    @GetMapping("/b")
+    @GetMapping("/b/blog")
     public String blog(Model model, @LoginUser SessionUser user){
         if(user != null){
             model.addAttribute("userName", user.getName());
