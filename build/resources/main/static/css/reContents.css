@@ -1,0 +1,151 @@
+.activity-content-wrap {
+    overflow: hidden;
+    position: relative;
+    padding-bottom: 56px;
+    margin: 0 -20px -56px;
+    opacity: 1!important;
+}
+
+html.gpu.show-comments #comments, html.gpu.show-export #export, html.gpu.show-info #related {
+    position: relative!important;
+    -webkit-touch-callout: default!important;
+    -webkit-user-select: auto!important;
+    -moz-user-select: auto!important;
+    -ms-user-select: auto!important;
+    user-select: auto!important;
+    /* pointer-events: auto!important; */
+    opacity: 1!important;
+    height: auto!important;
+    transition-delay: .2s;
+
+@media (max-width: 640px)
+#comments {
+    margin-bottom: -20px;
+}
+#comments {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.comments {
+    max-width: calc(728px + 80px)!important;
+}
+.comments {
+    max-width: 808px;
+    margin: auto;
+}
+.comments {
+    opacity: 1!important;
+}
+
+
+ol {
+    display: block;
+    list-style-type: decimal;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+.fc-list li, .sidebar li {
+    list-style: none;
+}
+.comment-item {
+    position: relative;
+    clear: both;
+    background: 0 0!important;
+}
+
+
+.reply-wrap, html.gpu .comment-wrap {
+    will-change: opacity;
+}
+.comment-wrap {
+    float: left;
+    padding-left: 40px;
+}
+.comment-wrap, .reply-wrap {
+    clear: both;
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    max-width: 80%;
+    margin-bottom: 33px;
+}
+
+
+
+html.day .comment-avatar, html.day .comment-wrap .comment-desc {
+    background-color: #f4f4f4;
+}
+.comment-wrap .comment-desc, .comment-wrap .comment-info {
+    float: left;
+}
+.comment-desc {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    max-width: 100%;
+    min-height: 52px;
+    padding: 12px 20px;
+    margin-bottom: 5px;
+    border-radius: 26px;
+}
+
+
+
+element.style {
+    background-image: url(//img1.daumcdn.net/thumb/R110x0/?fname=https://tistory1.daumcdn.net/tistory/user/3775029/profile/profileImg?v=1586761795848);
+}
+html.day .comment-avatar, html.day .comment-wrap .comment-desc {
+    background-color: #f4f4f4;
+}
+html.gpu .comment-avatar {
+    will-change: opacity;
+}
+.comment-wrap .comment-avatar {
+    left: -1px;
+}
+.comment-avatar {
+    overflow: hidden;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    position: absolute;
+    bottom: 2px;
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    background: 50% 50%/cover no-repeat;
+    border-radius: 18px;
+}
+
+
+
+html.gpu .comment-control {
+    transition: opacity .3s;
+}
+.comment-wrap .comment-control {
+    left: 46px;
+}
+.comment-control[aria-hidden=true] {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    opacity: 0;
+}
+.comment-control {
+    position: absolute;
+    z-index: 1;
+
+}

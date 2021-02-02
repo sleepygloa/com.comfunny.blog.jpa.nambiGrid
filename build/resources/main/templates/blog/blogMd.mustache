@@ -1,0 +1,49 @@
+
+<div class="input-group">
+
+    <input class="form-control" type="text" list="blogCategoryAList" id="blogCategoryA" >
+    <datalist id="blogCategoryAList">
+    </datalist>
+    <span class="input-group-text"> - </span>
+    <input class="form-control" type="text" list="blogCategoryBList" id="blogCategoryB" >
+    <datalist id="blogCategoryBList">
+    </datalist>
+    <span class="input-group-text"> - </span>
+    <input class="form-control" type="text" list="blogCategoryCList" id="blogCategoryC" >
+    <datalist id="blogCategoryCList">
+    </datalist>
+
+</div>
+<!--<div class="input-group">
+    <input type="file" class="form-control" id="blogFileUpload" aria-describedby="blogFileUploadAddon" aria-label="Upload" >
+    <button class="btn btn-outline-secondary" type="button" id="blogFileUploadAddon" >Button</button>
+</div>-->
+
+    <div class="row mt-5">
+        <div class="col">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="blogTitle" placeholder="Title" autocomplete="off" class="form-control"
+                        value=""/>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Url:</label>
+                <input type="text" id="blogUrl" placeholder="Url" autocomplete="off" class="form-control"
+                        value=""/>
+            </div>
+
+            <div class="form-group">
+                <label for="content">Content:</label>
+                <textarea type="text" rows="4"  id="blogContent" placeholder="Content" class="form-control"
+                           autocomplete="off"></textarea>
+            </div>
+
+            <!--<button class="btn btn-primary" type="submit">Submit form</button>-->
+
+        </div>
+    </div>
+
+<script>
+var simplemde = new SimpleMDE({ element: document.getElementById("blogContent"), status : false, toolbar : false});
+</script>
